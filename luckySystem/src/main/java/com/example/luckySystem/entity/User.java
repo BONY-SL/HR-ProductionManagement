@@ -28,7 +28,7 @@ public class User {
     @JoinColumn(name = "emp_id",referencedColumnName = "employee_id")
     private Employee employee;
 
-    @Column(name="email",length = 100,nullable = false)
+    @Column(name="email",length = 100,nullable = false,unique = true)
     private String  Email;
 
     @Column(name="contact_number",length = 10,nullable = false)
