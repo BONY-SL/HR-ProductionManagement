@@ -16,7 +16,7 @@ public class EmployeeDeduction {
 
     @Id
     @Column(name="employee_deduction_id",unique = true, nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long EmployeeDeductionID;
 
     @ManyToOne

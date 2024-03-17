@@ -18,7 +18,7 @@ public class EmployeeAttendance {
 
     @Id
     @Column(name="employee_attendance_id",unique = true, nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long AttendanceID;
 
     @ManyToOne

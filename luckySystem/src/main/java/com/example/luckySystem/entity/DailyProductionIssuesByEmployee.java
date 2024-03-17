@@ -16,7 +16,7 @@ public class DailyProductionIssuesByEmployee {
 
     @Id
     @Column(name="daily_issue_id",unique = true,nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long DailyIssueID;
 
     @ManyToOne

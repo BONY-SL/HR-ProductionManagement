@@ -16,7 +16,7 @@ public class EmployeeLoan {
 
     @Id
     @Column(name="loan_id",unique = true, nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long loan_id;
 
     @ManyToOne

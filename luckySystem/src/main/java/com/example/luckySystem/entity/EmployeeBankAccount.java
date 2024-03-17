@@ -16,7 +16,7 @@ public class EmployeeBankAccount {
 
     @Id
     @Column(name="employee_bank_account_id",unique = true, nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long EmployeeBankAccountID;
 
     @ManyToOne

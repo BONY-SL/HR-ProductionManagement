@@ -17,7 +17,7 @@ public class EmployeeDailyPayRoll {
 
     @Id
     @Column(name="employee_daily_id",unique = true, nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long daily_id;
 
     @ManyToOne

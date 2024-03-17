@@ -19,7 +19,7 @@ public class GoodProductsForLoading {
 
     @Id
     @Column(name="loading_id",unique = true,nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long LordingID;
 
     @Column(name = "amount",nullable = false)

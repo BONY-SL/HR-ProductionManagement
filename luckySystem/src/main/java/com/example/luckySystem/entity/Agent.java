@@ -16,7 +16,7 @@ public class Agent {
 
     @Id
     @Column(name="agent_id",unique = true,nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long AgentID;
 
     @Column(name = "agent_name",length = 50,nullable = false)

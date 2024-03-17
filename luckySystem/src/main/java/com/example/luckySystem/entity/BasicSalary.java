@@ -17,7 +17,7 @@ public class BasicSalary{
 
     @Id
     @Column(name="basicsalary_id",unique = true, nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long BasicSalary_id;
 
     @Column(name="salary_type",length = 15,nullable = false)

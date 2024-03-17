@@ -17,7 +17,7 @@ public class EmployeeAdvanceSalary {
 
     @Id
     @Column(name="advance_salary_id",unique = true, nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long advance_salary_id;
 
     @OneToOne

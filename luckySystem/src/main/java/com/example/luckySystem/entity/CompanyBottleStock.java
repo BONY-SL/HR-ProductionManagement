@@ -19,7 +19,7 @@ public class CompanyBottleStock {
 
     @Id
     @Column(name="id",nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long UpdatedID;
 
     @Column(name = "update_Date",nullable = false)
