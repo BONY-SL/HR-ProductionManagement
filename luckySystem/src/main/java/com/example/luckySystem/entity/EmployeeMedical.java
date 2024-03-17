@@ -18,7 +18,7 @@ public class EmployeeMedical {
 
     @Id
     @Column(name="employee_medical_id",unique = true, nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long MedicalID;
 
     @ManyToOne

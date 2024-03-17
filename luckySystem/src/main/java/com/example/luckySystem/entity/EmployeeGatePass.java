@@ -18,7 +18,7 @@ public class EmployeeGatePass {
 
     @Id
     @Column(name="employee_gate_pass_id",unique = true, nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long EmployeeGatePassID;
 
     @ManyToOne

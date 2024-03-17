@@ -16,7 +16,7 @@ public class ProductionIssue {
 
     @Id
     @Column(name="issue_id",unique = true,nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long IssueID;
 
     @Column(name = "issue_name",length = 50,nullable = false)

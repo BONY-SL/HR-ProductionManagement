@@ -17,7 +17,7 @@ import java.sql.Time;
 public class DailyWashingBottleUnit {
     @Id
     @Column(name="washed_id",unique = true,nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long WashedUnitID;
 
     @Column(name = "damage_bottles",nullable = false)

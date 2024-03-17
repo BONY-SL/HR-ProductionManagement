@@ -18,7 +18,7 @@ public class EmployeeLeave {
 
     @Id
     @Column(name="employee_leave_id",unique = true, nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long EmployeeLeaveID;
 
     @ManyToOne

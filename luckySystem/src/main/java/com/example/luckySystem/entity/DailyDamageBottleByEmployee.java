@@ -17,7 +17,7 @@ public class DailyDamageBottleByEmployee {
 
     @Id
     @Column(name="daily_damage_id",unique = true,nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long DailyDamageID;
 
     // Empty,Washed

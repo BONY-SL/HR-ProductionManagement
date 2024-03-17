@@ -18,7 +18,7 @@ public class DailyEmptyBottleUnit {
 
     @Id
     @Column(name="empty_id",unique = true,nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long EmptyUnitID;
 
     @Column(name = "empty_bottles",nullable = false)

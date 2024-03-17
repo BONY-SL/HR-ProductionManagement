@@ -17,7 +17,7 @@ public class Deduction{
 
     @Id
     @Column(name="deduction_id",unique = true, nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Deduction_id;
 
     @Column(name="salary_type",length = 15,nullable = false)

@@ -18,7 +18,7 @@ public class DailyFinished {
 
     @Id
     @Column(name="finished_id",unique = true,nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long FinishedID;
 
     @Column(name = "amount",nullable = false)
