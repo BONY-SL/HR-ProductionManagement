@@ -17,6 +17,7 @@ public class Employee {
     //"EPF00001"
     @Id
     @Column(name="employee_id",length = 8,unique = true,nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String Employee_id;
 
     @Column(name = "job_role",length = 50,nullable = false)
