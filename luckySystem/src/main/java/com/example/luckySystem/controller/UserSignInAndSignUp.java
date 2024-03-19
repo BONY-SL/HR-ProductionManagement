@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -48,17 +48,18 @@ public class UserSignInAndSignUp {
     UserRepo userRepo;
 
     @PostMapping("/loginUser")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRe loginRe){
-        Authentication authentication=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRe.getUsername(),loginRe.getUserpassword()));
+    synchronized public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRe loginRe){
+        Authentication authentication=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRe.getUsername(),loginRe.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt=jwtResorce.generateJwtToken(authentication);
 
         UserDetail userDetail= (UserDetail) authentication.getPrincipal();
 
-        List<String> roles=userDetail.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .toList();
+        UserDetail userDetails = (UserDetail) authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toList());
 
         return ResponseEntity.ok(new JwtRes(jwt,userDetail.getId(),userDetail.getUsername(),userDetail.getEmail(),roles));
 
@@ -66,7 +67,7 @@ public class UserSignInAndSignUp {
     }
 
     @PostMapping("/regiterUser")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRe signUpRe){
+    synchronized public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRe signUpRe){
 
         if(userRepo.existsByUsername(signUpRe.getUsername())){
             return ResponseEntity.badRequest().body(new MessageRes("The User is Already taken"));

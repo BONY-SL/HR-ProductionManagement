@@ -2,6 +2,7 @@ package com.example.luckySystem.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -24,21 +25,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     @Column(name="username",length = 8,unique = true,nullable = false)
     private String username;
 
-    @Column(name="password",length = 50,nullable = false)
-    @NotBlank
+    @Column(name="password",nullable = false)
+    @Size(max = 512)
     private String password;
 
     @Column(name="email",length = 100,nullable = false,unique = true)
     @Email
-    @NotBlank
     private String  email;
 
     @Column(name="contact",length = 10,nullable = false)
-    @NotBlank
     private String contact;
 
     @ManyToMany(fetch = FetchType.LAZY)

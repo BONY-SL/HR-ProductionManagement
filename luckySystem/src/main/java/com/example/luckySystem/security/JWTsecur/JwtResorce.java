@@ -22,10 +22,10 @@ public class JwtResorce {
     private int jwtExpirationMs;
 
     public String generateJwtToken(Authentication authentication){
-        UserDetail userDetail= (UserDetail) authentication.getPrincipal();
+        UserDetail userPrincipal= (UserDetail) authentication.getPrincipal();
 
         return Jwts.builder()
-                .setSubject(userDetail.getUsername())
+                .setSubject(userPrincipal.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512,jwtSecret)

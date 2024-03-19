@@ -11,18 +11,22 @@ import java.util.Set;
 
 public class SignUpRe {
 
-    @NotBlank
-    private String username;
 
     @NotBlank
-    private String password;
-    @NotBlank
-    @Size(max = 70)
+    @Size(min = 3, max = 20)
+    private String username;
+
+    @Size(max = 100)
     @Email
     private String email;
 
-    @NotBlank
+    @Size(min=8,max = 10)
+    private String password;
+
+    @Size(max = 10)
     private String contact;
+
+    private Set<String> role;
 
     public String getUsername() {
         return username;
@@ -44,7 +48,6 @@ public class SignUpRe {
         return role;
     }
 
-    private Set<String> role;
 
     public void setUsername(String username) {
         this.username = username;

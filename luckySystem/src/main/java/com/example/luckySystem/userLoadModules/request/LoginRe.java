@@ -7,22 +7,22 @@ public class LoginRe {
     private String username;
 
     @NotBlank
-    private String userpassword;
+    private String password;
 
 
     public String getUsername() {
         return username;
     }
 
-    public String getUserpassword() {
-        return userpassword;
+    public String getPassword() {
+        return password;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public void setUserpassword(String userpassword) {
-        this.userpassword = userpassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
