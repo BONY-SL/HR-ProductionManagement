@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.Set;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Getter
 @Setter
@@ -48,4 +46,14 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    public User(){
+
+    }
+    public User(String user_name, String user_password, String email, String contact_number) {
+        this.user_name = user_name;
+        this.user_password = user_password;
+        this.email = email;
+        this.contact_number = contact_number;
+    }
 }
