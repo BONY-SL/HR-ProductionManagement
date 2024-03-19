@@ -14,18 +14,19 @@ import java.util.Date;
 @Setter
 @Component
 
-@Entity(name="companybottlestock")
+@Entity
+@Table(name="companybottlestock")
 public class CompanyBottleStock {
 
     @Id
-    @Column(name="id",nullable = false)
+    @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long UpdatedID;
+    private Long updated_id;
 
-    @Column(name = "update_Date",nullable = false)
+    @Column(nullable = false)
     private Date date;
 
-    @Column(name = "total_Bottles",nullable = false)
-    private long TotalBottle;
+    @Column(nullable = false)
+    private long total_bottle;
 
 }

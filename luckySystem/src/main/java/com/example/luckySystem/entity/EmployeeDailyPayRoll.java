@@ -12,32 +12,33 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 
-@Entity(name="employeedailypayroll")
+@Entity
+@Table(name="employeedailypayroll")
 public class EmployeeDailyPayRoll {
 
     @Id
     @Column(name="employee_daily_id",unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long daily_id;
+    private Long employee_daily_id;
 
     @ManyToOne
     @JoinColumn(name = "emp_id",referencedColumnName = "employee_id")
-    private Employee employee;
+    private Employee emp_id;
 
     @ManyToOne
     @JoinColumn(name = "daily_pay_id",referencedColumnName = "daily_pay_roll_id")
-    private DailyPayRoll dailyPayRoll;
+    private DailyPayRoll daily_pay_id;
 
     @Column(name="working_hours",nullable = false)
     private int working_hours;
 
     @Column(name="ot_amount",nullable = false)
-    private double OTAmount;
+    private double ot_amount;
 
     @Column(name="shift_amount",nullable = false)
-    private double shiftAmount;
+    private double shift_amount;
 
     @Column(name="total_amount",nullable = false)
-    private double TotalAmount;
+    private double total_amount;
 
 }

@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -12,26 +14,27 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 
-@Entity(name = "dailybottledamage")
+@Entity
+@Table(name = "dailybottledamage")
 public class DailyDamageBottleByEmployee {
 
     @Id
-    @Column(name="daily_damage_id",unique = true,nullable = false)
+    @Column(unique = true,nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long DailyDamageID;
+    private Long daily_damage_id;
 
     // Empty,Washed
-    @Column(name = "unit_type",length = 50,nullable = false)
-    private String UnitType;
+    @Column(length = 50,nullable = false)
+    private String unit_type;
 
     @ManyToOne
-    @JoinColumn(name = "emp_id",referencedColumnName = "employee_id")
-    private Employee employee;
+    @JoinColumn(referencedColumnName = "employee_id")
+    private Employee employee_id;
 
-    @Column(name = "damage_amount",nullable = false)
-    private int DamageAmount;
+    @Column(nullable = false)
+    private int damage_amount;
 
-    @Column(name = "date",nullable = false,length = 50)
-    private String date;
+    @Column(nullable = false)
+    private Date date;
 
 }

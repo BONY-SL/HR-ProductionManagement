@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.sql.Time;
+import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,28 +14,29 @@ import java.sql.Time;
 @Setter
 @Component
 
-@Entity(name = "dailyfinished")
+@Entity
+@Table(name = "dailyfinished")
 public class DailyFinished {
 
     @Id
-    @Column(name="finished_id",unique = true,nullable = false)
+    @Column(unique = true,nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long FinishedID;
+    private Long finished_id;
 
-    @Column(name = "amount",nullable = false)
-    private long Amount;
+    @Column(nullable = false)
+    private long amount;
 
-    @Column(name = "batch_code",length = 50,nullable = false)
-    private String BatchCode;
+    @Column(length = 50,nullable = false)
+    private String batch_code;
 
-    @Column(name = "submit_time",nullable = false)
-    private Time submitTime;
+    @Column(nullable = false)
+    private Time submit_time;
 
-    @Column(name = "submit_date",length = 50,nullable = false)
-    private String submitDate;
+    @Column(nullable = false)
+    private Date submit_date;
 
     // good ,bad
-    @Column(name = "finished_status",length = 50)
-    private String status;
+    @Column(length = 10)
+    private String finished_status;
 
 }

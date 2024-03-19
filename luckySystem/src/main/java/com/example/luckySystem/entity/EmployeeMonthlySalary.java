@@ -12,7 +12,8 @@ import org.springframework.stereotype.Component;
 @Component
 
 
-@Entity(name="employeemonthlysalary")
+@Entity
+@Table(name="employeemonthlysalary")
 public class EmployeeMonthlySalary {
 
     @Id
@@ -22,7 +23,7 @@ public class EmployeeMonthlySalary {
 
     @ManyToOne
     @JoinColumn(name = "emp_id",referencedColumnName = "employee_id")
-    private Employee employee;
+    private Employee emp_id;
 
     @Column(name="salary_type",length = 15,nullable = false)
     private String salary_type;
@@ -34,10 +35,10 @@ public class EmployeeMonthlySalary {
     private String date;
 
     @Column(name="bonus_amount")
-    private double bonusAmount;
+    private double bonus_amount;
 
-    @Column(name="allowancess_Amount")
-    private double Allowancess_Amount;
+    @Column(name="allowancess_amount")
+    private double allowancess_amount;
 
     @Column(name="deduction_amount")
     private double deduction_amount;

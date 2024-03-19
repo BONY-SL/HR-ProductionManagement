@@ -12,30 +12,31 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 
-@Entity(name="allowances")
+@Entity
+@Table(name="allowances")
 public class Allowances{
 
     @Id
-    @Column(name="allowances_id",unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Allowances_id;
+    private Long allowances_id;
 
-    @Column(name="salary_type",length = 15,nullable = false)
+    @Column(length = 15,nullable = false)
     private String salary_type;
 
-    @Column(name="job_role",length = 20,nullable = false)
+    @Column(length = 20,nullable = false)
     private String job_role;
 
-    @Column(name="department_Name",length = 50,nullable = false)
-    private String departmentName;
+    @Column(length = 50,nullable = false)
+    private String department_name;
 
-    @Column(name="section_Name",length = 50,nullable = false)
-    private String sectionName;
+    @Column(length = 50,nullable = false)
+    private String section_name;
 
-    @Column(name="allowances_type",length = 50,nullable = false)
+    @Column(length = 50,nullable = false)
     private String allowances_type;
 
-    @Column(name="allowances_amount",nullable = false)
+    @Column(nullable = false)
     private double allowances_amount;
 
 }

@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.sql.Time;
+import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,25 +14,26 @@ import java.sql.Time;
 @Setter
 @Component
 
-@Entity(name = "employeemedical")
+@Entity
+@Table(name = "employeemedical")
 public class EmployeeMedical {
 
     @Id
     @Column(name="employee_medical_id",unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long MedicalID;
+    private Long employee_medical_id;
 
     @ManyToOne
     @JoinColumn(name = "emp_id",referencedColumnName = "employee_id")
-    private Employee employee;
+    private Employee emp_id;
 
     @Column(name="medical_status",length = 200)
-    private String MedicalStatus;
+    private String medical_status;
 
     @Column(name="submit_date",length = 10)
-    private String  date;
+    private Date submit_date;
 
     @Column(name="medical_report")
-    private byte[] OutTime;
+    private byte[] medical_report;
 
 }

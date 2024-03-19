@@ -12,7 +12,8 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 
-@Entity(name="employeeadvancesalary")
+@Entity
+@Table(name="employeeadvancesalary")
 public class EmployeeAdvanceSalary {
 
     @Id
@@ -22,10 +23,10 @@ public class EmployeeAdvanceSalary {
 
     @OneToOne
     @JoinColumn(name = "emp_id",referencedColumnName = "employee_id")
-    private Employee employee;
+    private Employee emp_id;
 
     @Column(name="reson",length = 240,nullable = false)
-    private String  loan_amount;
+    private String  reson;
 
     @Column(name="status",length = 240,nullable = false)
     private String  status;

@@ -11,14 +11,15 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 
-@Entity(name = "productionissue")
+@Entity
+@Table(name = "productionissue")
 public class ProductionIssue {
 
     @Id
     @Column(name="issue_id",unique = true,nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long IssueID;
+    private Long issue_id;
 
     @Column(name = "issue_name",length = 50,nullable = false)
-    private String IssuName;
+    private String issue_name;
 }

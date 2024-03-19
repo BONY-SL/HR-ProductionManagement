@@ -17,14 +17,14 @@ public class EmployeeBankAccount {
     @Id
     @Column(name="employee_bank_account_id",unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long EmployeeBankAccountID;
+    private Long employee_bank_account_id;
 
     @ManyToOne
     @JoinColumn(name = "emp_id",referencedColumnName = "employee_id")
-    private Employee employee;
+    private Employee emp_id;
 
     @Column(name = "acount_name",length = 100,nullable = false)
-    private String AcountName;
+    private String acount_name;
 
 
 }

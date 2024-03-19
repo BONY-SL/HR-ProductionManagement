@@ -12,13 +12,14 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 
-@Entity(name="deduction")
+@Entity
+@Table(name="deduction")
 public class Deduction{
 
     @Id
     @Column(name="deduction_id",unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Deduction_id;
+    private Long deduction_id;
 
     @Column(name="salary_type",length = 15,nullable = false)
     private String salary_type;
@@ -26,11 +27,11 @@ public class Deduction{
     @Column(name="job_role",length = 20,nullable = false)
     private String job_role;
 
-    @Column(name="department_Name",length = 50,nullable = false)
-    private String departmentName;
+    @Column(name="department_name",length = 50,nullable = false)
+    private String department_name;
 
-    @Column(name="section_Name",length = 50,nullable = false)
-    private String sectionName;
+    @Column(name="section_name",length = 50,nullable = false)
+    private String section_name;
 
     @Column(name="deduction_type",length = 50,nullable = false)
     private String deduction_type;

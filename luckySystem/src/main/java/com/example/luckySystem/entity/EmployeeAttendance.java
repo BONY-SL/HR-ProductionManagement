@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
 import java.sql.Time;
 
 @AllArgsConstructor
@@ -13,29 +14,30 @@ import java.sql.Time;
 @Setter
 @Component
 
-@Entity(name="employeeattendance")
+@Entity
+@Table(name="employeeattendance")
 public class EmployeeAttendance {
 
     @Id
     @Column(name="employee_attendance_id",unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long AttendanceID;
+    private Long employee_attendance_id;
 
     @ManyToOne
     @JoinColumn(name = "emp_id",referencedColumnName = "employee_id")
-    private Employee employee;
+    private Employee emp_id;
 
     //Absent,Present,Late
     @Column(name="attendance_status",length = 15,nullable = false)
-    private String AttendanceStatus;
+    private String attendance_status;
 
     @Column(name="in_time",nullable = false)
-    private Time InTime;
+    private Time in_time;
 
     @Column(name="out_time")
-    private Time OutTime;
+    private Time out_time;
 
     @Column(name="date",nullable = false,length = 15)
-    private String date;
+    private Date date;
 
 }

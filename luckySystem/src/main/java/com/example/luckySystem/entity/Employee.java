@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -17,45 +19,46 @@ public class Employee {
     //"EPF00001"
     @Id
     @Column(name="employee_id",length = 8,unique = true,nullable = false)
-    private String Employee_id;
+    private String employee_id;
 
     @Column(name = "job_role",length = 50,nullable = false)
-    private String JobRole;
+    private String job_role;
 
     @Column(name = "salary_type",length = 50,nullable = false)
-    private String SalaryType;
+    private String salary_type;
 
     @Column(length = 200,nullable = false)
-    private String EmployeeName;
+    private String employee_name;
 
     @Column(length = 200,nullable = false)
-    private String DOB;
+    private Date dob;
 
     @Column(length = 200,nullable = false)
-    private String Address;
+    private String address;
 
     @Column(length = 6,nullable = false)
-    private String Gender;
+    private String gender;
+
+    //Marred Un Marred Status
+    @Column(length = 10,nullable = false)
+    private String ma_uma;
 
     @Column(length = 10,nullable = false)
-    private String MarriedUnMarriedStatus;
-
-    @Column(length = 10,nullable = false)
-    private String ContactNumber;
+    private String contact_number;
 
     //permanent or temporary
     @Column(length = 200,nullable = false)
-    private String CompanyStatus;
+    private String company_status;
 
-    @Column(name="CV_file",nullable = false)
-    private byte[] Cv;
+    @Column(name="cv",nullable = false)
+    private byte[] cv;
 
     @ManyToOne
-    @JoinColumn(name = "depid",referencedColumnName = "department_id")
-    private Department department;
+    @JoinColumn(name = "dep_id",referencedColumnName = "department_id")
+    private Department dep_id;
 
     @ManyToOne
     @JoinColumn(name = "sec_id",referencedColumnName = "section_id")
-    private Section section;
+    private Section sec_id;
 
 }

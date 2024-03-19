@@ -12,47 +12,48 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 
-@Entity(name="basicsalary")
+@Entity
+@Table(name="basicsalary")
 public class BasicSalary{
 
     @Id
-    @Column(name="basicsalary_id",unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long BasicSalary_id;
+    private Long basic_salary_id;
 
-    @Column(name="salary_type",length = 15,nullable = false)
+    @Column(length = 15,nullable = false)
     private String salary_type;
 
-    @Column(name="job_role",length = 20,nullable = false)
+    @Column(length = 20,nullable = false)
     private String job_role;
 
-    @Column(name="department_Name",length = 50,nullable = false)
-    private String departmentName;
+    @Column(length = 50,nullable = false)
+    private String department_name;
 
-    @Column(name="section_Name",length = 50,nullable = false)
-    private String sectionName;
+    @Column(length = 50,nullable = false)
+    private String section_name;
 
-    @Column(name="br_1")
+    @Column
     private double br_1;
 
-    @Column(name="br_2")
+    @Column
     private double br_2;
 
-    @Column(name="initial_days")
+    @Column
     private int initial_days;
 
-    @Column(name="initial_nopay_amount")
+    @Column
     private double initial_nopay_amount;
 
-    @Column(name="basic_amount")
+    @Column
     private double basic_amount;
 
-    @Column(name="get_pass_amount")
+    @Column
     private double get_pass_amount;
 
-    @Column(name="ot_amount")
+    @Column
     private double ot_amount;
 
-    @Column(name="subsistant")
+    @Column
     private double subsistant;
 }

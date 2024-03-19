@@ -12,13 +12,14 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 
-@Entity(name="dailypayroll")
+@Entity
+@Table(name="dailypayroll")
 public class DailyPayRoll{
 
     @Id
     @Column(name="daily_pay_roll_id",unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long DailyPayRoll_id;
+    private Long daily_pay_roll_id;
 
     @Column(name="salary_type",length = 15,nullable = false)
     private String salary_type;
@@ -26,11 +27,11 @@ public class DailyPayRoll{
     @Column(name="job_role",length = 20,nullable = false)
     private String job_role;
 
-    @Column(name="department_Name",length = 50,nullable = false)
-    private String departmentName;
+    @Column(name="department_name",length = 50,nullable = false)
+    private String department_name;
 
-    @Column(name="section_Name",length = 50,nullable = false)
-    private String sectionName;
+    @Column(name="section_name",length = 50,nullable = false)
+    private String section_name;
 
     @Column(name="working_hours",nullable = false)
     private int  working_hours;

@@ -21,7 +21,7 @@ public class EmployeeLoan {
 
     @ManyToOne
     @JoinColumn(name = "emp_id",referencedColumnName = "employee_id")
-    private Employee employee;
+    private Employee emp_id;
 
     @Column(name="loan_amount",nullable = false)
     private double loan_amount;

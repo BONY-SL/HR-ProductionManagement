@@ -1,6 +1,7 @@
 package com.example.luckySystem.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -11,27 +12,30 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 
-@Entity(name = "agent")
+@Entity
+@Table(name = "agent")
 public class Agent {
 
     @Id
-    @Column(name="agent_id",unique = true,nullable = false)
+    @Column(unique = true,nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long AgentID;
+    private Long agent_id;
 
-    @Column(name = "agent_name",length = 50,nullable = false)
-    private String AgentName;
+    @Column(length = 50,nullable = false)
+    private String agent_name;
 
-    @Column(name = "agency_name",length = 50,nullable = false)
-    private String AgencyName;
+    @Column(length = 50,nullable = false)
+    private String agency_name;
 
-    @Column(name = "address",length = 50,nullable = false)
-    private String Address;
+    @Column(length = 50,nullable = false)
+    private String address;
 
-    @Column(name = "email",length = 50,nullable = false)
-    private String Email;
+    @Column(length = 50,nullable = false)
+    @Email
+    private String email;
 
-    @Column(name = "contact_number",length = 50,nullable = false)
-    private String ContactNumber;
+
+    @Column(length = 50,nullable = false)
+    private String contact_number;
 
 }

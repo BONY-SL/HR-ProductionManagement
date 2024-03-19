@@ -11,21 +11,22 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 
-@Entity(name="employeededuction")
+@Entity
+@Table(name="employeededuction")
 public class EmployeeDeduction {
 
     @Id
     @Column(name="employee_deduction_id",unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long EmployeeDeductionID;
+    private Long employee_deduction_id;
 
     @ManyToOne
     @JoinColumn(name = "emp_id",referencedColumnName = "employee_id")
-    private Employee employee;
+    private Employee emp_id;
 
     @ManyToOne
     @JoinColumn(name = "de_id",referencedColumnName = "deduction_id")
-    private Deduction deduction;
+    private Deduction de_id;
 
     @Column(name="deduction_type",length = 50,nullable = false)
     private String deduction_type;

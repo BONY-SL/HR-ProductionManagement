@@ -1,8 +1,9 @@
 package com.example.luckySystem.entity;
-
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,7 +12,8 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 
-@Entity(name="section")
+@Entity
+@Table(name="section")
 public class Section {
 
     @Id
@@ -19,18 +21,17 @@ public class Section {
     private String section_id;
 
     @Column(name="section_name",length = 50,nullable = false)
-    private String sectionName;
+    private String section_name;
 
     @Column(name="start_date",length = 20,nullable = false)
-    private String startDate;
+    private Date start_date;
 
     @ManyToOne
     @JoinColumn(name = "dep_id",referencedColumnName = "department_id")
-    private Department department;
+    private Department dep_id;
 
     @ManyToOne
     @JoinColumn(name = "section_of_head",referencedColumnName = "employee_id")
-    private Employee employee;
-
+    private Employee section_of_head;
 
 }

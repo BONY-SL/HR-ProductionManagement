@@ -11,21 +11,22 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 
-@Entity(name="employeeallowances")
+@Entity
+@Table(name="employeeallowances")
 public class EmployeeAllowances {
 
     @Id
     @Column(name="employee_allowances_id",unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long EmployeeAllowancesID;
+    private Long employee_allowances_id;
 
     @ManyToOne
     @JoinColumn(name = "emp_id",referencedColumnName = "employee_id")
-    private Employee employee;
+    private Employee emp_id;
 
     @ManyToOne
     @JoinColumn(name = "alow_id",referencedColumnName = "allowances_id")
-    private Allowances allowances;
+    private Allowances alow_id;
 
     @Column(name="allowances_type",length = 50,nullable = false)
     private String allowances_type;

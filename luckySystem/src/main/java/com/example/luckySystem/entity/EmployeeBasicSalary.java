@@ -12,43 +12,44 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 
-@Entity(name="employeebasicsalary")
+@Entity
+@Table(name="employeebasicsalary")
 public class EmployeeBasicSalary {
 
     @Id
     @Column(name="employee_basic_id",unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long EmployeeBasicSalaryID;
+    private Long employee_basic_id;
 
     @ManyToOne
     @JoinColumn(name = "emp_id",referencedColumnName = "employee_id")
-    private Employee employee;
+    private Employee emp_id;
 
     @ManyToOne
-    @JoinColumn(name = "basic_salary_id",referencedColumnName = "basicsalary_id")
-    private BasicSalary basicSalary;
+    @JoinColumn(name = "basic_id",referencedColumnName = "basic_salary_id")
+    private BasicSalary basic_id;
 
     @Column(name="monthly_br_1")
-    private double br_1;
+    private double monthly_br_1;
 
     @Column(name="monthly_br_2")
-    private double br_2;
+    private double monthly_br_2;
 
     @Column(name="attend_days")
-    private int initial_days;
+    private int attend_days;
 
     @Column(name="monthly_nopay_amount")
-    private double initial_nopay_amount;
+    private double monthly_nopay_amount;
 
     @Column(name="monthly_basic_amount")
-    private double basic_amount;
+    private double monthly_basic_amount;
 
     @Column(name="monthly_get_pass_amount")
-    private double get_pass_amount;
+    private double monthly_get_pass_amount;
 
     @Column(name="monthly_ot_amount")
-    private double ot_amount;
+    private double monthly_ot_amount;
 
     @Column(name="monthly_subsistant")
-    private double subsistant;
+    private double monthly_subsistant;
 }

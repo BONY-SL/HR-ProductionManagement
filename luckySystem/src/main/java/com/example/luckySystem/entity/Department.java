@@ -5,7 +5,7 @@ import lombok.*;
 
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
+import java.util.Date;
 
 
 @AllArgsConstructor
@@ -15,7 +15,8 @@ import java.util.Set;
 @Setter
 @Component
 
-@Entity(name="department")
+@Entity
+@Table(name="department")
 public class Department {
 
     @Id
@@ -23,14 +24,14 @@ public class Department {
     private String department_id;
 
     @Column(name="department_name",length = 50,nullable = false)
-    private String departmentName;
+    private String department_name;
 
-    @Column(name="start_date",length = 20,nullable = false)
-    private String startDate;
+    @Column(name="start_date",nullable = false)
+    private Date start_date;
 
     @OneToOne
     @JoinColumn(name = "head_of_department",referencedColumnName = "employee_id")
-    private Employee employee;
+    private Employee head_of_department;
 
 
 

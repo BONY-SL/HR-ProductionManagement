@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.sql.Time;
+import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,27 +14,28 @@ import java.sql.Time;
 @Setter
 @Component
 
-@Entity(name = "dailyemptybottleunit")
+@Entity
+@Table(name = "dailyemptybottleunit")
 public class DailyEmptyBottleUnit {
 
     @Id
-    @Column(name="empty_id",unique = true,nullable = false)
+    @Column(unique = true,nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long EmptyUnitID;
+    private Long empty_unit_id;
 
-    @Column(name = "empty_bottles",nullable = false)
-    private long EmptyBottles;
+    @Column(nullable = false)
+    private long empty_bottles;
 
-    @Column(name = "damage_bottles")
-    private long DamageBottles;
+    @Column
+    private long damage_bottles;
 
-    @Column(name = "submit_time",nullable = false)
-    private Time submitTime;
+    @Column(nullable = false)
+    private Time submit_time;
 
-    @Column(name = "submit_date",length = 50,nullable = false)
-    private String submitDate;
+    @Column(nullable = false)
+    private Date submit_date;
 
-    @Column(name = "for_washing",nullable = false)
-    private long ForWashing;
+    @Column(nullable = false)
+    private long for_washing;
 
 }
