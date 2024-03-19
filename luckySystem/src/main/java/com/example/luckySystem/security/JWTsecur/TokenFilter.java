@@ -12,13 +12,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@Component
 public class TokenFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -45,7 +43,7 @@ public class TokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }catch (Exception e){
-            logger.error("Can not set User Service: {} ", e);
+            logger.error(e.getMessage());
         }
 
         filterChain.doFilter(request,response);
@@ -56,7 +54,7 @@ public class TokenFilter extends OncePerRequestFilter {
         String headerAuth=request.getHeader("Authorization");
 
         if(StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer")){
-            return headerAuth.substring(7,headerAuth.length());
+            return headerAuth.substring(7);
         }
         return  null;
     }

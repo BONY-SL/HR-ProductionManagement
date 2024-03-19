@@ -17,7 +17,7 @@ public class DataInitializer implements CommandLineRunner {
         this.roleRepository = roleRepository;
     }
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args){
         // Check if roles exist, if not, insert them
         if (roleRepository.findByName(EnumRole.HR_Manager).isEmpty()) {
             roleRepository.save(new Role(EnumRole.HR_Manager));

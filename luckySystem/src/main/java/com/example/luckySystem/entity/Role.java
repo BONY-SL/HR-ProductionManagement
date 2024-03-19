@@ -5,8 +5,7 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 
 @Data
-@Getter
-@Setter
+
 @Component
 @Entity
 @Table(name = "roles")
@@ -25,5 +24,21 @@ public class Role {
 
     public Role(EnumRole name) {
         this.name = name;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setName(EnumRole name) {
+        this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public EnumRole getName() {
+        return name;
     }
 }

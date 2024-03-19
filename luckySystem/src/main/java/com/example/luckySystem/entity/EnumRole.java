@@ -5,7 +5,6 @@ public enum EnumRole {
     HR_Manager,
     Accountant,
     Production_Manager,
-    Store_Keeper,
-    NULL
+    Store_Keeper
 
 }

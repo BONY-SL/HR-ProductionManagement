@@ -26,11 +26,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/system/user")
+@RequestMapping("/api/auth")
 public class UserSignInAndSignUp {
 
     @Autowired
@@ -50,7 +49,7 @@ public class UserSignInAndSignUp {
 
     @PostMapping("/loginUser")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRe loginRe){
-        Authentication authentication=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRe.getUser_name(),loginRe.getUser_password()));
+        Authentication authentication=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRe.getUsername(),loginRe.getUserpassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt=jwtResorce.generateJwtToken(authentication);
@@ -61,7 +60,7 @@ public class UserSignInAndSignUp {
                 .map(GrantedAuthority::getAuthority)
                 .toList();
 
-        return ResponseEntity.ok(new JwtRes(jwt,userDetail.getId(),userDetail.getUser_name(),userDetail.getEmail(),roles));
+        return ResponseEntity.ok(new JwtRes(jwt,userDetail.getId(),userDetail.getUsername(),userDetail.getEmail(),roles));
 
 
     }
@@ -69,7 +68,7 @@ public class UserSignInAndSignUp {
     @PostMapping("/regiterUser")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRe signUpRe){
 
-        if(userRepo.existsByUser_name(signUpRe.getUser_name())){
+        if(userRepo.existsByUsername(signUpRe.getUsername())){
             return ResponseEntity.badRequest().body(new MessageRes("The User is Already taken"));
         }
         if(userRepo.existsByEmail(signUpRe.getEmail())){
@@ -77,7 +76,7 @@ public class UserSignInAndSignUp {
 
         }
 
-        User user=new User(signUpRe.getUser_name(),passwordEncoder.encode(signUpRe.getUser_password()),signUpRe.getEmail(),signUpRe.getContact_number());
+        User user=new User(signUpRe.getUsername(),passwordEncoder.encode(signUpRe.getPassword()),signUpRe.getEmail(),signUpRe.getContact());
 
         Set<String> stringrole=signUpRe.getRole();
 
@@ -106,7 +105,7 @@ public class UserSignInAndSignUp {
                     roles.add(storekeeper);
                     break;
                 default:
-                    Role systemadminRole = roleRepo.findByName(EnumRole.NULL)
+                    Role systemadminRole = roleRepo.findByName(null)
                             .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                     roles.add(systemadminRole);
             }

@@ -28,12 +28,12 @@ public class UserDetail implements UserDetails {
 
     private Long id;
 
-    private String user_name;
+    private String username;
 
     private String email;
 
     @JsonIgnore
-    private String user_password;
+    private String password;
 
     private String contactnumber;
 
@@ -44,7 +44,7 @@ public class UserDetail implements UserDetails {
 
         List<GrantedAuthority> authorityList=user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
 
-        return new UserDetail(user.getId(),user.getUser_name(),user.getEmail(),user.getUser_password(),user.getContact_number(),authorityList);
+        return new UserDetail(user.getId(),user.getUsername(),user.getEmail(),user.getPassword(),user.getContact(),authorityList);
 
     }
 
@@ -55,12 +55,12 @@ public class UserDetail implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user_password;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return user_name;
+        return username;
     }
 
     @Override

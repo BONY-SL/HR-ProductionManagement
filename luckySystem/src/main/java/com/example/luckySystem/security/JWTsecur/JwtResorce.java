@@ -25,7 +25,7 @@ public class JwtResorce {
         UserDetail userDetail= (UserDetail) authentication.getPrincipal();
 
         return Jwts.builder()
-                .setSubject(userDetail.getUser_name())
+                .setSubject(userDetail.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512,jwtSecret)

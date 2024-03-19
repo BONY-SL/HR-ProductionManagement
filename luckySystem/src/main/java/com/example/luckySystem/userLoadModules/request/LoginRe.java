@@ -1,17 +1,28 @@
 package com.example.luckySystem.userLoadModules.request;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 public class LoginRe {
     @NotBlank
-    private String user_name;
+    private String username;
 
     @NotBlank
-    private String user_password;
+    private String userpassword;
 
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String getUserpassword() {
+        return userpassword;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setUserpassword(String userpassword) {
+        this.userpassword = userpassword;
+    }
 }
