@@ -1,6 +1,4 @@
 package com.example.luckySystem.controller;
-
-
 import com.example.luckySystem.entity.EnumRole;
 import com.example.luckySystem.entity.Role;
 import com.example.luckySystem.entity.User;
@@ -13,15 +11,14 @@ import com.example.luckySystem.userLoadModules.request.SignUpRe;
 import com.example.luckySystem.userLoadModules.response.JwtRes;
 import com.example.luckySystem.userLoadModules.response.MessageRes;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,20 +29,28 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/auth")
 public class UserSignInAndSignUp {
 
-    @Autowired
+    final
     AuthenticationManager authenticationManager;
 
-    @Autowired
+    final
     RoleRepo roleRepo;
 
-    @Autowired
+    final
     PasswordEncoder passwordEncoder;
 
-    @Autowired
+    final
     JwtResorce jwtResorce;
 
-    @Autowired
+    final
     UserRepo userRepo;
+
+    public UserSignInAndSignUp(AuthenticationManager authenticationManager, RoleRepo roleRepo, PasswordEncoder passwordEncoder, JwtResorce jwtResorce, UserRepo userRepo) {
+        this.authenticationManager = authenticationManager;
+        this.roleRepo = roleRepo;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtResorce = jwtResorce;
+        this.userRepo = userRepo;
+    }
 
     @PostMapping("/loginuser")
     synchronized public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRe loginRe){
@@ -58,7 +63,7 @@ public class UserSignInAndSignUp {
 
         UserDetail userDetails = (UserDetail) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(new JwtRes(jwt,userDetail.getId(),userDetail.getUsername(),userDetail.getEmail(),roles));

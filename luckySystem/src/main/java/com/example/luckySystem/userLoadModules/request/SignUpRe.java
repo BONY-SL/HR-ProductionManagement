@@ -9,6 +9,8 @@ import lombok.Setter;
 import java.util.Set;
 
 
+@Setter
+@Getter
 public class SignUpRe {
 
 
@@ -28,44 +30,5 @@ public class SignUpRe {
 
     private Set<String> role;
 
-    public String getUsername() {
-        return username;
-    }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public Set<String> getRole() {
-        return role;
-    }
-
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
-    public void setRole(Set<String> role) {
-        this.role = role;
-    }
 }

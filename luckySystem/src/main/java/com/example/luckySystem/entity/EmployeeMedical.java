@@ -3,8 +3,6 @@ package com.example.luckySystem.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
-
-import java.sql.Time;
 import java.util.Date;
 
 @AllArgsConstructor

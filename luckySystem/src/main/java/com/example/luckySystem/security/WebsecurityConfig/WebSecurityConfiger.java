@@ -1,35 +1,33 @@
 package com.example.luckySystem.security.WebsecurityConfig;
-import com.example.luckySystem.security.JWTsecur.SecurityEntryPoint;
 import com.example.luckySystem.security.JWTsecur.TokenFilters;
 import com.example.luckySystem.security.JWTserviceToUser.UserDetailsSer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfiger {
 
-    @Autowired
+    final
     UserDetailsSer userDetailsService;
 
-    @Autowired
-    private SecurityEntryPoint unauthorizedHandler;
+    public WebSecurityConfiger(UserDetailsSer userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Bean
     public TokenFilters authenticationJwtTokenFilter() {
@@ -56,13 +54,13 @@ public class WebSecurityConfiger {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration cfg = new CorsConfiguration();
                     cfg.setAllowedMethods(Collections.singletonList("*"));
                     cfg.setAllowCredentials(true);
                     cfg.setAllowedHeaders(Collections.singletonList("*"));
-                    cfg.setExposedHeaders(Arrays.asList("Authorization"));
+                    cfg.setExposedHeaders(List.of("Authorization"));
                     cfg.setMaxAge(3600L);
                     return cfg;
                 }))

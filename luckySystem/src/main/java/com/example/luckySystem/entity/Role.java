@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
+@Setter
+@Getter
 @Data
 
 @Component
@@ -26,19 +28,4 @@ public class Role {
         this.name = name;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setName(EnumRole name) {
-        this.name = name;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public EnumRole getName() {
-        return name;
-    }
 }
