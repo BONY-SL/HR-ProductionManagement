@@ -8,8 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,31 +21,26 @@ import org.springframework.web.cors.CorsConfiguration;
 import java.util.Arrays;
 import java.util.Collections;
 
-
 @Configuration
-@EnableGlobalMethodSecurity(
-        prePostEnabled = true
-)
-public class WebSecurityConfiger{
+@EnableWebSecurity
+public class WebSecurityConfiger {
 
     @Autowired
-    UserDetailsSer userDetailsSer;
+    UserDetailsSer userDetailsService;
+
     @Autowired
-    private SecurityEntryPoint securityEntryPoint;
+    private SecurityEntryPoint unauthorizedHandler;
 
     @Bean
     public TokenFilters authenticationJwtTokenFilter() {
         return new TokenFilters();
     }
 
-
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
-        authProvider.setUserDetailsService(userDetailsSer);
+        authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
-
         return authProvider;
     }
     @Bean
@@ -71,7 +67,8 @@ public class WebSecurityConfiger{
                     return cfg;
                 }))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/auth/loginuser").permitAll()
+                        .requestMatchers("api/auth/regiteruser").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

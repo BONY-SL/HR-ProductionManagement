@@ -47,7 +47,7 @@ public class UserSignInAndSignUp {
     @Autowired
     UserRepo userRepo;
 
-    @PostMapping("/loginUser")
+    @PostMapping("/loginuser")
     synchronized public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRe loginRe){
         Authentication authentication=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRe.getUsername(),loginRe.getPassword()));
 
@@ -66,7 +66,7 @@ public class UserSignInAndSignUp {
 
     }
 
-    @PostMapping("/regiterUser")
+    @PostMapping("/regiteruser")
     synchronized public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRe signUpRe){
 
         if(userRepo.existsByUsername(signUpRe.getUsername())){
