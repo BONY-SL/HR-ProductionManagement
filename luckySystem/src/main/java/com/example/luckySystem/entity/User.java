@@ -5,16 +5,13 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Setter
 @Getter
 @Data
+@Builder
 @Component
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Entity
 @Table(name="user",uniqueConstraints = {
         @UniqueConstraint(columnNames = "username"),
@@ -40,17 +37,8 @@ public class User {
     @Column(name="contact",length = 10,nullable = false)
     private String contact;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(  name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @Column(name="role",length = 20,nullable = false)
+    private String  roles ;
 
-    public User(String username, String password, String email, String contact) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.contact = contact;
-    }
 
 }
