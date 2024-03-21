@@ -37,7 +37,7 @@ public class User {
     @Column(name="contact",length = 10,nullable = false)
     private String contact;
 
-    @Column(name="role",length = 20,nullable = false)
+    @Column(name="role",length = 30,nullable = false)
     private String  roles ;
 
 
