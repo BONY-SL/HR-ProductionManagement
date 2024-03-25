@@ -44,7 +44,7 @@ public class Employee {
     private String ma_uma;
 
     @Column(length = 10,nullable = false)
-    private String contact_number;
+    private String contact;
 
     //permanent or temporary
     @Column(length = 200,nullable = false)
@@ -60,5 +60,6 @@ public class Employee {
     @ManyToOne
     @JoinColumn(name = "sec_id",referencedColumnName = "section_id")
     private Section sec_id;
+
 
 }

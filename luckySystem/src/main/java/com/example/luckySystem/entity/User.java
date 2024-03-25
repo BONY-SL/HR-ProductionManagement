@@ -40,5 +40,10 @@ public class User {
     @Column(name="role",length = 30,nullable = false)
     private String  roles ;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "emp_id", referencedColumnName = "employee_id",unique = true)
+    private Employee employee;
+
+
 
 }

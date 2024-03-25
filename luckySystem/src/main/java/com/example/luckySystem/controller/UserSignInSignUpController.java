@@ -4,18 +4,18 @@ import com.example.luckySystem.config.UserAuthenticationProvider;
 import com.example.luckySystem.dto.CredentialsDto;
 import com.example.luckySystem.dto.SignUpDto;
 import com.example.luckySystem.dto.UserDto;
+import com.example.luckySystem.exceptions.EmployeeIDAlreadyExistsException;
 import com.example.luckySystem.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
 
 @RequiredArgsConstructor
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping
+@RequestMapping("/api")
 public class UserSignInSignUpController {
 
     private final UserService userService;
@@ -28,11 +28,15 @@ public class UserSignInSignUpController {
         return ResponseEntity.ok(userDto);
     }
     @PostMapping("/userregister")
-    public ResponseEntity<UserDto> register(@RequestBody @Valid SignUpDto user) {
+    public ResponseEntity<?> register(@RequestBody @Valid SignUpDto user) {
 
-        UserDto createdUser = userService.register(user);
-        createdUser.setToken(userAuthenticationProvider.createToken(createdUser));
-        return ResponseEntity.created(URI.create(createdUser.getUsername())).body(createdUser);
+        try {
+            UserDto createdUser = userService.register(user);
+            createdUser.setToken(userAuthenticationProvider.createToken(createdUser));
+            return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
+        } catch (EmployeeIDAlreadyExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
 
     }
 }

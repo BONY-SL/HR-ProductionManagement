@@ -1,7 +1,6 @@
 package com.example.luckySystem.config;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -31,7 +30,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(HttpMethod.POST, "userlogin", "userregister").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/userlogin", "/api/userregister").permitAll()
+                        .requestMatchers(HttpMethod.DELETE,"/api/deleteuser").permitAll()
                         .anyRequest().authenticated())
         ;
         return http.build();

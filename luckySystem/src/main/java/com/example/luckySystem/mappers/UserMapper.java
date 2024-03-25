@@ -1,5 +1,4 @@
 package com.example.luckySystem.mappers;
-
 import com.example.luckySystem.dto.SignUpDto;
 import com.example.luckySystem.dto.UserDto;
 import com.example.luckySystem.entity.User;
