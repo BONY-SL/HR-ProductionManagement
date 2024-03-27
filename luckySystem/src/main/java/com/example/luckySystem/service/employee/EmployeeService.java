@@ -1,7 +1,7 @@
-package com.example.luckySystem.service;
+package com.example.luckySystem.service.employee;
 
 
-import com.example.luckySystem.repo.EmployeeRepo;
+import com.example.luckySystem.repo.employee.EmployeeRepo;
 import org.springframework.stereotype.Service;
 
 @Service

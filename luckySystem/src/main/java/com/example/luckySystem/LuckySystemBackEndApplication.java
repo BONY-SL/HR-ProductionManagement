@@ -1,5 +1,5 @@
 package com.example.luckySystem;
-import com.example.luckySystem.dto.UserDto;
+import com.example.luckySystem.dto.user.UserDto;
 import com.example.luckySystem.entity.User;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;

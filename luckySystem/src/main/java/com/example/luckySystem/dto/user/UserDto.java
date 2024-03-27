@@ -1,4 +1,4 @@
-package com.example.luckySystem.dto;
+package com.example.luckySystem.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -4,8 +4,8 @@ package com.example.luckySystem.config;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.luckySystem.dto.UserDto;
-import com.example.luckySystem.service.UserService;
+import com.example.luckySystem.dto.user.UserDto;
+import com.example.luckySystem.service.user.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,7 +46,7 @@ public class UserAuthenticationProvider {
                 .withIssuedAt(now)
                 .withExpiresAt(validity)
                 .withClaim("email", user.getEmail())
-                .withClaim("role", user.getRoles())
+                .withClaim("username", user.getUsername())
                 .withClaim("employeeID",user.getEmployeeid())
                 .sign(algorithm);
     }
@@ -62,7 +62,7 @@ public class UserAuthenticationProvider {
         UserDto user = UserDto.builder()
                 .username(decoded.getSubject())
                 .email(decoded.getClaim("email").asString())
-                .roles(decoded.getClaim("role").asString())
+                .roles(decoded.getClaim("username").asString())
                 .employeeid(decoded.getClaim("employeeId").asString())
                 .build();
 

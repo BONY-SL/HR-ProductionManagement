@@ -1,14 +1,15 @@
-package com.example.luckySystem.service;
+package com.example.luckySystem.service.user;
 
-import com.example.luckySystem.dto.CredentialsDto;
-import com.example.luckySystem.dto.SignUpDto;
-import com.example.luckySystem.dto.UserDto;
+import com.example.luckySystem.dto.user.CredentialsDto;
+import com.example.luckySystem.dto.user.SignUpDto;
+import com.example.luckySystem.dto.user.UserDto;
 import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.entity.User;
 import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.mappers.UserMapper;
-import com.example.luckySystem.repo.EmployeeRepo;
-import com.example.luckySystem.repo.UserRepo;
+import com.example.luckySystem.repo.employee.EmployeeRepo;
+import com.example.luckySystem.repo.user.UserRepo;
+import com.example.luckySystem.service.employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.ComponentScan;
@@ -81,6 +82,7 @@ public class UserService {
             user.setEmail(userDto.email());
             user.setUsername(userDto.username());
             User savedUser = userRepository.save(user);
+
 
             return modelMapper.map(savedUser,UserDto.class);
     }
