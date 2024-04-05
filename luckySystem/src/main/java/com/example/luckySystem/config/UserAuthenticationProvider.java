@@ -5,6 +5,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.luckySystem.dto.user.UserDto;
+import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.service.user.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -45,9 +46,13 @@ public class UserAuthenticationProvider {
                 .withSubject(user.getUsername())
                 .withIssuedAt(now)
                 .withExpiresAt(validity)
-                .withClaim("email", user.getEmail())
                 .withClaim("username", user.getUsername())
-                .withClaim("employeeID",user.getEmployeeid())
+                .withClaim("password", user.getPassword())
+                .withClaim("email", user.getEmail())
+                .withClaim("employee", user.getEmployee())
+                .withClaim("role", user.getRoles())
+                .withClaim("contact", user.getContact())
+                .withClaim("id", user.getId())
                 .sign(algorithm);
     }
 
@@ -61,9 +66,13 @@ public class UserAuthenticationProvider {
 
         UserDto user = UserDto.builder()
                 .username(decoded.getSubject())
+                .username(decoded.getClaim("username").asString())
+                .password(decoded.getClaim("password").asString())
                 .email(decoded.getClaim("email").asString())
-                .roles(decoded.getClaim("username").asString())
-                .employeeid(decoded.getClaim("employeeId").asString())
+                .employee(decoded.getClaim("employee").asString())
+                .roles(decoded.getClaim("role").asString())
+                .contact(decoded.getClaim("contact").asString())
+                .id(decoded.getClaim("id").asLong())
                 .build();
 
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
@@ -79,7 +88,7 @@ public class UserAuthenticationProvider {
 
         UserDto user = userService.findByUsername(decoded.getSubject());
 
-        return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+        return new UsernamePasswordAuthenticationToken(user,null, Collections.emptyList());
     }
 
 }

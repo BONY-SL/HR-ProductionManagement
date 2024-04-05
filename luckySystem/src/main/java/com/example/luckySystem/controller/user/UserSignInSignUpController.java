@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @CrossOrigin(origins = "*")
-//@RequestMapping("/api")
+@RequestMapping("/hrandproduction")
 public class UserSignInSignUpController {
 
     private final UserService userService;
@@ -25,15 +25,15 @@ public class UserSignInSignUpController {
     public ResponseEntity<UserDto> login(@RequestBody @Valid CredentialsDto credentialsDto) {
         UserDto userDto = userService.login(credentialsDto);
         userDto.setToken(userAuthenticationProvider.createToken(userDto));
+        System.out.println(12);
         return ResponseEntity.ok(userDto);
     }
     @PostMapping("/userregister")
     public ResponseEntity<?> register(@RequestBody @Valid SignUpDto user) {
 
         try {
-            UserDto createdUser = userService.register(user);
-            createdUser.setToken(userAuthenticationProvider.createToken(createdUser));
-            System.out.println(createdUser.getToken());
+            userService.register(user);
+
             return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
         } catch (EmployeeIDAlreadyExistsException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

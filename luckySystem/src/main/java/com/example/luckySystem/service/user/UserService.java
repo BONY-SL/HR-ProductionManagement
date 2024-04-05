@@ -46,12 +46,17 @@ public class UserService {
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
         if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()), user.getPassword())) {
-            return userMapper.toUserDto(user);
+            UserDto userDto = userMapper.toUserDto(user);
+            // Retrieve and set the Employee information if available
+            if (user.getEmployee() != null) {
+                userDto.setEmployee(user.getEmployee().getEmployee_id()); // Set whatever Employee information you need
+            }
+            return userDto;
         }
         throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
     }
 
-    public UserDto register(SignUpDto userDto) {
+    public void register(SignUpDto userDto) {
         Optional<User> optionalUser = userRepository.findByUsername(userDto.username());
         Boolean email=userRepository.existsByEmail(userDto.email());
 
@@ -61,15 +66,14 @@ public class UserService {
         }if(email){
             throw new AppException("Login email already exists",HttpStatus.BAD_REQUEST);
         }
-        if(!employeeService.employeeExists(userDto.employeeid())) {
+        if(!employeeService.employeeExists(userDto.employee_id())) {
 
             throw new AppException("Employee not found with ID: ", HttpStatus.BAD_REQUEST);
 
         }
             User user = modelMapper.map(userDto,User.class);
 
-            Employee employee=employeeRepo.findById(userDto.employeeid()).orElseThrow(() -> new AppException("Employee not found",HttpStatus.BAD_REQUEST));
-            user.setEmployee(employee);
+            Employee employee=employeeRepo.findById(userDto.employee_id()).orElseThrow(() -> new AppException("Employee not found",HttpStatus.BAD_REQUEST));
             Boolean id=userRepository.existsByEmployee(employee);
 
             if(id){
@@ -81,15 +85,24 @@ public class UserService {
             user.setContact(userDto.contact());
             user.setEmail(userDto.email());
             user.setUsername(userDto.username());
+            user.setEmployee(employee);
             User savedUser = userRepository.save(user);
 
 
-            return modelMapper.map(savedUser,UserDto.class);
+        modelMapper.map(savedUser, UserDto.class);
     }
     public UserDto findByUsername(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
-        return userMapper.toUserDto(user);
+
+        Employee employee=user.getEmployee();
+        UserDto userDto=userMapper.toUserDto(user);
+
+        if (employee != null) {
+            userDto.setEmployee(employee.getEmployee_id()); // Set whatever Employee information you need
+        }
+
+        return userDto;
     }
 
 }

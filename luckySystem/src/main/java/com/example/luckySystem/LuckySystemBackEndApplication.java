@@ -22,7 +22,7 @@ public class LuckySystemBackEndApplication {
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
 		modelMapper.typeMap(User.class, UserDto.class).addMappings(mapper -> {
-			mapper.map(src -> src.getEmployee().getEmployee_id(), UserDto::setEmployeeid);
+			mapper.map(src -> src.getEmployee().getEmployee_id(), UserDto::setEmployee);
 			// Add other custom mappings as needed
 		});
 
