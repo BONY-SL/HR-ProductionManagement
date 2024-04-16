@@ -66,14 +66,15 @@ public class UserService {
         }if(email){
             throw new AppException("Login email already exists",HttpStatus.BAD_REQUEST);
         }
-        if(!employeeService.employeeExists(userDto.employee_id())) {
+        if(!employeeService.employeeExists(userDto.employee())) {
 
             throw new AppException("Employee not found with ID: ", HttpStatus.BAD_REQUEST);
 
         }
             User user = modelMapper.map(userDto,User.class);
 
-            Employee employee=employeeRepo.findById(userDto.employee_id()).orElseThrow(() -> new AppException("Employee not found",HttpStatus.BAD_REQUEST));
+            Employee employee=employeeRepo.findById(userDto.employee()).orElseThrow(() -> new AppException("Employee not found",HttpStatus.BAD_REQUEST));
+            user.setEmployee(employee);
             Boolean id=userRepository.existsByEmployee(employee);
 
             if(id){
@@ -85,7 +86,6 @@ public class UserService {
             user.setContact(userDto.contact());
             user.setEmail(userDto.email());
             user.setUsername(userDto.username());
-            user.setEmployee(employee);
             User savedUser = userRepository.save(user);
 
 
