@@ -123,4 +123,26 @@ public class DailyEmptyBottleUnitService {
 
     }
 
+    public List<DailyFinishedDTO> getDailyFinishedMilkBottle() {
+
+        List<DailyFinished> units = dailyFinishedRepostory.findAll();
+        return units.stream().map(this::finishedconvertEntityToDTO).collect(Collectors.toList());
+    }
+
+    private DailyFinishedDTO finishedconvertEntityToDTO(DailyFinished unit) {
+
+        return new DailyFinishedDTO(unit.getFinished_id(),unit.getAmount(),unit.getBatch_code(),unit.getSubmit_time(),unit.getSubmit_date(),unit.getFinished_status());
+    }
+
+    public void updatefinishedMilk(DailyFinishedDTO dto) {
+
+        DailyFinished unit = dailyFinishedRepostory.findById(dto.getFinished_id()).orElseThrow();
+
+        unit.setFinished_id(dto.getFinished_id());
+        unit.setAmount(dto.getAmount());
+        unit.setBatch_code(dto.getBatch_code());
+        unit.setFinished_status(dto.getFinished_status());
+        dailyFinishedRepostory.save(unit);
+    }
+
 }

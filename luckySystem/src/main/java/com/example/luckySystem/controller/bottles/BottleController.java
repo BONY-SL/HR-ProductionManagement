@@ -63,4 +63,17 @@ public class BottleController {
         DailyFinished savedEntity = service.saveDailyFinishedMilk(dto);
         return ResponseEntity.ok(savedEntity);
     }
+
+    @GetMapping("/getDailyFinishedMilkBottle")
+    public ResponseEntity<List<DailyFinishedDTO>> getDailyFinishedMilkBottle() {
+        List<DailyFinishedDTO> bottles = service.getDailyFinishedMilkBottle();
+        return ResponseEntity.ok().body(bottles);
+    }
+
+
+    @PutMapping("/updatefinishedMilk")
+    public ResponseEntity<?> updatefinishedMilk(@RequestBody DailyFinishedDTO dto) {
+        service.updatefinishedMilk(dto);
+        return ResponseEntity.ok().build();
+    }
 }
