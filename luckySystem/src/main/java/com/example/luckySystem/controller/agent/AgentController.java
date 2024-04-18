@@ -41,4 +41,16 @@ public class AgentController {
         return ResponseEntity.ok().build();
     }
 
+    @PatchMapping("/deleteAgentDetails/{agentId}")
+    public ResponseEntity<?> deleteAgentDetails(@PathVariable Long agentId, @RequestParam String deleteReason) {
+        agentService.deleteAgentDetails(agentId, deleteReason);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/undoDeleteAgentDetails/{agentId}")
+    public ResponseEntity<?> undoDeleteAgentDetails(@PathVariable Long agentId) {
+        agentService.undoDeleteAgentDetails(agentId);
+        return ResponseEntity.ok().build();
+    }
+
 }

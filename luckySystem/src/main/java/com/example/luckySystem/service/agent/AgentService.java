@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,13 +27,13 @@ public class AgentService {
     }
 
     public List<AgentDTO> getallAgentDetails() {
-        List<Agent> units = agentRepo.findAll();
-        return units.stream().map(this::convertAgentEntityToDTO).collect(Collectors.toList());
+        List<Agent> agents = agentRepo.findAllByDeletedAtIsNull();
+        return agents.stream().map(this::convertAgentEntityToDTO).collect(Collectors.toList());
     }
 
     private AgentDTO convertAgentEntityToDTO(Agent unit) {
 
-        return new AgentDTO(unit.getAgent_id(),unit.getAgent_name(),unit.getAgency_name(),unit.getAddress(),unit.getEmail(),unit.getContact_number());
+        return new AgentDTO(unit.getAgent_id(),unit.getAgent_name(),unit.getAgency_name(),unit.getAddress(),unit.getEmail(),unit.getContact_number(),unit.getDeletedAt(),unit.getDeleteReason());
     }
 
     public void updateAgentDetails(AgentDTO dto) {
@@ -47,5 +48,21 @@ public class AgentService {
         unit.setContact_number(dto.getContact_number());
 
         agentRepo.save(unit);
+    }
+
+    public void deleteAgentDetails(Long agentId, String deleteReason) {
+        Agent agent = agentRepo.findById(agentId).orElseThrow(() -> new RuntimeException("Agent not found"));
+        agent.setDeletedAt(new Date());
+        agent.setDeleteReason(deleteReason);
+        agentRepo.save(agent);
+    }
+
+    public void undoDeleteAgentDetails(Long agentId) {
+        //System.out.println(agentId);
+        Agent agent = agentRepo.findById(agentId).orElseThrow(() -> new RuntimeException("Agent not found"));
+        agent.setAgent_id(agentId);
+        agent.setDeletedAt(null);
+        agent.setDeleteReason(null);
+        agentRepo.save(agent);
     }
 }

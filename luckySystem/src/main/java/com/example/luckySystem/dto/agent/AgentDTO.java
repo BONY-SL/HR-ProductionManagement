@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,4 +19,6 @@ public class AgentDTO {
     private String address;
     private String email;
     private String contact_number;
+    private Date deletedAt;
+    private String deleteReason;
 }
