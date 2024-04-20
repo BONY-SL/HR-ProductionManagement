@@ -1,13 +1,16 @@
 package com.example.luckySystem.controller.bottles;
+import com.example.luckySystem.dto.bottles.CompanyBottleStockDTO;
 import com.example.luckySystem.dto.bottles.DailyFinishedDTO;
 import com.example.luckySystem.dto.bottles.DamageBottleDTO;
 import com.example.luckySystem.dto.bottles.EmptyBottleDTO;
+import com.example.luckySystem.entity.CompanyBottleStock;
 import com.example.luckySystem.entity.DailyDamageBottleByEmployee;
 import com.example.luckySystem.entity.DailyEmptyBottleUnit;
 import com.example.luckySystem.entity.DailyFinished;
 import com.example.luckySystem.service.bottles.DailyEmptyBottleUnitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,5 +78,12 @@ public class BottleController {
     public ResponseEntity<?> updatefinishedMilk(@RequestBody DailyFinishedDTO dto) {
         service.updatefinishedMilk(dto);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/addnewpurchasednewBottles")
+    public ResponseEntity<CompanyBottleStock> updateBottleStock(@RequestBody CompanyBottleStockDTO dto) {
+        System.out.println(dto);
+        CompanyBottleStock updatedStock = service.updateOrSaveCompanyBottleStock(dto);
+        return new ResponseEntity<>(updatedStock, HttpStatus.OK);
     }
 }

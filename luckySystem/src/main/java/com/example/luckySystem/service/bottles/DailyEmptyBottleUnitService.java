@@ -1,13 +1,12 @@
 package com.example.luckySystem.service.bottles;
 
+import com.example.luckySystem.dto.bottles.CompanyBottleStockDTO;
 import com.example.luckySystem.dto.bottles.DailyFinishedDTO;
 import com.example.luckySystem.dto.bottles.DamageBottleDTO;
 import com.example.luckySystem.dto.bottles.EmptyBottleDTO;
-import com.example.luckySystem.entity.DailyDamageBottleByEmployee;
-import com.example.luckySystem.entity.DailyEmptyBottleUnit;
-import com.example.luckySystem.entity.DailyFinished;
-import com.example.luckySystem.entity.Employee;
+import com.example.luckySystem.entity.*;
 import com.example.luckySystem.exceptions.AppException;
+import com.example.luckySystem.repo.bottles.CompanyBottleStockRepository;
 import com.example.luckySystem.repo.bottles.DailyDamagesByEmployeeRepository;
 import com.example.luckySystem.repo.bottles.DailyEmptyBottleUnitRepository;
 import com.example.luckySystem.repo.bottles.DailyFinishedRepostory;
@@ -41,6 +40,9 @@ public class DailyEmptyBottleUnitService {
 
     @Autowired
     private EmployeeRepo employeeRepo;
+
+    @Autowired
+    private CompanyBottleStockRepository repositoryNewBottle;
 
     public DailyEmptyBottleUnit saveDailyEmptyBottleUnit(EmptyBottleDTO dto) {
         DailyEmptyBottleUnit entity = modelMapper.map(dto, DailyEmptyBottleUnit.class);
@@ -144,5 +146,16 @@ public class DailyEmptyBottleUnitService {
         unit.setFinished_status(dto.getFinished_status());
         dailyFinishedRepostory.save(unit);
     }
+
+
+
+    public CompanyBottleStock updateOrSaveCompanyBottleStock(CompanyBottleStockDTO dto) {
+        CompanyBottleStock stock = repositoryNewBottle.findTopByOrderByDateDesc()
+                .orElse(new CompanyBottleStock());
+        stock.setDate(dto.getDate());
+        stock.setTotal_bottle(dto.getTotalBottle()+stock.getTotal_bottle());
+        return repositoryNewBottle.save(stock);
+    }
+
 
 }

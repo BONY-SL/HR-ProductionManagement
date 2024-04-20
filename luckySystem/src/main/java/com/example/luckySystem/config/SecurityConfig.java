@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(HttpMethod.POST, "/hrandproduction/userlogin", "/hrandproduction/userregister","/hrandproduction/adddailyemptybottles","/hrandproduction/addDailyDamages","/hrandproduction/adddailyfinishedmilk","/hrandproduction/addNewAgent").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/hrandproduction/userlogin", "/hrandproduction/userregister","/hrandproduction/adddailyemptybottles","/hrandproduction/addDailyDamages","/hrandproduction/adddailyfinishedmilk","/hrandproduction/addNewAgent","/hrandproduction/addnewpurchasednewBottles").permitAll()
                         .requestMatchers(HttpMethod.GET,"/hrandproduction/getEmptyBottle","/hrandproduction/getemployeeDamageBottle","/hrandproduction/getDailyFinishedMilkBottle","/hrandproduction/getallAgentDetails").permitAll()
                         .requestMatchers(HttpMethod.DELETE,"/hrandproduction/deleteuser").permitAll()
                         .requestMatchers(HttpMethod.PUT,"/hrandproduction/updateEmptyBottle","/hrandproduction/updatedamageBottle","/hrandproduction/updatefinishedMilk","/hrandproduction/updateAgentDetails").permitAll()
