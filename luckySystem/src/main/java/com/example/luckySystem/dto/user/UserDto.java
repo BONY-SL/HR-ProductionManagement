@@ -1,10 +1,9 @@
 package com.example.luckySystem.dto.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Setter
+@Getter
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,5 +19,6 @@ public class UserDto {
     private String  roles ;
     private String employee;
     private String  token ;
+
 
 }

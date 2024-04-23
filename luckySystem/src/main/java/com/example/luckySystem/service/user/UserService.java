@@ -71,22 +71,22 @@ public class UserService {
             throw new AppException("Employee not found with ID: ", HttpStatus.BAD_REQUEST);
 
         }
-            User user = modelMapper.map(userDto,User.class);
+        User user = modelMapper.map(userDto,User.class);
 
-            Employee employee=employeeRepo.findById(userDto.employee()).orElseThrow(() -> new AppException("Employee not found",HttpStatus.BAD_REQUEST));
-            user.setEmployee(employee);
-            Boolean id=userRepository.existsByEmployee(employee);
+        Employee employee=employeeRepo.findById(userDto.employee()).orElseThrow(() -> new AppException("Employee not found",HttpStatus.BAD_REQUEST));
+        user.setEmployee(employee);
+        Boolean id=userRepository.existsByEmployee(employee);
 
-            if(id){
-                throw new AppException("The Entered Employee ID Already Use to User Acount", HttpStatus.BAD_REQUEST);
-            }
+        if(id){
+            throw new AppException("The Entered Employee ID Already Use to User Acount", HttpStatus.BAD_REQUEST);
+        }
 
-            user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.password())));
-            user.setRoles(userDto.role());
-            user.setContact(userDto.contact());
-            user.setEmail(userDto.email());
-            user.setUsername(userDto.username());
-            User savedUser = userRepository.save(user);
+        user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.password())));
+        user.setRoles(userDto.role());
+        user.setContact(userDto.contact());
+        user.setEmail(userDto.email());
+        user.setUsername(userDto.username());
+        User savedUser = userRepository.save(user);
 
 
         modelMapper.map(savedUser, UserDto.class);
