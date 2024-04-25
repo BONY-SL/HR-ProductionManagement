@@ -1,15 +1,10 @@
 package com.example.luckySystem.service.bottles;
 
-import com.example.luckySystem.dto.bottles.CompanyBottleStockDTO;
-import com.example.luckySystem.dto.bottles.DailyFinishedDTO;
-import com.example.luckySystem.dto.bottles.DamageBottleDTO;
-import com.example.luckySystem.dto.bottles.EmptyBottleDTO;
+import com.example.luckySystem.dto.bottles.*;
 import com.example.luckySystem.entity.*;
 import com.example.luckySystem.exceptions.AppException;
-import com.example.luckySystem.repo.bottles.CompanyBottleStockRepository;
-import com.example.luckySystem.repo.bottles.DailyDamagesByEmployeeRepository;
-import com.example.luckySystem.repo.bottles.DailyEmptyBottleUnitRepository;
-import com.example.luckySystem.repo.bottles.DailyFinishedRepostory;
+import com.example.luckySystem.repo.agent.AgentRepo;
+import com.example.luckySystem.repo.bottles.*;
 import com.example.luckySystem.repo.employee.EmployeeRepo;
 import com.example.luckySystem.service.employee.EmployeeService;
 import org.modelmapper.ModelMapper;
@@ -43,6 +38,12 @@ public class DailyEmptyBottleUnitService {
 
     @Autowired
     private CompanyBottleStockRepository repositoryNewBottle;
+
+    @Autowired
+    private ProductsForLoadingRepo productsForLoadingRepo;
+
+    @Autowired
+    private AgentRepo agentRepo;
 
     public DailyEmptyBottleUnit saveDailyEmptyBottleUnit(EmptyBottleDTO dto) {
         DailyEmptyBottleUnit entity = modelMapper.map(dto, DailyEmptyBottleUnit.class);
@@ -155,6 +156,37 @@ public class DailyEmptyBottleUnitService {
         stock.setDate(dto.getDate());
         stock.setTotal_bottle(dto.getTotalBottle()+stock.getTotal_bottle());
         return repositoryNewBottle.save(stock);
+    }
+
+    public GoodProductsForLoading addLording(ProductsForLoadingDTO dto) {
+
+        GoodProductsForLoading entity = modelMapper.map(dto, GoodProductsForLoading.class);
+        return productsForLoadingRepo.save(entity);
+
+    }
+
+    public List<ProductsForLoadingDTO> getAllLoading() {
+
+        List<GoodProductsForLoading> units = productsForLoadingRepo.findAll();
+        return units.stream().map(this::lordingconvertEntityToDTO).collect(Collectors.toList());
+    }
+
+    private ProductsForLoadingDTO lordingconvertEntityToDTO(GoodProductsForLoading unit) {
+
+        return new ProductsForLoadingDTO(unit.getLoading_id(),unit.getAmount(),unit.getBatch_code(),unit.getSubmit_time(),unit.getSubmit_date(),unit.getAg_id().getAgent_id());
+    }
+
+    public void updateLording(ProductsForLoadingDTO dto) {
+
+        GoodProductsForLoading unit = productsForLoadingRepo.findById(dto.getLoading_id()).orElseThrow();
+
+        Agent agent=agentRepo.findById(dto.getAg_id())
+                .orElseThrow(() -> new AppException("Agent not found", HttpStatus.NOT_FOUND));
+
+        unit.setAmount(dto.getAmount());
+        unit.setBatch_code(dto.getBatch_code());
+        unit.setAg_id(agent);
+        productsForLoadingRepo.save(unit);
     }
 
 

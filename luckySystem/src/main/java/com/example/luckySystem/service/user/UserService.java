@@ -24,7 +24,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-@ComponentScan
+@ComponentScan("com.example.luckySystem.mappers")
 @Component
 @Repository
 public class UserService {
@@ -41,13 +41,13 @@ public class UserService {
 
     private final EmployeeService employeeService;
 
+
     public UserDto login(CredentialsDto credentialsDto) {
         User user = userRepository.findByUsername(credentialsDto.username())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
         if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()), user.getPassword())) {
             UserDto userDto = userMapper.toUserDto(user);
-            // Retrieve and set the Employee information if available
             if (user.getEmployee() != null) {
                 userDto.setEmployee(user.getEmployee().getEmployee_id()); // Set whatever Employee information you need
             }
@@ -57,39 +57,37 @@ public class UserService {
     }
 
     public void register(SignUpDto userDto) {
-        Optional<User> optionalUser = userRepository.findByUsername(userDto.username());
-        Boolean email=userRepository.existsByEmail(userDto.email());
 
-        //Check The Username Already Have In the User Table
+        Optional<User> optionalUser = userRepository.findByUsername(userDto.username());
+        Boolean emailExists = userRepository.existsByEmail(userDto.email());
+
         if (optionalUser.isPresent()) {
             throw new AppException("Login name already exists", HttpStatus.BAD_REQUEST);
-        }if(email){
-            throw new AppException("Login email already exists",HttpStatus.BAD_REQUEST);
         }
-        if(!employeeService.employeeExists(userDto.employee())) {
-
-            throw new AppException("Employee not found with ID: ", HttpStatus.BAD_REQUEST);
-
+        if (emailExists) {
+            throw new AppException("Login email already exists", HttpStatus.BAD_REQUEST);
         }
-        User user = modelMapper.map(userDto,User.class);
 
-        Employee employee=employeeRepo.findById(userDto.employee()).orElseThrow(() -> new AppException("Employee not found",HttpStatus.BAD_REQUEST));
+        if (!employeeService.employeeExists(userDto.employee())) {
+            throw new AppException("Employee not found with ID: " + userDto.employee(), HttpStatus.BAD_REQUEST);
+        }
+
+        User user = userMapper.signUpToUser(userDto);
+
+
+        Employee employee = employeeRepo.findById(userDto.employee())
+                .orElseThrow(() -> new AppException("Employee not found", HttpStatus.BAD_REQUEST));
         user.setEmployee(employee);
-        Boolean id=userRepository.existsByEmployee(employee);
 
-        if(id){
-            throw new AppException("The Entered Employee ID Already Use to User Acount", HttpStatus.BAD_REQUEST);
+        if (userRepository.existsByEmployee(employee)) {
+            throw new AppException("The entered Employee ID is already associated with another user", HttpStatus.BAD_REQUEST);
         }
 
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.password())));
         user.setRoles(userDto.role());
         user.setContact(userDto.contact());
         user.setEmail(userDto.email());
-        user.setUsername(userDto.username());
-        User savedUser = userRepository.save(user);
-
-
-        modelMapper.map(savedUser, UserDto.class);
+        userRepository.save(user);
     }
     public UserDto findByUsername(String username) {
         User user = userRepository.findByUsername(username)
@@ -99,7 +97,7 @@ public class UserService {
         UserDto userDto=userMapper.toUserDto(user);
 
         if (employee != null) {
-            userDto.setEmployee(employee.getEmployee_id()); // Set whatever Employee information you need
+            userDto.setEmployee(employee.getEmployee_id());
         }
 
         return userDto;

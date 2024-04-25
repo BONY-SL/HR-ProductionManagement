@@ -34,7 +34,7 @@ public class User {
     @Email
     private String  email;
 
-    @Column(name="contact",length = 10,nullable = false)
+    @Column(name="contact",length = 12,nullable = false)
     private String contact;
 
     @Column(name="roles",length = 30,nullable = false)

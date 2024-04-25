@@ -43,7 +43,7 @@ public class Employee {
     @Column(length = 10,nullable = false)
     private String ma_uma;
 
-    @Column(length = 10,nullable = false)
+    @Column(length = 12,nullable = false)
     private String contact;
 
     //permanent or temporary

@@ -1,12 +1,6 @@
 package com.example.luckySystem.controller.bottles;
-import com.example.luckySystem.dto.bottles.CompanyBottleStockDTO;
-import com.example.luckySystem.dto.bottles.DailyFinishedDTO;
-import com.example.luckySystem.dto.bottles.DamageBottleDTO;
-import com.example.luckySystem.dto.bottles.EmptyBottleDTO;
-import com.example.luckySystem.entity.CompanyBottleStock;
-import com.example.luckySystem.entity.DailyDamageBottleByEmployee;
-import com.example.luckySystem.entity.DailyEmptyBottleUnit;
-import com.example.luckySystem.entity.DailyFinished;
+import com.example.luckySystem.dto.bottles.*;
+import com.example.luckySystem.entity.*;
 import com.example.luckySystem.service.bottles.DailyEmptyBottleUnitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,4 +80,25 @@ public class BottleController {
         CompanyBottleStock updatedStock = service.updateOrSaveCompanyBottleStock(dto);
         return new ResponseEntity<>(updatedStock, HttpStatus.OK);
     }
+
+    @PostMapping("/addLording")
+    public ResponseEntity<GoodProductsForLoading> addLording(@RequestBody ProductsForLoadingDTO dto) {
+        GoodProductsForLoading savedEntity = service.addLording(dto);
+        return ResponseEntity.ok(savedEntity);
+    }
+
+    @GetMapping("/getAllLoading")
+    public ResponseEntity<List<ProductsForLoadingDTO>> getAllLoading() {
+        List<ProductsForLoadingDTO> bottles = service.getAllLoading();
+        return ResponseEntity.ok().body(bottles);
+    }
+
+
+    @PutMapping("/updateLording")
+    public ResponseEntity<?> updateLording(@RequestBody ProductsForLoadingDTO dto) {
+        service.updateLording(dto);
+        return ResponseEntity.ok().build();
+    }
+
+
 }
