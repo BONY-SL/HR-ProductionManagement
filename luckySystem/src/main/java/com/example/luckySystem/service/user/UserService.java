@@ -37,8 +37,6 @@ public class UserService {
 
     private final UserMapper userMapper;
 
-    private final ModelMapper modelMapper;
-
     private final EmployeeService employeeService;
 
 
