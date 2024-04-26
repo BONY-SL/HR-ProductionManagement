@@ -20,7 +20,7 @@ import java.util.Date;
 @RestController
 public class UserAuthenticationProvider {
 
-    @Value("ap1hd")
+    @Value("${com.app.jwtSecret}")
     private String secretKey;
 
     private final UserService userService;

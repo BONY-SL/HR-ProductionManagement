@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
-
+@Configuration
 public class SecurityConfig {
 
 
