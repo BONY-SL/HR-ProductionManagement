@@ -20,9 +20,7 @@ import java.util.Collections;
 import java.util.Date;
 
 @RequiredArgsConstructor
-
 @RestController
-
 public class UserAuthenticationProvider {
 
     @Value("${com.app.jwtSecret}")
