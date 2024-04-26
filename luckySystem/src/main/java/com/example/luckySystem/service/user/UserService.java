@@ -24,7 +24,6 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-@ComponentScan("com.example.luckySystem.mappers")
 @Component
 @Repository
 public class UserService {
