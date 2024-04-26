@@ -24,6 +24,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
+@ComponentScan
 @Component
 @Repository
 @ComponentScan
