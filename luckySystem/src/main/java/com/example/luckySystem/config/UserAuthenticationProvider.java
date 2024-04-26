@@ -10,6 +10,7 @@ import com.example.luckySystem.service.user.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import com.auth0.jwt.JWTVerifier;
@@ -20,7 +21,6 @@ import java.util.Collections;
 import java.util.Date;
 
 @RequiredArgsConstructor
-
 @RestController
 
 public class UserAuthenticationProvider {
