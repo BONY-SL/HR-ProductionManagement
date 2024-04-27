@@ -32,6 +32,21 @@ public class AdvanceController {
         return advanceService.addAdvanceDetails(advanceDto);
     }
 
+    @PutMapping("/updateAdvance")
+    public AdvanceDto updateAdvance(@RequestBody AdvanceDto advanceDto) {
+        return advanceService.updateAdvanceDetails(advanceDto);
+    }
+
+    @DeleteMapping("/deleteAdvance")
+    public boolean deleteAdvance(@RequestBody AdvanceDto advanceDto) {
+        return  advanceService.deleteAdvanceDetails(advanceDto);
+    }
+
+    @GetMapping("/getAdvanceByID/{advanceID}")
+    public AdvanceDto getAdvanceById(@PathVariable String advanceID) {
+        return advanceService.getAdvanceByID(advanceID);
+    }
+
 
 
 }

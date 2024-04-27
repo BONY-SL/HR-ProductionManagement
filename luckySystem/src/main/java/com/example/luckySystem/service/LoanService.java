@@ -1,6 +1,7 @@
 package com.example.luckySystem.service;
 import com.example.luckySystem.dto.BasicSalaryDto;
 import com.example.luckySystem.dto.LoanDto;
+import com.example.luckySystem.entity.Allowances;
 import com.example.luckySystem.entity.BasicSalary;
 import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.entity.EmployeeLoan;
@@ -47,6 +48,17 @@ public class LoanService {
         EmployeeLoan lone = modelMapper.map(loanDto, EmployeeLoan.class);
         loanRepo.save(lone);
         return loanDto;
+    }
+
+
+    public boolean deleteLoanDetails(LoanDto loanDto){
+        loanRepo.delete(modelMapper.map(loanDto, EmployeeLoan.class));
+        return true;
+    }
+
+    public LoanDto getLoanDetailsByID(String loanId){
+        EmployeeLoan loan = loanRepo.getLoanById(loanId);
+        return modelMapper.map(loan, LoanDto.class);
     }
 
 }

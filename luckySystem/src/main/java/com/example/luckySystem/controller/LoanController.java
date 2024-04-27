@@ -3,6 +3,7 @@ package com.example.luckySystem.controller;
 
 import com.example.luckySystem.dto.BasicSalaryDto;
 import com.example.luckySystem.dto.LoanDto;
+import com.example.luckySystem.entity.EmployeeLoan;
 import com.example.luckySystem.service.LoanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,21 @@ public class LoanController {
     public LoanDto updateLoneDetails(@RequestBody LoanDto loanDto) {
         return loanService.updatelone(loanDto);
     }
+
+
+    @DeleteMapping("/deleteLoan")
+    public boolean deleteLoan(@RequestBody LoanDto loanDto) {
+        return loanService.deleteLoanDetails(loanDto);
+    }
+
+
+
+    @GetMapping("/getLoanByID/{loanID}")
+    public LoanDto getLoanById(@PathVariable String loanID) {
+        System.out.println(loanID);
+        return loanService.getLoanDetailsByID(loanID);
+    }
+
+
 
 }

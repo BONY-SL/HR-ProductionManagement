@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -45,6 +47,22 @@ public class AdvanceService {
         advance.setEmp_id(emp);
         advanceRepo.save(advance);
         return advanceDto;
+    }
+
+    public AdvanceDto updateAdvanceDetails(AdvanceDto advanceDto) {
+        EmployeeAdvanceSalary advanceSalary = modelMapper.map(advanceDto, EmployeeAdvanceSalary.class);
+        advanceRepo.save(advanceSalary);
+        return advanceDto;
+    }
+
+    public boolean deleteAdvanceDetails(AdvanceDto advanceDto){
+        advanceRepo.delete(modelMapper.map(advanceDto,EmployeeAdvanceSalary.class));
+        return true;
+    }
+
+    public AdvanceDto getAdvanceByID(String advance_id){
+        EmployeeAdvanceSalary advanceSalary = advanceRepo.getAdvanceByID(advance_id);
+        return modelMapper.map(advanceSalary, AdvanceDto.class);
     }
 
 }
