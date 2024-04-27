@@ -26,6 +26,7 @@ import java.util.Optional;
 @Service
 @Component
 @Repository
+@ComponentScan
 public class UserService {
 
     private final UserRepo userRepository;
