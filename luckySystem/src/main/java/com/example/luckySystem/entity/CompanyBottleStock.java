@@ -22,7 +22,8 @@ public class CompanyBottleStock {
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long updated_id;
-
+    
+    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date date;
 

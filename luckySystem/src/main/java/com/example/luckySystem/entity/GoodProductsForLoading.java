@@ -4,8 +4,7 @@ package com.example.luckySystem.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
-
-import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -31,7 +30,8 @@ public class GoodProductsForLoading {
     private String batch_code;
 
     @Column(name = "submit_time",nullable = false)
-    private Time submit_time;
+    private LocalTime submit_time;
+
 
     @Column(name = "submit_date",length = 50,nullable = false)
     private Date submit_date;

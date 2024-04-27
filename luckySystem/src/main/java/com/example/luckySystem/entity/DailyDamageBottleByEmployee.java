@@ -28,8 +28,9 @@ public class DailyDamageBottleByEmployee {
     private String unit_type;
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "employee_id")
-    private Employee employee_id;
+    @JoinColumn(name="employee_id",referencedColumnName = "employee_id")
+    private Employee employee;
+
 
     @Column(nullable = false)
     private int damage_amount;

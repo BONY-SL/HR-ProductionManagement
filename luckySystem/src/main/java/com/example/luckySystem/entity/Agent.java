@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.springframework.stereotype.Component;
+import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,8 +35,13 @@ public class Agent {
     @Email
     private String email;
 
-
-    @Column(length = 50,nullable = false)
+    @Column(length = 12,nullable = false)
     private String contact_number;
+
+    @Column(nullable = true)
+    private Date deletedAt;
+
+    @Column(nullable = true, length = 500)
+    private String deleteReason;
 
 }

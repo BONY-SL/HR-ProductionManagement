@@ -1,7 +1,6 @@
 package com.example.luckySystem.mappers;
-
-import com.example.luckySystem.dto.SignUpDto;
-import com.example.luckySystem.dto.UserDto;
+import com.example.luckySystem.dto.user.SignUpDto;
+import com.example.luckySystem.dto.user.UserDto;
 import com.example.luckySystem.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

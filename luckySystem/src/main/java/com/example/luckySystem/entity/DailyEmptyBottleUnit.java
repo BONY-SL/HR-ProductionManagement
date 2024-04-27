@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
-import java.sql.Time;
+import java.time.LocalTime;
+
 import java.util.Date;
 
 @AllArgsConstructor
@@ -21,7 +22,8 @@ public class DailyEmptyBottleUnit {
     @Id
     @Column(unique = true,nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long empty_unit_id;
+    private Long id;
+
 
     @Column(nullable = false)
     private long empty_bottles;
@@ -30,7 +32,8 @@ public class DailyEmptyBottleUnit {
     private long damage_bottles;
 
     @Column(nullable = false)
-    private Time submit_time;
+    private LocalTime submit_time;
+
 
     @Column(nullable = false)
     private Date submit_date;

@@ -33,12 +33,15 @@ public class User {
     @Column(name="email",length = 100,nullable = false,unique = true)
     @Email
     private String  email;
-
-    @Column(name="contact",length = 10,nullable = false)
+    @Column(name="contact",length = 12,nullable = false)
     private String contact;
 
-    @Column(name="role",length = 30,nullable = false)
+    @Column(name="roles",length = 30,nullable = false)
     private String  roles ;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id", referencedColumnName = "employee_id",unique = true)
+    private Employee employee;
 
 
 }

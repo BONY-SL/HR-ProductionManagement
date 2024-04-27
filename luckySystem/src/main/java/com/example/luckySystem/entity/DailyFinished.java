@@ -3,8 +3,7 @@ package com.example.luckySystem.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
-
-import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -30,7 +29,8 @@ public class DailyFinished {
     private String batch_code;
 
     @Column(nullable = false)
-    private Time submit_time;
+    private LocalTime submit_time;
+
 
     @Column(nullable = false)
     private Date submit_date;

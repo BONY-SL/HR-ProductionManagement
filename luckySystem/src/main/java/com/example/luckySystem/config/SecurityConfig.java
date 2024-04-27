@@ -2,6 +2,7 @@ package com.example.luckySystem.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -38,8 +39,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/getDeduction","/getAllowance","/getAllowanceByID/{allowanceID}","/getDeductionByID/{deductionID}","/employeeCount","/getGatepass","/getEmployeeByID/{employeeID}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/getuserdetailsByID/{userId}","/getEmployee","/getmedical","/getAttendance","/getLeave","/getAdvance","/employeeCountByDepartment","/totalCount","/getLoanByID/{loanID}","/getAdvanceByID/{advanceID}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/addAdvance","/addAttendance","/addLeave","/addLoan","/addMedical","/addGatepass").permitAll()
-
-
+                        .requestMatchers(HttpMethod.POST, "/hrandproduction/userlogin", "/hrandproduction/userregister","/hrandproduction/adddailyemptybottles","/hrandproduction/addDailyDamages","/hrandproduction/adddailyfinishedmilk","/hrandproduction/addNewAgent","/hrandproduction/addnewpurchasednewBottles","/hrandproduction/addLording").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/hrandproduction/getEmptyBottle","/hrandproduction/getemployeeDamageBottle","/hrandproduction/getDailyFinishedMilkBottle","/hrandproduction/getallAgentDetails","/hrandproduction/getAllLoading").permitAll()
+                        .requestMatchers(HttpMethod.DELETE,"/hrandproduction/deleteuser").permitAll()
+                        .requestMatchers(HttpMethod.PUT,"/hrandproduction/updateEmptyBottle","/hrandproduction/updatedamageBottle","/hrandproduction/updatefinishedMilk","/hrandproduction/updateAgentDetails","/hrandproduction/updateLording").permitAll()
+                        .requestMatchers(HttpMethod.PATCH,"/hrandproduction/deleteAgentDetails/{agentId}","/hrandproduction/undoDeleteAgentDetails/{agentId}").permitAll()
                         .anyRequest().authenticated())
         ;
         return http.build();

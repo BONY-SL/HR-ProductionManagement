@@ -1,6 +1,4 @@
 package com.example.luckySystem.config;
-
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,16 +22,18 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if (header != null) {
             String[] authElements = header.split(" ");
-
             if (authElements.length == 2
                     && "Bearer".equals(authElements[0])) {
+            if (authElements.length == 3 && "Bearer".equals(authElements[0])) {
+
                 try {
                     if ("GET".equals(request.getMethod())) {
                         SecurityContextHolder.getContext().setAuthentication(
                                 userAuthenticationProvider.validateToken(authElements[1]));
                     } else {
                         SecurityContextHolder.getContext().setAuthentication(
-                                userAuthenticationProvider.validateTokenStrongly(authElements[1]));
+
+                                userAuthenticationProvider.validateTokenStrongly(authElements[2]));
                     }
                 } catch (RuntimeException e) {
                     SecurityContextHolder.clearContext();

@@ -2,8 +2,6 @@ package com.example.luckySystem.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -20,7 +18,6 @@ public class Employee {
 
     //"EPF00001"
     @Id
-    @Cascade(CascadeType.ALL)
     @Column(name="employee_id",length = 8,unique = true,nullable = false)
     private String employee_id;
 
@@ -46,7 +43,7 @@ public class Employee {
     @Column(length = 10,nullable = false)
     private String ma_uma;
 
-    @Column(length = 10,nullable = false)
+    @Column(length = 12,nullable = false)
     private String contact;
 
     //permanent or temporary
@@ -68,4 +65,6 @@ public class Employee {
     public Employee(String employee_id) {
         this.employee_id = employee_id;
     }
+
+
 }
