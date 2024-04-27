@@ -15,8 +15,9 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 
 @RequiredArgsConstructor
-@Configuration
 @EnableWebSecurity
+@Configuration
+
 public class SecurityConfig {
 
 
