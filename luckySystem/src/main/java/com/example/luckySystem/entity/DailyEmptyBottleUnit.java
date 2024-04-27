@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
+
 import java.util.Date;
 
 @AllArgsConstructor
@@ -23,6 +24,7 @@ public class DailyEmptyBottleUnit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @Column(nullable = false)
     private long empty_bottles;
 
@@ -31,6 +33,7 @@ public class DailyEmptyBottleUnit {
 
     @Column(nullable = false)
     private LocalTime submit_time;
+
 
     @Column(nullable = false)
     private Date submit_date;

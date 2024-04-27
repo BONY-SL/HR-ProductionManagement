@@ -4,14 +4,18 @@ package com.example.luckySystem.config;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+
 import com.example.luckySystem.dto.user.UserDto;
-import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.service.user.UserService;
+
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+
+
 import com.auth0.jwt.JWTVerifier;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,7 +24,6 @@ import java.util.Collections;
 import java.util.Date;
 
 @RequiredArgsConstructor
-
 @RestController
 
 public class UserAuthenticationProvider {
@@ -87,7 +90,6 @@ public class UserAuthenticationProvider {
         DecodedJWT decoded = verifier.verify(token);
 
         UserDto user = userService.findByUsername(decoded.getSubject());
-
         return new UsernamePasswordAuthenticationToken(user,null, Collections.emptyList());
     }
 

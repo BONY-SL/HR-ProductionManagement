@@ -31,6 +31,7 @@ public class DailyFinished {
     @Column(nullable = false)
     private LocalTime submit_time;
 
+
     @Column(nullable = false)
     private Date submit_date;
 

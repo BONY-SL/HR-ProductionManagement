@@ -41,7 +41,7 @@ public class EmployeeDTO {
 
     private byte[] cv;
 
-    private Department dep_id;
+    private String dep_id;
 
-    private Section sec_id;
+    private String sec_id;
 }

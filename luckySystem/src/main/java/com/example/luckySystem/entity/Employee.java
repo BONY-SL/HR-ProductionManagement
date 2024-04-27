@@ -61,5 +61,4 @@ public class Employee {
     @JoinColumn(name = "sec_id",referencedColumnName = "section_id")
     private Section sec_id;
 
-
 }

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.springframework.stereotype.Component;
-
 import java.util.Date;
 
 @AllArgsConstructor

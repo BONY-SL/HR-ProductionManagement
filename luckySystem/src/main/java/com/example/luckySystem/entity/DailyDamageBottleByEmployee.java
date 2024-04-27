@@ -31,6 +31,7 @@ public class DailyDamageBottleByEmployee {
     @JoinColumn(name="employee_id",referencedColumnName = "employee_id")
     private Employee employee;
 
+
     @Column(nullable = false)
     private int damage_amount;
 

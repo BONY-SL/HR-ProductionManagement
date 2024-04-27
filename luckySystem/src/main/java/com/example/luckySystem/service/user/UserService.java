@@ -1,5 +1,4 @@
 package com.example.luckySystem.service.user;
-
 import com.example.luckySystem.dto.user.CredentialsDto;
 import com.example.luckySystem.dto.user.SignUpDto;
 import com.example.luckySystem.dto.user.UserDto;
@@ -11,7 +10,6 @@ import com.example.luckySystem.repo.employee.EmployeeRepo;
 import com.example.luckySystem.repo.user.UserRepo;
 import com.example.luckySystem.service.employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +24,7 @@ import java.util.Optional;
 @Service
 @Component
 @Repository
+@ComponentScan
 public class UserService {
 
     private final UserRepo userRepository;

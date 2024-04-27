@@ -1,3 +1,3 @@
-package com.example.luckySystem.dto;
+package com.example.luckySystem.exceptions;
 
 public record ErrorDto (String message) { }

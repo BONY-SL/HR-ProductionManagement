@@ -32,6 +32,7 @@ public class GoodProductsForLoading {
     @Column(name = "submit_time",nullable = false)
     private LocalTime submit_time;
 
+
     @Column(name = "submit_date",length = 50,nullable = false)
     private Date submit_date;
 

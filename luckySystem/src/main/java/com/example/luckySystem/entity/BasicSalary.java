@@ -56,4 +56,37 @@ public class BasicSalary{
 
     @Column
     private double subsistant;
+
+    public void setSalaryType(String salaryType) {
+    }
+
+    public void setJobRole(String jobRole) {
+    }
+
+    public void setDepartmentName(String departmentName) {
+    }
+
+    public void setSectionName(String sectionName) {
+    }
+
+    public void setBr1(double br1) {
+    }
+
+    public void setBr2(double br2) {
+    }
+
+    public void setInitialDays(int initialDays) {
+    }
+
+    public void setInitialNopayAmount(double initialNopayAmount) {
+    }
+
+    public void setBasicAmount(double basicAmount) {
+    }
+
+    public void setGetPassAmount(double getPassAmount) {
+    }
+
+    public void setOtAmount(double otAmount) {
+    }
 }
