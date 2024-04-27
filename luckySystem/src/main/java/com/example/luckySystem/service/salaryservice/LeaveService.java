@@ -4,7 +4,7 @@ import com.example.luckySystem.dto.salary.LeaveDto;
 import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.entity.EmployeeLeave;
 import com.example.luckySystem.exceptions.AppException;
-import com.example.luckySystem.repo.salary.EmployeeRepo;
+import com.example.luckySystem.repo.employee.EmployeeRepo;
 import com.example.luckySystem.repo.salary.LeaveRepo;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;

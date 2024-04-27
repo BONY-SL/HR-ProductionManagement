@@ -5,7 +5,7 @@ import com.example.luckySystem.dto.salary.GatePassDto;
 import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.entity.EmployeeGatePass;
 import com.example.luckySystem.exceptions.AppException;
-import com.example.luckySystem.repo.salary.EmployeeRepo;
+import com.example.luckySystem.repo.employee.EmployeeRepo;
 import com.example.luckySystem.repo.salary.GatePassRepo;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;

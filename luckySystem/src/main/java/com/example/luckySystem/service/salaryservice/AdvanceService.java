@@ -5,7 +5,7 @@ import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.entity.EmployeeAdvanceSalary;
 import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.repo.salary.AdvanceRepo;
-import com.example.luckySystem.repo.salary.EmployeeRepo;
+import com.example.luckySystem.repo.employee.EmployeeRepo;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
