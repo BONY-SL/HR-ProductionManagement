@@ -61,10 +61,4 @@ public class Employee {
     @JoinColumn(name = "sec_id",referencedColumnName = "section_id")
     private Section sec_id;
 
-    // Constructor with String argument for employee_id
-    public Employee(String employee_id) {
-        this.employee_id = employee_id;
-    }
-
-
 }

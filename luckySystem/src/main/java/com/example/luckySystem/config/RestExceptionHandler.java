@@ -1,6 +1,6 @@
 package com.example.luckySystem.config;
 
-import com.example.luckySystem.dto.salary.ErrorDto;
+import com.example.luckySystem.exceptions.ErrorDto;
 import com.example.luckySystem.exceptions.AppException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

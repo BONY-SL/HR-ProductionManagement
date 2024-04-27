@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @CrossOrigin(origins = "*")
-//@RequestMapping("/api")
+@RequestMapping("/hrandproduction")
 
 public class MedicalController {
 
