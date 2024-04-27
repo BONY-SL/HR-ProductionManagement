@@ -5,11 +5,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
-import com.example.luckySystem.dto.UserDto;
-import com.example.luckySystem.service.UserService;
-
 import com.example.luckySystem.dto.user.UserDto;
-import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.service.user.UserService;
 
 import jakarta.annotation.PostConstruct;
@@ -17,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
 
 
 import com.auth0.jwt.JWTVerifier;

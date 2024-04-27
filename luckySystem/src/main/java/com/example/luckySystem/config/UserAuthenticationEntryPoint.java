@@ -1,7 +1,7 @@
 package com.example.luckySystem.config;
 
 
-import com.example.luckySystem.dto.ErrorDto;
+import com.example.luckySystem.dto.salary.ErrorDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
