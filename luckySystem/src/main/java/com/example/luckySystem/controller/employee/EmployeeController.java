@@ -2,8 +2,10 @@
 package com.example.luckySystem.controller.employee;
 
 import com.example.luckySystem.dto.employee.EmployeeDTO;
+import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.service.employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,9 +25,10 @@ public class EmployeeController {
     }
 
     @PostMapping("/addEmployee")
-    public EmployeeDTO addEmployee(@RequestBody EmployeeDTO employeeDto) {
-        System.out.println("Received request to add an employee.");
-        return employeeService.addEmployee(employeeDto);
+    public ResponseEntity<Employee> addEmployee(@RequestBody EmployeeDTO employeeDto) {
+        System.out.println("Received request to add an employee with ID: " + employeeDto.getEmployeeid());
+        Employee employee=employeeService.addEmployee(employeeDto);
+        return ResponseEntity.ok(employee);
     }
 
     @GetMapping("/employeeCountByDepartment")

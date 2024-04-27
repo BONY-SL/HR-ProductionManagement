@@ -2,22 +2,32 @@ package com.example.luckySystem.service.employee;
 
 
 import com.example.luckySystem.dto.employee.EmployeeDTO;
+import com.example.luckySystem.entity.Department;
 import com.example.luckySystem.entity.Employee;
+import com.example.luckySystem.entity.Section;
+import com.example.luckySystem.exceptions.AppException;
+import com.example.luckySystem.repo.depAndsec.DepartmentRepo;
+import com.example.luckySystem.repo.depAndsec.SectionRepo;
 import com.example.luckySystem.repo.employee.EmployeeRepo;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 @Service
-@Transactional
 public class EmployeeService {
 
 
     @Autowired
     private EmployeeRepo employeeRepo;
+
+    @Autowired
+    private DepartmentRepo departmentRepo;
+
+    @Autowired
+    private SectionRepo sectionRepo;
 
     public EmployeeService(EmployeeRepo employeeRepo) {
         this.employeeRepo = employeeRepo;
@@ -38,13 +48,26 @@ public class EmployeeService {
         return modelMapper.map(employeeList, new TypeToken<List<EmployeeDTO>>() {}.getType());
     }
 
-    public EmployeeDTO addEmployee(EmployeeDTO employeeDto) {
-        System.out.println("work");
+    public Employee addEmployee(EmployeeDTO employeeDto) {
+        System.out.println("Service request to add an employee with ID: " + employeeDto.getEmployeeid());
         Employee employee = modelMapper.map(employeeDto, Employee.class);
-        employeeRepo.save(employee);
-        return employeeDto;
+        if (employee.getEmployee_id() == null) {
+            employee.setEmployee_id(employeeDto.getEmployeeid()); // Ensure this is correctly named and implemented
+        }
+        Department department=departmentRepo.findById(employeeDto.getDep_id())
+                .orElseThrow(() -> new AppException("Department not found", HttpStatus.BAD_REQUEST));
 
+        Section section=sectionRepo.findById(employeeDto.getSec_id())
+                .orElseThrow(() -> new AppException("Section not found", HttpStatus.BAD_REQUEST));
+
+        employee.setDep_id(department);
+        employee.setSec_id(section);
+        
+        employeeRepo.save(employee);
+        System.out.println(employee);
+        return employee;
     }
+
 
     public List<Object[]> countActiveEmployeesByDepartment() {
         return employeeRepo.countActiveEmployeesByDepartment();

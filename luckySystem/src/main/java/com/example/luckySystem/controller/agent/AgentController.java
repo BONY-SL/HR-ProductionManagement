@@ -24,7 +24,7 @@ public class AgentController {
     private AgentService agentService;
 
     @PostMapping("/addNewAgent")
-    public ResponseEntity<Agent> addDailyEmptyBottleUnit(@RequestBody AgentDTO dto) {
+    public ResponseEntity<Agent> addNewAgent(@RequestBody AgentDTO dto) {
         Agent savedEntity=agentService.saveNewAgentDetails(dto);
         return ResponseEntity.ok(savedEntity);
     }
