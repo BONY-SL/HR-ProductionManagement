@@ -62,7 +62,7 @@ public class EmployeeService {
 
         employee.setDep_id(department);
         employee.setSec_id(section);
-        
+
         employeeRepo.save(employee);
         System.out.println(employee);
         return employee;
