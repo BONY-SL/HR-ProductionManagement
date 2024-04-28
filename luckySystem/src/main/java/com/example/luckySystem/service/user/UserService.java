@@ -98,5 +98,16 @@ public class UserService {
 
         return userDto;
     }
+    public void updateUserDetails(UserDto dto) {
+
+        User user = userRepository.findById(dto.getId()).orElseThrow();
+        user.setId(dto.getId());
+        userRepository.save(user);
+    }
+
+    public void deleteUserDetails(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Agent not found"));
+        userRepository.save(user);
+    }
 
 }
