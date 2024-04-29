@@ -41,10 +41,7 @@ public class UserService {
     private final UserMapper userMapper;
 
     private final EmployeeService employeeService;
-
-    @Autowired
-    private EmailService emailService;
-
+    
 
     public UserDto login(CredentialsDto credentialsDto) {
         User user = userRepository.findByUsername(credentialsDto.username())

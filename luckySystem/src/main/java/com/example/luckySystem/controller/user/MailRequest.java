@@ -14,7 +14,7 @@ public class MailRequest {
     private String to;
 
     @NotBlank(message = "Subject is required")
-    @Size(max = 512, message = "Subject cannot be longer than 255 characters")
+    @Size(max = 1024, message = "Subject cannot be longer than 255 characters")
     private String content;
 
     @NotBlank(message = "Content is required")
