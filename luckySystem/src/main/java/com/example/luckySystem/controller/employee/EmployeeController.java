@@ -1,6 +1,7 @@
 
 package com.example.luckySystem.controller.employee;
 
+import com.example.luckySystem.dto.agent.AgentDTO;
 import com.example.luckySystem.dto.employee.EmployeeDTO;
 import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.service.employee.EmployeeService;
@@ -19,9 +20,10 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping("/getEmployee")
-    public List<EmployeeDTO> getAllEmployeeDetails() {
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployeeDetails() {
         System.out.println("Received request to get all employees.");
-        return employeeService.getEmployee();
+        List<EmployeeDTO> employeeDTOS = employeeService.getAllEmployee();
+        return ResponseEntity.ok().body(employeeDTOS);
     }
 
     @PostMapping("/addEmployee")
@@ -43,8 +45,10 @@ public class EmployeeController {
 
 
     @PutMapping("/updateEmployee")
-    public EmployeeDTO updateEmployee(@RequestBody EmployeeDTO employeeDto) {
-        return employeeService.updateEmployeeDetails(employeeDto);
+    public ResponseEntity<Employee> updateEmployee(@RequestBody EmployeeDTO employeeDto) {
+        System.out.println("Received request to add an employee with ID: " + employeeDto.getEmployeeid());
+        Employee employee=employeeService.updateEmployeeDetails(employeeDto);
+        return ResponseEntity.ok(employee);
     }
     @DeleteMapping("/deleteEmployee")
     public boolean deleteEmployee(@RequestBody EmployeeDTO employeeDto) {
