@@ -50,7 +50,7 @@ public class Employee {
     @Column(length = 200,nullable = false)
     private String company_status;
 
-    @Column(name="cv",nullable = false)
+    @Column(name="cv",nullable = true)
     private byte[] cv;
 
     @ManyToOne
