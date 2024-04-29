@@ -83,6 +83,7 @@ public class BottleController {
 
     @PostMapping("/addLording")
     public ResponseEntity<GoodProductsForLoading> addLording(@RequestBody ProductsForLoadingDTO dto) {
+        System.out.println("Controller"+dto);
         GoodProductsForLoading savedEntity = service.addLording(dto);
         return ResponseEntity.ok(savedEntity);
     }

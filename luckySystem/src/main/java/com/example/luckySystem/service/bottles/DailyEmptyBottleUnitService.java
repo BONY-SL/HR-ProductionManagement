@@ -159,8 +159,11 @@ public class DailyEmptyBottleUnitService {
     }
 
     public GoodProductsForLoading addLording(ProductsForLoadingDTO dto) {
+        Agent agent = agentRepo.findById(dto.getAg_id())
+                .orElseThrow(() -> new AppException("Invalid Agent ID not found", HttpStatus.BAD_REQUEST));
 
         GoodProductsForLoading entity = modelMapper.map(dto, GoodProductsForLoading.class);
+        entity.setAg_id(agent);
         return productsForLoadingRepo.save(entity);
 
     }
@@ -186,6 +189,8 @@ public class DailyEmptyBottleUnitService {
         unit.setAmount(dto.getAmount());
         unit.setBatch_code(dto.getBatch_code());
         unit.setAg_id(agent);
+        unit.setSubmit_time(dto.getSubmit_time());
+        unit.setSubmit_date(dto.getSubmit_date());
         productsForLoadingRepo.save(unit);
     }
 
