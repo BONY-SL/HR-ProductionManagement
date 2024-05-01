@@ -1,10 +1,12 @@
 package com.example.luckySystem.controller.salary;
 
 
+import com.example.luckySystem.dto.salary.AdvanceDto;
 import com.example.luckySystem.dto.salary.LoanDto;
 import com.example.luckySystem.service.salaryservice.LoanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,11 +20,14 @@ public class LoanController {
     @Autowired
     private LoanService loanService;
 
+
     @GetMapping("/getLoan")
-    public List<LoanDto> getAllLoanDetails(){
-        System.out.println("Received request to save allowance data.");
-        return loanService.getLoanDetails();
+    public ResponseEntity<List<LoanDto>> getAllLoanDetails(){
+        System.out.println("Received request to save data.");
+        List<LoanDto> loandto = loanService.getLoanDetails();
+        return ResponseEntity.ok().body(loandto);
     }
+
 
     @PostMapping("/addLoan")
     public LoanDto addLoan(@RequestBody LoanDto loanDto) {
@@ -31,10 +36,10 @@ public class LoanController {
     }
 
     @PutMapping("/updateLone")
-    public LoanDto updateLoneDetails(@RequestBody LoanDto loanDto) {
-        return loanService.updatelone(loanDto);
+    public ResponseEntity<LoanDto> updateLoneDetails(@RequestBody LoanDto loanDto) {
+        LoanDto updatedLoan = loanService.updateLoanDetails(loanDto);
+        return ResponseEntity.ok().body(updatedLoan);
     }
-
 
     @DeleteMapping("/deleteLoan")
     public boolean deleteLoan(@RequestBody LoanDto loanDto) {
@@ -42,13 +47,10 @@ public class LoanController {
     }
 
 
-
     @GetMapping("/getLoanByID/{loanID}")
     public LoanDto getLoanById(@PathVariable String loanID) {
         System.out.println(loanID);
         return loanService.getLoanDetailsByID(loanID);
     }
-
-
 
 }

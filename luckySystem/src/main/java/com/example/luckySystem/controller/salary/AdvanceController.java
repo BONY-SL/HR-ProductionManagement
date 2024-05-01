@@ -1,10 +1,12 @@
 package com.example.luckySystem.controller.salary;
 
 
+import com.example.luckySystem.dto.employee.EmployeeDTO;
 import com.example.luckySystem.dto.salary.AdvanceDto;
 import com.example.luckySystem.service.salaryservice.AdvanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,9 +21,10 @@ public class AdvanceController {
     public AdvanceService advanceService;
 
     @GetMapping("/getAdvance")
-    public List<AdvanceDto> getAdvance(){
+    public ResponseEntity<List<AdvanceDto>> getAdvance(){
         System.out.println("Received request to save data.");
-        return advanceService.getAdvance();
+        List<AdvanceDto> advanceDtos = advanceService.getAdvance();
+        return ResponseEntity.ok().body(advanceDtos);
     }
 
     @PostMapping("/addAdvance")
