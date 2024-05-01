@@ -3,10 +3,8 @@ package com.example.luckySystem.service.employee;
 
 import com.example.luckySystem.dto.agent.AgentDTO;
 import com.example.luckySystem.dto.employee.EmployeeDTO;
-import com.example.luckySystem.entity.Agent;
-import com.example.luckySystem.entity.Department;
-import com.example.luckySystem.entity.Employee;
-import com.example.luckySystem.entity.Section;
+import com.example.luckySystem.dto.salary.LoanDto;
+import com.example.luckySystem.entity.*;
 import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.repo.depAndsec.DepartmentRepo;
 import com.example.luckySystem.repo.depAndsec.SectionRepo;
@@ -112,10 +110,39 @@ public class EmployeeService {
         employeeRepo.delete(modelMapper.map(employeeDto,Employee.class));
         return true;
     }
-
+/*
     public EmployeeDTO  getEmployeeByEmployeeID(String employeeId){
         Employee employee=employeeRepo.getEmployeeByEmployeeID(employeeId);
         return modelMapper.map(employee,EmployeeDTO.class);
+    }
+
+ */
+
+
+    public EmployeeDTO  getEmployeeByEmployeeID(String employeeId){
+        Employee employee=employeeRepo.getEmployeeByEmployeeID(employeeId);
+        if (employee != null) {
+            EmployeeDTO employeeDTO = new EmployeeDTO();
+            employeeDTO.setEmployeeid(employee.getEmployee_id());
+            employeeDTO.setJob_role(employee.getJob_role());
+            employeeDTO.setSalary_type(employee.getSalary_type());
+            employeeDTO.setEmployee_name(employee.getEmployee_name());
+            employeeDTO.setDob(employee.getDob());
+            employeeDTO.setAddress(employee.getAddress());
+            employeeDTO.setGender(employee.getGender());
+            employeeDTO.setMa_uma(employee.getMa_uma());
+            employeeDTO.setContact(employee.getContact());
+            employeeDTO.setCompany_status(employee.getCompany_status());
+            employeeDTO.setCv(employee.getCv());
+            employeeDTO.setDep_id(employee.getDep_id().getDepartment_id());
+            employeeDTO.setSec_id(employee.getSec_id().getSection_id());
+
+
+            return employeeDTO;
+        } else {
+            // Handle case where loan is not found
+            return null;
+        }
     }
 
 

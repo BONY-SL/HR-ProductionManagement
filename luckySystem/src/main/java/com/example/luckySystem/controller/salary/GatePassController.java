@@ -1,9 +1,11 @@
 package com.example.luckySystem.controller.salary;
 
+import com.example.luckySystem.dto.salary.AdvanceDto;
 import com.example.luckySystem.dto.salary.GatePassDto;
 import com.example.luckySystem.service.salaryservice.GatepassService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,10 +25,17 @@ public class GatePassController {
         System.out.println("Received request to save user data.");
         return gatepassService.addGatepass(gatePassDto);
     }
+
+
+
     @GetMapping("/getGatepass")
-    public List<GatePassDto> getGatepassDetails() {
-        return gatepassService.getGatepassDetails();
+    public ResponseEntity<List<GatePassDto>> getGatepassDetails() {
+        System.out.println("Received request to save data.");
+        List<GatePassDto> gatePassDtos = gatepassService.getGatepassDetails();
+        return ResponseEntity.ok().body(gatePassDtos);
     }
+
+
 
 
 
