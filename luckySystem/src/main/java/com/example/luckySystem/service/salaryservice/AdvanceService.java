@@ -1,8 +1,11 @@
 package com.example.luckySystem.service.salaryservice;
 
+import com.example.luckySystem.dto.employee.EmployeeDTO;
 import com.example.luckySystem.dto.salary.AdvanceDto;
+import com.example.luckySystem.dto.salary.LoanDto;
 import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.entity.EmployeeAdvanceSalary;
+import com.example.luckySystem.entity.EmployeeLoan;
 import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.repo.salary.AdvanceRepo;
 import com.example.luckySystem.repo.employee.EmployeeRepo;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -28,9 +32,14 @@ public class AdvanceService {
     @Autowired
     public EmployeeRepo emprepo;
 
-    public List<AdvanceDto> getAdvance() {
-        List<EmployeeAdvanceSalary> AdvanceList = advanceRepo.findAll();
-        return modelMapper.map(AdvanceList, new TypeToken<List<AdvanceDto>>() {}.getType());
+    public List<AdvanceDto> getAdvance(){
+        List<EmployeeAdvanceSalary>employeeList=advanceRepo.findAll();
+        return employeeList.stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    private AdvanceDto convertToDTO(EmployeeAdvanceSalary unit) {
+
+        return new AdvanceDto(unit.getAdvance_salary_id(),unit.getEmp_id().getEmployee_id(),unit.getReson(),unit.getStatus(),unit.getAmount());
     }
 
     public AdvanceDto addAdvanceDetails(AdvanceDto advanceDto) {
@@ -54,9 +63,26 @@ public class AdvanceService {
         return true;
     }
 
+
+
     public AdvanceDto getAdvanceByID(String advance_id){
+
         EmployeeAdvanceSalary advanceSalary = advanceRepo.getAdvanceByID(advance_id);
-        return modelMapper.map(advanceSalary, AdvanceDto.class);
-    }
+        if(advanceSalary!=null) {
+            AdvanceDto advanceDto = new AdvanceDto();
+            advanceDto.setAdvance_salary_id(advanceSalary.getAdvance_salary_id());
+            advanceDto.setEmp_id(advanceSalary.getEmp_id().getEmployee_id());
+            advanceDto.setReson(advanceSalary.getReson());
+            advanceDto.setStatus(advanceSalary.getStatus());
+            advanceDto.setStatus(advanceSalary.getStatus());
+            return advanceDto;
+        } else{
+                return null;
+            }
+
+
+        }
+
+
 
 }
