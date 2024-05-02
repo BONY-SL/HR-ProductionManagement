@@ -2,8 +2,13 @@ package com.example.luckySystem.controller.issue;
 
 
 import com.example.luckySystem.dto.agent.AgentDTO;
+import com.example.luckySystem.dto.bottles.DamageBottleDTO;
+import com.example.luckySystem.dto.bottles.ProductsForLoadingDTO;
+import com.example.luckySystem.dto.issue.DailyIssuEmployeeDTO;
 import com.example.luckySystem.dto.issue.IssueDTO;
 import com.example.luckySystem.entity.Agent;
+import com.example.luckySystem.entity.DailyDamageBottleByEmployee;
+import com.example.luckySystem.entity.DailyProductionIssuesByEmployee;
 import com.example.luckySystem.entity.ProductionIssue;
 import com.example.luckySystem.service.Issue.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +36,17 @@ public class IssueContrroler {
     public ResponseEntity<List<IssueDTO>> getIssueDetails() {
         List<IssueDTO> issue = issueService.getIssueDetails();
         return ResponseEntity.ok().body(issue);
+    }
+
+    @PutMapping("/updateIssue")
+    public ResponseEntity<?> updateIssue(@RequestBody IssueDTO dto) {
+        issueService.updateIssue(dto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/addDailyIssues")
+    public ResponseEntity<DailyProductionIssuesByEmployee> addDailyIssues(@RequestBody DailyIssuEmployeeDTO dto) {
+        DailyProductionIssuesByEmployee savedEntity = issueService.addDailyIssues(dto);
+        return ResponseEntity.ok(savedEntity);
     }
 }
