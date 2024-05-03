@@ -44,9 +44,17 @@ public class IssueContrroler {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/addDailyIssues")
+    @PostMapping("/addDailyIssuesemployee")
     public ResponseEntity<DailyProductionIssuesByEmployee> addDailyIssues(@RequestBody DailyIssuEmployeeDTO dto) {
+        //System.out.println("controller"+dto);
         DailyProductionIssuesByEmployee savedEntity = issueService.addDailyIssues(dto);
         return ResponseEntity.ok(savedEntity);
+    }
+
+    @GetMapping("/gettAllIssueByEmployee")
+    public ResponseEntity<List<DailyIssuEmployeeDTO>> gettAllIssueByEmployee() {
+        List<DailyIssuEmployeeDTO> employeeIssue = issueService.gettAllIssueByEmployee();
+        System.out.println(employeeIssue);
+        return ResponseEntity.ok().body(employeeIssue);
     }
 }

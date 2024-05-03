@@ -1,13 +1,8 @@
 package com.example.luckySystem.service.Issue;
-
-
-import com.example.luckySystem.dto.agent.AgentDTO;
-import com.example.luckySystem.dto.bottles.DamageBottleDTO;
 import com.example.luckySystem.dto.issue.DailyIssuEmployeeDTO;
 import com.example.luckySystem.dto.issue.IssueDTO;
 import com.example.luckySystem.entity.*;
 import com.example.luckySystem.exceptions.AppException;
-import com.example.luckySystem.repo.agent.AgentRepo;
 import com.example.luckySystem.repo.employee.EmployeeRepo;
 import com.example.luckySystem.repo.issue.DailyIssueRepo;
 import com.example.luckySystem.repo.issue.IssueRepo;
@@ -65,15 +60,27 @@ public class IssueService {
     }
 
     public DailyProductionIssuesByEmployee addDailyIssues(DailyIssuEmployeeDTO dto){
-        if(!employeeService.employeeExists(dto.getEmp_id().getEmployee_id())) {
-            throw new AppException("Invalid Employee ID: " + dto.getEmp_id().getEmployee_id(), HttpStatus.BAD_REQUEST);
+        //System.out.println("service 1"+dto);
+        if(!employeeService.employeeExists(dto.getEmp_id())) {
+            throw new AppException("Invalid Employee ID: " + dto.getEmp_id(), HttpStatus.BAD_REQUEST);
         }
 
-        Employee employee = employeeRepo.findById(dto.getEmp_id().getEmployee_id())
+        Employee employee = employeeRepo.findById(dto.getEmp_id())
                 .orElseThrow(() -> new AppException("Employee not found", HttpStatus.NOT_FOUND));
 
         DailyProductionIssuesByEmployee entity = modelMapper.map(dto, DailyProductionIssuesByEmployee.class);
         entity.setEmp_id(employee);
         return dailyIssueRepo.save(entity);
+    }
+
+    public List<DailyIssuEmployeeDTO> gettAllIssueByEmployee() {
+
+        List<DailyProductionIssuesByEmployee> units = dailyIssueRepo.findAll();
+        return units.stream().map(this::IssueconvertEntityToDTO).collect(Collectors.toList());
+    }
+
+    private DailyIssuEmployeeDTO IssueconvertEntityToDTO(DailyProductionIssuesByEmployee unit) {
+
+        return new DailyIssuEmployeeDTO(unit.getDaily_issue_id(),unit.getEmp_id().getEmployee_id(),unit.getIssue_name(),unit.getDamage_amount(),unit.getSubmit_date());
     }
 }

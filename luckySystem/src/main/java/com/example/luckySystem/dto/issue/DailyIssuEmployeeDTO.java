@@ -17,7 +17,7 @@ import java.util.Date;
 public class DailyIssuEmployeeDTO {
 
     private Long daily_issue_id;
-    private Employee emp_id;
+    private String emp_id;
     private String issue_name;
     private int damage_amount;
     private Date submit_date;
