@@ -4,11 +4,13 @@ package com.example.luckySystem.service.employee;
 import com.example.luckySystem.dto.agent.AgentDTO;
 import com.example.luckySystem.dto.employee.EmployeeDTO;
 import com.example.luckySystem.dto.salary.LoanDto;
+import com.example.luckySystem.dto.salary.MedicalDto;
 import com.example.luckySystem.entity.*;
 import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.repo.depAndsec.DepartmentRepo;
 import com.example.luckySystem.repo.depAndsec.SectionRepo;
 import com.example.luckySystem.repo.employee.EmployeeRepo;
+import com.example.luckySystem.repo.salary.MedicalRepo;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class EmployeeService {
 
     @Autowired
     private SectionRepo sectionRepo;
+
+    @Autowired
+    private MedicalRepo medicalRepo;
 
     public EmployeeService(EmployeeRepo employeeRepo) {
         this.employeeRepo = employeeRepo;
@@ -143,6 +148,16 @@ public class EmployeeService {
             // Handle case where loan is not found
             return null;
         }
+    }
+
+    public List<MedicalDto> getMedicalData() {
+        List<EmployeeMedical> medical = medicalRepo.findAll();
+        return medical.stream().map(this::convertMedicalEntityToDTO).collect(Collectors.toList());
+    }
+
+    private MedicalDto convertMedicalEntityToDTO(EmployeeMedical unit) {
+
+        return new MedicalDto(unit.getEmployee_medical_id(),unit.getEmp_id().getEmployee_id(),unit.getMedical_status(),unit.getSubmit_date(),unit.getMedical_report());
     }
 
 

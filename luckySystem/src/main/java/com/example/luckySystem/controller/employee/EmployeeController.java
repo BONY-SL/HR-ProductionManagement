@@ -3,6 +3,7 @@ package com.example.luckySystem.controller.employee;
 
 import com.example.luckySystem.dto.agent.AgentDTO;
 import com.example.luckySystem.dto.employee.EmployeeDTO;
+import com.example.luckySystem.dto.salary.MedicalDto;
 import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.service.employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +59,12 @@ public class EmployeeController {
     @GetMapping("/getEmployeeByID/{employeeID}")
     public EmployeeDTO getEmployeeById(@PathVariable String employeeID){
         return employeeService.getEmployeeByEmployeeID(employeeID);
+    }
+
+    @GetMapping("/getMedicalData")
+    public ResponseEntity<List<MedicalDto>> getMedicalData() {
+        List<MedicalDto> agent = employeeService.getMedicalData();
+        return ResponseEntity.ok().body(agent);
     }
 
 }
