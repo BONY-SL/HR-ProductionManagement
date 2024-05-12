@@ -3,6 +3,7 @@ package com.example.luckySystem.controller.salary;
 
 import com.example.luckySystem.dto.salary.AttendanceDto;
 import com.example.luckySystem.dto.salary.LeaveDto;
+import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.service.salaryservice.LeaveService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class LeaveController {
 
 
     @PostMapping("/addLeave")
-    public LeaveDto addLeave(@RequestBody LeaveDto leaveDto) {
+    public LeaveDto addLeave(@RequestBody LeaveDto leaveDto) throws AppException {
         System.out.println("Received request to save user salary data.");
         return leaveService.addLeave(leaveDto);
     }

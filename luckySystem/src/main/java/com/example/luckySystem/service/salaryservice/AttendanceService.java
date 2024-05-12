@@ -44,7 +44,7 @@ public class AttendanceService {
     }
 
 
-    public AttendanceDto addAttendance(AttendanceDto attendanceDto) {
+    public AttendanceDto addAttendance(AttendanceDto attendanceDto) throws AppException {
         Employee emp=emprepo.findById(String.valueOf(attendanceDto.getEmp_id())).orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
 
