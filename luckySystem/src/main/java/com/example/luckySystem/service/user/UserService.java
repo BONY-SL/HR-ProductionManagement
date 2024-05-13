@@ -3,6 +3,7 @@ import com.example.luckySystem.controller.user.OTPSearailzeble;
 import com.example.luckySystem.dto.user.CredentialsDto;
 import com.example.luckySystem.dto.user.SignUpDto;
 import com.example.luckySystem.dto.user.UserDto;
+import com.example.luckySystem.dto.user.UserUpdateRequestDTO;
 import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.entity.User;
 import com.example.luckySystem.exceptions.AppException;
@@ -105,12 +106,6 @@ public class UserService {
 
         return userDto;
     }
-    public void updateUserDetails(UserDto dto) {
-
-        User user = userRepository.findById(dto.getId()).orElseThrow();
-        user.setId(dto.getId());
-        userRepository.save(user);
-    }
 
     public void deleteUserDetails(Long id) {
         userRepository.deleteById(id);
@@ -149,6 +144,41 @@ public class UserService {
         userRepository.save(user);
 
 
+    }
+
+    public UserDto updateUserProfile(UserUpdateRequestDTO userUpdateRequestDTO) {
+
+        User user = userRepository.findById(userUpdateRequestDTO.getId())
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+
+
+        Optional<User> existingUserWithUsername = userRepository.findByUsername(userUpdateRequestDTO.getUsername());
+        if (existingUserWithUsername.isPresent() && !existingUserWithUsername.get().getId().equals(user.getId())) {
+            throw new AppException("New username already exists", HttpStatus.BAD_REQUEST);
+        }
+
+
+        Optional<User> existingUserWithEmail = userRepository.findByEmail(userUpdateRequestDTO.getEmail());
+        if (existingUserWithEmail.isPresent() && !existingUserWithEmail.get().getId().equals(user.getId())) {
+            throw new AppException("New email already exists", HttpStatus.BAD_REQUEST);
+        }
+
+        user.setUsername(userUpdateRequestDTO.getUsername());
+        user.setEmail(userUpdateRequestDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userUpdateRequestDTO.getPassword())));
+        user.setContact(userUpdateRequestDTO.getContact());
+        userRepository.save(user);
+
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setUsername(user.getUsername());
+        userDto.setEmail(user.getEmail());
+        userDto.setPassword(user.getPassword());
+        userDto.setContact(user.getContact());
+        userDto.setRoles(user.getRoles());
+        userDto.setEmployee(user.getEmployee().getEmployee_id());
+
+        return userDto;
     }
 
 }
