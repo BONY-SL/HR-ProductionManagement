@@ -1,9 +1,8 @@
 package com.example.luckySystem.service.user;
-import com.example.luckySystem.dto.agent.AgentDTO;
+import com.example.luckySystem.controller.user.OTPSearailzeble;
 import com.example.luckySystem.dto.user.CredentialsDto;
 import com.example.luckySystem.dto.user.SignUpDto;
 import com.example.luckySystem.dto.user.UserDto;
-import com.example.luckySystem.entity.Agent;
 import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.entity.User;
 import com.example.luckySystem.exceptions.AppException;
@@ -12,7 +11,6 @@ import com.example.luckySystem.repo.employee.EmployeeRepo;
 import com.example.luckySystem.repo.user.UserRepo;
 import com.example.luckySystem.service.employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -115,8 +113,7 @@ public class UserService {
     }
 
     public void deleteUserDetails(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Agent not found"));
-        userRepository.save(user);
+        userRepository.deleteById(id);
     }
 
     public List<UserDto> getallUsers() {
@@ -127,6 +124,31 @@ public class UserService {
     private UserDto convertUserEntityToDTO(User unit) {
 
         return new UserDto(unit.getId(),unit.getUsername(),unit.getPassword(),unit.getEmail(),unit.getContact(),unit.getRoles(),unit.getEmployee().getEmployee_id(),null);
+    }
+
+    public boolean  checkUserIDandUserEmail(String userID, String email){
+
+
+        Employee employee=employeeRepo.findById(userID).orElseThrow(() -> new AppException("Employee Is Not Found", HttpStatus.NOT_FOUND));
+
+        return userRepository.findByEmployeeAndEmail(employee,email).isPresent();
+
+
+    }
+
+    public void resetPassword(OTPSearailzeble userMailAndOTPSerailzeble, String password) throws AppException {
+
+        Employee employee=employeeRepo.findById(userMailAndOTPSerailzeble.getEmployeeID())
+                .orElseThrow(() -> new AppException("Employee Is Not Found", HttpStatus.NOT_FOUND));
+
+
+        User user=userRepository.findByEmployeeAndEmail(employee,userMailAndOTPSerailzeble.getEmail())
+                .orElseThrow(()->new AppException("Invalid Email Address",HttpStatus.NOT_FOUND));
+
+        user.setPassword(passwordEncoder.encode(CharBuffer.wrap(password)));
+        userRepository.save(user);
+
+
     }
 
 }

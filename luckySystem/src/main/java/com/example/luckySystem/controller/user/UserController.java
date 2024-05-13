@@ -55,10 +55,10 @@ public class UserController {
         userService.updateUserDetails(dto);
         return ResponseEntity.ok().build();
     }
-    @PatchMapping("/deleteUserDetails/{userId}")
-    public ResponseEntity<?> deleteUserDetails(@PathVariable Long userId) {
-        userService.deleteUserDetails(userId);
-        return ResponseEntity.ok().build();
+    @DeleteMapping("/deleteUserDetails/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        userService.deleteUserDetails(id);
+        return ResponseEntity.ok().body("User deleted successfully");
     }
 
     @GetMapping("/getallUsers")
