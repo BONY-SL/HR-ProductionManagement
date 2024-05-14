@@ -1,7 +1,4 @@
 package com.example.luckySystem.dto.issue;
-
-import com.example.luckySystem.entity.Employee;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

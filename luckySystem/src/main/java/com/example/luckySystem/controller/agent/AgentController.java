@@ -1,9 +1,6 @@
 package com.example.luckySystem.controller.agent;
-
-
 import com.example.luckySystem.dto.agent.AgentDTO;
 import com.example.luckySystem.dto.agent.AgentPurchaseDTO;
-import com.example.luckySystem.dto.bottles.EmptyBottleDTO;
 import com.example.luckySystem.entity.Agent;
 import com.example.luckySystem.service.agent.AgentService;
 import lombok.RequiredArgsConstructor;

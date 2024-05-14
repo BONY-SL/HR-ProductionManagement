@@ -1,5 +1,6 @@
 package com.example.luckySystem.service.Issue;
 import com.example.luckySystem.dto.issue.DailyIssuEmployeeDTO;
+import com.example.luckySystem.dto.issue.GetMonthlyIssueDTO;
 import com.example.luckySystem.dto.issue.IssueDTO;
 import com.example.luckySystem.entity.*;
 import com.example.luckySystem.exceptions.AppException;
@@ -83,4 +84,11 @@ public class IssueService {
 
         return new DailyIssuEmployeeDTO(unit.getDaily_issue_id(),unit.getEmp_id().getEmployee_id(),unit.getIssue_name(),unit.getDamage_amount(),unit.getSubmit_date());
     }
+
+    public List<GetMonthlyIssueDTO> getMonthlyIssues(int month, int year) {
+        return dailyIssueRepo.findIssuesGroupedByIssueName(month, year);
+    }
+
+
+
 }
