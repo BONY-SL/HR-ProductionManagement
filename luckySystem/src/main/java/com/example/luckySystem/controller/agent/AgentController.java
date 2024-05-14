@@ -2,6 +2,7 @@ package com.example.luckySystem.controller.agent;
 
 
 import com.example.luckySystem.dto.agent.AgentDTO;
+import com.example.luckySystem.dto.agent.AgentPurchaseDTO;
 import com.example.luckySystem.dto.bottles.EmptyBottleDTO;
 import com.example.luckySystem.entity.Agent;
 import com.example.luckySystem.service.agent.AgentService;
@@ -53,4 +54,12 @@ public class AgentController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("getAgentPurchaseDetails/{agentId}/{year}/{month}")
+    public List<AgentPurchaseDTO> getPurchases(@PathVariable Long agentId, @PathVariable int year, @PathVariable int month) {
+
+        System.out.println(agentId);
+        System.out.println(year);
+        System.out.println(month);
+        return agentService.getPurchasesByAgentIdAndMonthYear(agentId, month, year);
+    }
 }
