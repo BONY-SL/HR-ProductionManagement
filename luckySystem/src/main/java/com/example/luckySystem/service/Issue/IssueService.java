@@ -1,4 +1,5 @@
 package com.example.luckySystem.service.Issue;
+import com.example.luckySystem.dto.bottles.EmptyBottleDTO;
 import com.example.luckySystem.dto.issue.DailyIssuEmployeeDTO;
 import com.example.luckySystem.dto.issue.GetMonthlyIssueDTO;
 import com.example.luckySystem.dto.issue.IssueDTO;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -74,6 +76,22 @@ public class IssueService {
         return dailyIssueRepo.save(entity);
     }
 
+    public void updateIssueChanges(DailyIssuEmployeeDTO dto) {
+        if (dto.getDaily_issue_id() == null) {
+            throw new IllegalArgumentException("ID must not be null");
+        }
+        Employee employee=employeeRepo.findById(dto.getEmp_id()).orElseThrow(() -> new AppException("Employee not found", HttpStatus.NOT_FOUND));
+        // System.out.println(dto);
+        DailyProductionIssuesByEmployee unit = dailyIssueRepo.findById(dto.getDaily_issue_id()).orElseThrow();
+
+        unit.setDaily_issue_id(dto.getDaily_issue_id());
+        unit.setIssue_name(dto.getIssue_name());
+        unit.setDamage_amount(dto.getDamage_amount());
+        unit.setEmp_id(employee);
+        dailyIssueRepo.save(unit);
+    }
+
+    //get Issue
     public List<DailyIssuEmployeeDTO> gettAllIssueByEmployee() {
 
         List<DailyProductionIssuesByEmployee> units = dailyIssueRepo.findAll();

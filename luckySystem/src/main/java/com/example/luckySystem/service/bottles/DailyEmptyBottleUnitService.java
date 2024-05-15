@@ -1,5 +1,4 @@
 package com.example.luckySystem.service.bottles;
-
 import com.example.luckySystem.dto.bottles.*;
 import com.example.luckySystem.entity.*;
 import com.example.luckySystem.exceptions.AppException;
@@ -46,13 +45,17 @@ public class DailyEmptyBottleUnitService {
     private AgentRepo agentRepo;
 
     public DailyEmptyBottleUnit saveDailyEmptyBottleUnit(EmptyBottleDTO dto) {
+
         DailyEmptyBottleUnit entity = modelMapper.map(dto, DailyEmptyBottleUnit.class);
-        return repository.save(entity);
+        repository.save(entity);
+        return entity;
     }
 
 
+    //get all add empty bottles
     public List<EmptyBottleDTO> getAllEmptyBottles() {
         List<DailyEmptyBottleUnit> units = repository.findAll();
+        //System.out.println(units.get(units.toArray().length-1).getFor_washing());
         return units.stream().map(this::convertEntityToDTO).collect(Collectors.toList());
     }
 
@@ -87,6 +90,9 @@ public class DailyEmptyBottleUnitService {
         entity.setEmployee(employee);
         return repo.save(entity);
     }
+
+
+    //get all demages
     public List<DamageBottleDTO> getAllDamageBottles() {
 
         List<DailyDamageBottleByEmployee> units = repo.findAll();
@@ -126,6 +132,8 @@ public class DailyEmptyBottleUnitService {
 
     }
 
+
+    //get daily finished
     public List<DailyFinishedDTO> getDailyFinishedMilkBottle() {
 
         List<DailyFinished> units = dailyFinishedRepostory.findAll();
@@ -150,6 +158,8 @@ public class DailyEmptyBottleUnitService {
 
 
 
+
+    //for maintain company bottle stock continuously
     public CompanyBottleStock updateOrSaveCompanyBottleStock(CompanyBottleStockDTO dto) {
         CompanyBottleStock stock = repositoryNewBottle.findTopByOrderByDateDesc()
                 .orElse(new CompanyBottleStock());
@@ -168,6 +178,7 @@ public class DailyEmptyBottleUnitService {
 
     }
 
+    //get all lording
     public List<ProductsForLoadingDTO> getAllLoading() {
 
         List<GoodProductsForLoading> units = productsForLoadingRepo.findAll();

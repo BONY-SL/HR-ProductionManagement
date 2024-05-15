@@ -1,4 +1,5 @@
 package com.example.luckySystem.controller.issue;
+import com.example.luckySystem.dto.bottles.EmptyBottleDTO;
 import com.example.luckySystem.dto.issue.DailyIssuEmployeeDTO;
 import com.example.luckySystem.dto.issue.GetMonthlyIssueDTO;
 import com.example.luckySystem.dto.issue.IssueDTO;
@@ -43,6 +44,12 @@ public class IssueContrroler {
         //System.out.println("controller"+dto);
         DailyProductionIssuesByEmployee savedEntity = issueService.addDailyIssues(dto);
         return ResponseEntity.ok(savedEntity);
+    }
+
+    @PutMapping("/updateIssueChanges")
+    public ResponseEntity<?> updateIssueChanges(@RequestBody DailyIssuEmployeeDTO dto) {
+        issueService.updateIssueChanges(dto);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/gettAllIssueByEmployee")
