@@ -1,5 +1,5 @@
 package com.example.luckySystem.service.Issue;
-import com.example.luckySystem.dto.bottles.EmptyBottleDTO;
+import com.example.luckySystem.dto.bottles.CurrentBottleStatusDTO;
 import com.example.luckySystem.dto.issue.DailyIssuEmployeeDTO;
 import com.example.luckySystem.dto.issue.GetMonthlyIssueDTO;
 import com.example.luckySystem.dto.issue.IssueDTO;
@@ -9,13 +9,13 @@ import com.example.luckySystem.repo.employee.EmployeeRepo;
 import com.example.luckySystem.repo.issue.DailyIssueRepo;
 import com.example.luckySystem.repo.issue.IssueRepo;
 import com.example.luckySystem.service.employee.EmployeeService;
+import com.example.luckySystem.util.SerializeCurrentBottleStock;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +36,9 @@ public class IssueService {
 
     @Autowired
     private EmployeeRepo employeeRepo;
+
+    @Autowired
+    SerializeCurrentBottleStock serializeCurrentBottleStock;
 
 
     public ProductionIssue addNewIssue(String  issue) {
@@ -73,6 +76,17 @@ public class IssueService {
 
         DailyProductionIssuesByEmployee entity = modelMapper.map(dto, DailyProductionIssuesByEmployee.class);
         entity.setEmp_id(employee);
+
+        CurrentBottleStatusDTO currentBottleStatusDTO=serializeCurrentBottleStock.deserializebottleStock();
+        currentBottleStatusDTO.setProduction(currentBottleStatusDTO.getProduction()-dto.getDamage_amount());
+
+        serializeCurrentBottleStock.serializebottleStock(currentBottleStatusDTO);
+
+        System.out.println("Add Issue");
+        System.out.println("Washing"+ serializeCurrentBottleStock.deserializebottleStock().getWoshing());
+        System.out.println("Production"+ serializeCurrentBottleStock.deserializebottleStock().getProduction());
+        System.out.println("Lording"+ serializeCurrentBottleStock.deserializebottleStock().getLording());
+
         return dailyIssueRepo.save(entity);
     }
 

@@ -2,6 +2,9 @@ package com.example.luckySystem.dto.bottles;
 
 
 import lombok.*;
+import org.springframework.stereotype.Service;
+
+import java.io.Serializable;
 
 @Setter
 @Getter
@@ -9,10 +12,13 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CurrentBottleStatusDTO {
-
+@Service
+public class CurrentBottleStatusDTO implements Serializable {
 
     private long woshing;
     private long production;
     private long lording;
+
 }
+
+

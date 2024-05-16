@@ -6,6 +6,7 @@ import com.example.luckySystem.repo.agent.AgentRepo;
 import com.example.luckySystem.repo.bottles.*;
 import com.example.luckySystem.repo.employee.EmployeeRepo;
 import com.example.luckySystem.service.employee.EmployeeService;
+import com.example.luckySystem.util.SerializeCurrentBottleStock;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,9 +45,31 @@ public class DailyEmptyBottleUnitService {
     @Autowired
     private AgentRepo agentRepo;
 
+    @Autowired
+    private SerializeCurrentBottleStock serializeCurrentBottleStock;
+
+
     public DailyEmptyBottleUnit saveDailyEmptyBottleUnit(EmptyBottleDTO dto) {
 
         DailyEmptyBottleUnit entity = modelMapper.map(dto, DailyEmptyBottleUnit.class);
+
+        //add to Current Washing
+
+        CurrentBottleStatusDTO currentBottleStatusDTO=serializeCurrentBottleStock.deserializebottleStock();
+
+        currentBottleStatusDTO.setWoshing(currentBottleStatusDTO.getWoshing()+dto.getFor_washing());
+        if(currentBottleStatusDTO.getLording()>dto.getFor_washing()) {
+
+            currentBottleStatusDTO.setLording(currentBottleStatusDTO.getLording()-dto.getFor_washing());
+        }
+
+        serializeCurrentBottleStock.serializebottleStock(currentBottleStatusDTO);
+
+        System.out.println("Add Washing");
+        System.out.println("Washing"+ serializeCurrentBottleStock.deserializebottleStock().getWoshing());
+        System.out.println("Production"+ serializeCurrentBottleStock.deserializebottleStock().getProduction());
+        System.out.println("Lording"+ serializeCurrentBottleStock.deserializebottleStock().getLording());
+
         repository.save(entity);
         return entity;
     }
@@ -87,6 +110,19 @@ public class DailyEmptyBottleUnitService {
                 .orElseThrow(() -> new AppException("Employee not found", HttpStatus.NOT_FOUND));
 
         DailyDamageBottleByEmployee entity = modelMapper.map(dto, DailyDamageBottleByEmployee.class);
+
+        //reduce the Damages
+        CurrentBottleStatusDTO currentBottleStatusDTO=serializeCurrentBottleStock.deserializebottleStock();
+
+        currentBottleStatusDTO.setWoshing(currentBottleStatusDTO.getWoshing()-dto.getDamage_amount());
+
+        serializeCurrentBottleStock.serializebottleStock(currentBottleStatusDTO);
+
+        System.out.println("Add Damage");
+        System.out.println("Washing"+ serializeCurrentBottleStock.deserializebottleStock().getWoshing());
+        System.out.println("Production"+ serializeCurrentBottleStock.deserializebottleStock().getProduction());
+        System.out.println("Lording"+ serializeCurrentBottleStock.deserializebottleStock().getLording());
+
         entity.setEmployee(employee);
         return repo.save(entity);
     }
@@ -128,6 +164,19 @@ public class DailyEmptyBottleUnitService {
     public DailyFinished saveDailyFinishedMilk(DailyFinishedDTO dto) {
 
         DailyFinished entity = modelMapper.map(dto, DailyFinished.class);
+
+        //set Current Production
+        CurrentBottleStatusDTO currentBottleStatusDTO=serializeCurrentBottleStock.deserializebottleStock();
+
+        currentBottleStatusDTO.setWoshing(currentBottleStatusDTO.getWoshing()-dto.getAmount());
+        currentBottleStatusDTO.setProduction(currentBottleStatusDTO.getProduction()+dto.getAmount());
+
+        serializeCurrentBottleStock.serializebottleStock(currentBottleStatusDTO);
+
+        System.out.println("Add Production");
+        System.out.println("Washing"+ serializeCurrentBottleStock.deserializebottleStock().getWoshing());
+        System.out.println("Production"+ serializeCurrentBottleStock.deserializebottleStock().getProduction());
+        System.out.println("Lording"+ serializeCurrentBottleStock.deserializebottleStock().getLording());
         return dailyFinishedRepostory.save(entity);
 
     }
@@ -174,6 +223,21 @@ public class DailyEmptyBottleUnitService {
 
         GoodProductsForLoading entity = modelMapper.map(dto, GoodProductsForLoading.class);
         entity.setAg_id(agent);
+
+        //set lording
+        CurrentBottleStatusDTO currentBottleStatusDTO=serializeCurrentBottleStock.deserializebottleStock();
+
+
+        currentBottleStatusDTO.setProduction(currentBottleStatusDTO.getProduction()-dto.getAmount());
+        currentBottleStatusDTO.setLording(currentBottleStatusDTO.getLording()+dto.getAmount());
+
+        serializeCurrentBottleStock.serializebottleStock(currentBottleStatusDTO);
+
+        System.out.println("Add Lording");
+        System.out.println("Washing"+ serializeCurrentBottleStock.deserializebottleStock().getWoshing());
+        System.out.println("Production"+ serializeCurrentBottleStock.deserializebottleStock().getProduction());
+        System.out.println("Lording"+ serializeCurrentBottleStock.deserializebottleStock().getLording());
+
         return productsForLoadingRepo.save(entity);
 
     }
