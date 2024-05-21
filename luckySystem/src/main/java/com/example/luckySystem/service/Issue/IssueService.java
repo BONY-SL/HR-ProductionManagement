@@ -15,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,12 +84,6 @@ public class IssueService {
         currentBottleStatusDTO.setProduction(currentBottleStatusDTO.getProduction()-dto.getDamage_amount());
 
         serializeCurrentBottleStock.serializebottleStock(currentBottleStatusDTO);
-
-        System.out.println("Add Issue");
-        System.out.println("Washing"+ serializeCurrentBottleStock.deserializebottleStock().getWoshing());
-        System.out.println("Production"+ serializeCurrentBottleStock.deserializebottleStock().getProduction());
-        System.out.println("Lording"+ serializeCurrentBottleStock.deserializebottleStock().getLording());
-
         return dailyIssueRepo.save(entity);
     }
 
@@ -107,20 +104,25 @@ public class IssueService {
 
     //get Issue
     public List<DailyIssuEmployeeDTO> gettAllIssueByEmployee() {
+        LocalDate threeMonthsAgo = LocalDate.now().minusMonths(2).withDayOfMonth(1);
+        Date startDate = Date.from(threeMonthsAgo.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        List<DailyProductionIssuesByEmployee> units = dailyIssueRepo.findAll();
+        List<DailyProductionIssuesByEmployee> units = dailyIssueRepo.findAllFromLastThreeMonths(startDate);
         return units.stream().map(this::IssueconvertEntityToDTO).collect(Collectors.toList());
     }
 
     private DailyIssuEmployeeDTO IssueconvertEntityToDTO(DailyProductionIssuesByEmployee unit) {
-
-        return new DailyIssuEmployeeDTO(unit.getDaily_issue_id(),unit.getEmp_id().getEmployee_id(),unit.getIssue_name(),unit.getDamage_amount(),unit.getSubmit_date());
+        return new DailyIssuEmployeeDTO(
+                unit.getDaily_issue_id(),
+                unit.getEmp_id().getEmployee_id(),
+                unit.getIssue_name(),
+                unit.getDamage_amount(),
+                unit.getSubmit_date()
+        );
     }
 
     public List<GetMonthlyIssueDTO> getMonthlyIssues(int month, int year) {
         return dailyIssueRepo.findIssuesGroupedByIssueName(month, year);
     }
-
-
 
 }

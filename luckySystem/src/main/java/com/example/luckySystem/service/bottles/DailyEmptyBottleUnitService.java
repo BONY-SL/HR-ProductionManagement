@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,10 +68,6 @@ public class DailyEmptyBottleUnitService {
 
         serializeCurrentBottleStock.serializebottleStock(currentBottleStatusDTO);
 
-        System.out.println("Add Washing");
-        System.out.println("Washing"+ serializeCurrentBottleStock.deserializebottleStock().getWoshing());
-        System.out.println("Production"+ serializeCurrentBottleStock.deserializebottleStock().getProduction());
-        System.out.println("Lording"+ serializeCurrentBottleStock.deserializebottleStock().getLording());
 
         repository.save(entity);
         return entity;
@@ -77,14 +76,22 @@ public class DailyEmptyBottleUnitService {
 
     //get all add empty bottles
     public List<EmptyBottleDTO> getAllEmptyBottles() {
-        List<DailyEmptyBottleUnit> units = repository.findAll();
-        //System.out.println(units.get(units.toArray().length-1).getFor_washing());
+        LocalDate threeMonthsAgo = LocalDate.now().minusMonths(2).withDayOfMonth(1);
+        Date startDate = Date.from(threeMonthsAgo.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        List<DailyEmptyBottleUnit> units = repository.findAllFromLastThreeMonths(startDate);
         return units.stream().map(this::convertEntityToDTO).collect(Collectors.toList());
     }
 
     private EmptyBottleDTO convertEntityToDTO(DailyEmptyBottleUnit unit) {
-
-        return new EmptyBottleDTO(unit.getId(), unit.getEmpty_bottles(), unit.getDamage_bottles(), unit.getSubmit_time(), unit.getSubmit_date(), unit.getFor_washing());
+        return new EmptyBottleDTO(
+                unit.getId(),
+                unit.getEmpty_bottles(),
+                unit.getDamage_bottles(),
+                unit.getSubmit_time(),
+                unit.getSubmit_date(),
+                unit.getFor_washing()
+        );
     }
 
 
@@ -118,10 +125,6 @@ public class DailyEmptyBottleUnitService {
 
         serializeCurrentBottleStock.serializebottleStock(currentBottleStatusDTO);
 
-        System.out.println("Add Damage");
-        System.out.println("Washing"+ serializeCurrentBottleStock.deserializebottleStock().getWoshing());
-        System.out.println("Production"+ serializeCurrentBottleStock.deserializebottleStock().getProduction());
-        System.out.println("Lording"+ serializeCurrentBottleStock.deserializebottleStock().getLording());
 
         entity.setEmployee(employee);
         return repo.save(entity);
@@ -130,14 +133,21 @@ public class DailyEmptyBottleUnitService {
 
     //get all demages
     public List<DamageBottleDTO> getAllDamageBottles() {
+        LocalDate threeMonthsAgo = LocalDate.now().minusMonths(2).withDayOfMonth(1);
+        Date startDate = Date.from(threeMonthsAgo.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        List<DailyDamageBottleByEmployee> units = repo.findAll();
+        List<DailyDamageBottleByEmployee> units = repo.findAllFromLastThreeMonths(startDate);
         return units.stream().map(this::damageconvertEntityToDTO).collect(Collectors.toList());
     }
 
     private DamageBottleDTO damageconvertEntityToDTO(DailyDamageBottleByEmployee unit) {
-
-        return new DamageBottleDTO(unit.getDaily_damage_id(),unit.getUnit_type(),unit.getEmployee().getEmployee_id(),unit.getDamage_amount(),unit.getDate());
+        return new DamageBottleDTO(
+                unit.getDaily_damage_id(),
+                unit.getUnit_type(),
+                unit.getEmployee().getEmployee_id(),
+                unit.getDamage_amount(),
+                unit.getDate()
+        );
     }
 
     public void updateDamageBottle(DamageBottleDTO dto) {
@@ -173,10 +183,6 @@ public class DailyEmptyBottleUnitService {
 
         serializeCurrentBottleStock.serializebottleStock(currentBottleStatusDTO);
 
-        System.out.println("Add Production");
-        System.out.println("Washing"+ serializeCurrentBottleStock.deserializebottleStock().getWoshing());
-        System.out.println("Production"+ serializeCurrentBottleStock.deserializebottleStock().getProduction());
-        System.out.println("Lording"+ serializeCurrentBottleStock.deserializebottleStock().getLording());
         return dailyFinishedRepostory.save(entity);
 
     }
@@ -184,14 +190,22 @@ public class DailyEmptyBottleUnitService {
 
     //get daily finished
     public List<DailyFinishedDTO> getDailyFinishedMilkBottle() {
+        LocalDate threeMonthsAgo = LocalDate.now().minusMonths(2).withDayOfMonth(1);
+        Date startDate = Date.from(threeMonthsAgo.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        List<DailyFinished> units = dailyFinishedRepostory.findAll();
+        List<DailyFinished> units = dailyFinishedRepostory.findAllFromLastThreeMonths(startDate);
         return units.stream().map(this::finishedconvertEntityToDTO).collect(Collectors.toList());
     }
 
     private DailyFinishedDTO finishedconvertEntityToDTO(DailyFinished unit) {
-
-        return new DailyFinishedDTO(unit.getFinished_id(),unit.getAmount(),unit.getBatch_code(),unit.getSubmit_time(),unit.getSubmit_date(),unit.getFinished_status());
+        return new DailyFinishedDTO(
+                unit.getFinished_id(),
+                unit.getAmount(),
+                unit.getBatch_code(),
+                unit.getSubmit_time(),
+                unit.getSubmit_date(),
+                unit.getFinished_status()
+        );
     }
 
     public void updatefinishedMilk(DailyFinishedDTO dto) {
@@ -233,25 +247,28 @@ public class DailyEmptyBottleUnitService {
 
         serializeCurrentBottleStock.serializebottleStock(currentBottleStatusDTO);
 
-        System.out.println("Add Lording");
-        System.out.println("Washing"+ serializeCurrentBottleStock.deserializebottleStock().getWoshing());
-        System.out.println("Production"+ serializeCurrentBottleStock.deserializebottleStock().getProduction());
-        System.out.println("Lording"+ serializeCurrentBottleStock.deserializebottleStock().getLording());
-
         return productsForLoadingRepo.save(entity);
 
     }
 
     //get all lording
     public List<ProductsForLoadingDTO> getAllLoading() {
+        LocalDate threeMonthsAgo = LocalDate.now().minusMonths(3).withDayOfMonth(1);
+        Date startDate = Date.from(threeMonthsAgo.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        List<GoodProductsForLoading> units = productsForLoadingRepo.findAll();
-        return units.stream().map(this::lordingconvertEntityToDTO).collect(Collectors.toList());
+        List<GoodProductsForLoading> units = productsForLoadingRepo.findAllFromLastThreeMonths(startDate);
+        return units.stream().map(this::loadingconvertEntityToDTO).collect(Collectors.toList());
     }
 
-    private ProductsForLoadingDTO lordingconvertEntityToDTO(GoodProductsForLoading unit) {
-
-        return new ProductsForLoadingDTO(unit.getLoading_id(),unit.getAmount(),unit.getBatch_code(),unit.getSubmit_time(),unit.getSubmit_date(),unit.getAg_id().getAgent_id());
+    private ProductsForLoadingDTO loadingconvertEntityToDTO(GoodProductsForLoading unit) {
+        return new ProductsForLoadingDTO(
+                unit.getLoading_id(),
+                unit.getAmount(),
+                unit.getBatch_code(),
+                unit.getSubmit_time(),
+                unit.getSubmit_date(),
+                unit.getAg_id().getAgent_id()
+        );
     }
 
     public void updateLording(ProductsForLoadingDTO dto) {

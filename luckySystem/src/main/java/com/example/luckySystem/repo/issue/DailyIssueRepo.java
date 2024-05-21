@@ -40,4 +40,8 @@ public interface DailyIssueRepo extends JpaRepository<DailyProductionIssuesByEmp
             "WHERE MONTH(d.submit_date) = :month AND YEAR(d.submit_date) = :year " +
             "GROUP BY d.issue_name")
     List<IssueReportDTO> findIssuesByMonth(@Param("month") int month, @Param("year") int year);
+
+
+    @Query("SELECT d FROM DailyProductionIssuesByEmployee d WHERE d.submit_date >= :startDate")
+    List<DailyProductionIssuesByEmployee> findAllFromLastThreeMonths(@Param("startDate") Date startDate);
 }

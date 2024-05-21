@@ -7,10 +7,6 @@ import com.example.luckySystem.dto.user.UserDto;
 import com.example.luckySystem.entity.User;
 import org.modelmapper.convention.MatchingStrategies;
 
-
-
-//example.app.jwtSecret = ap1hd
-//example.app.jwtExpirationMs= 86400000
 @SpringBootApplication
 public class LuckySystemBackEndApplication {
 
