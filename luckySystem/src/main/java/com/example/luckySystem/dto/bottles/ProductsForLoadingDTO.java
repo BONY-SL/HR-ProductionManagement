@@ -1,7 +1,5 @@
 package com.example.luckySystem.dto.bottles;
 
-import com.example.luckySystem.entity.Agent;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

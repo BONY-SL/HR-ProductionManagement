@@ -1,9 +1,9 @@
 package com.example.luckySystem.controller.issue;
-
-
-import com.example.luckySystem.dto.agent.AgentDTO;
+import com.example.luckySystem.dto.bottles.EmptyBottleDTO;
+import com.example.luckySystem.dto.issue.DailyIssuEmployeeDTO;
+import com.example.luckySystem.dto.issue.GetMonthlyIssueDTO;
 import com.example.luckySystem.dto.issue.IssueDTO;
-import com.example.luckySystem.entity.Agent;
+import com.example.luckySystem.entity.DailyProductionIssuesByEmployee;
 import com.example.luckySystem.entity.ProductionIssue;
 import com.example.luckySystem.service.Issue.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,4 +32,40 @@ public class IssueContrroler {
         List<IssueDTO> issue = issueService.getIssueDetails();
         return ResponseEntity.ok().body(issue);
     }
+
+    @PutMapping("/updateIssue")
+    public ResponseEntity<?> updateIssue(@RequestBody IssueDTO dto) {
+        issueService.updateIssue(dto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/addDailyIssuesemployee")
+    public ResponseEntity<DailyProductionIssuesByEmployee> addDailyIssues(@RequestBody DailyIssuEmployeeDTO dto) {
+        //System.out.println("controller"+dto);
+        DailyProductionIssuesByEmployee savedEntity = issueService.addDailyIssues(dto);
+        return ResponseEntity.ok(savedEntity);
+    }
+
+    @PutMapping("/updateIssueChanges")
+    public ResponseEntity<?> updateIssueChanges(@RequestBody DailyIssuEmployeeDTO dto) {
+        issueService.updateIssueChanges(dto);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/gettAllIssueByEmployee")
+    public ResponseEntity<List<DailyIssuEmployeeDTO>> gettAllIssueByEmployee() {
+        List<DailyIssuEmployeeDTO> employeeIssue = issueService.gettAllIssueByEmployee();
+        System.out.println(employeeIssue);
+        return ResponseEntity.ok().body(employeeIssue);
+    }
+
+    @GetMapping("/getMonthlyIssues")
+    public List<GetMonthlyIssueDTO> getMonthlyIssues(@RequestParam int month, @RequestParam int year) {
+
+        System.out.println(month);
+        System.out.println(year);
+        return issueService.getMonthlyIssues(month, year);
+    }
+
+
 }
