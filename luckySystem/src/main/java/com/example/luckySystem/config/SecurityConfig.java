@@ -38,7 +38,7 @@ public class SecurityConfig {
                                 "/hrandproduction/getProductionsByMonth","/hrandproduction/getIssuesByMonth","hrandproduction/getMedicalData","hrandproduction/getLeaveData").permitAll()
                         .requestMatchers(HttpMethod.DELETE,"/hrandproduction/deleteuser","/hrandproduction/deleteEmployee","/hrandproduction/deleteAdvance","/hrandproduction/deleteAllowance","/hrandproduction/deleteSalary","/hrandproduction/deleteDeduction","/hrandproduction/deleteLoan","hrandproduction/deleteUserDetails").permitAll()
                         .requestMatchers(HttpMethod.PUT,"/hrandproduction/updateEmptyBottle","/hrandproduction/updatedamageBottle","/hrandproduction/updatefinishedMilk","/hrandproduction/updateAgentDetails","/hrandproduction/updateLording","/hrandproduction/updateEmployee","/hrandproduction/updateAdvance","/hrandproduction/updateAllowance","/hrandproduction/updateSalary","/hrandproduction/updateDeduction","/hrandproduction/updateLone","/hrandproduction/updateIssue",
-                                "/hrandproduction/updateIssueChanges").permitAll()
+                                "/hrandproduction/updateIssueChanges","/hrandproduction/updateUserProfile").permitAll()
                         .requestMatchers(HttpMethod.PATCH,"/hrandproduction/deleteAgentDetails/{agentId}","/hrandproduction/undoDeleteAgentDetails/{agentId}").permitAll()
                         .anyRequest().authenticated())
         ;
