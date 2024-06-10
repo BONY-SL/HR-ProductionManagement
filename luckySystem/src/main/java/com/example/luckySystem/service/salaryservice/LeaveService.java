@@ -46,7 +46,7 @@ public class LeaveService {
 
 
 
-    public LeaveDto addLeave(LeaveDto leaveDto) {
+    public LeaveDto addLeave(LeaveDto leaveDto) throws AppException {
         Employee emp=emprepo.findById(leaveDto.getEmp_id()).orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
         EmployeeLeave leave = modelMapper.map(leaveDto, EmployeeLeave.class);
         leave.setEmp_id(emp);

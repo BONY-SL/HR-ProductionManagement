@@ -2,6 +2,7 @@ package com.example.luckySystem.controller.salary;
 
 import com.example.luckySystem.dto.salary.AdvanceDto;
 import com.example.luckySystem.dto.salary.AttendanceDto;
+import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.service.salaryservice.AttendanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class AttendanceController {
     }
 
     @PostMapping("/addAttendance")
-    public AttendanceDto addAttendance(@RequestBody AttendanceDto attendanceDto) {
+    public AttendanceDto addAttendance(@RequestBody AttendanceDto attendanceDto) throws AppException {
         System.out.println("Received request to save user salary data.");
         return attendanceService.addAttendance(attendanceDto);
     }

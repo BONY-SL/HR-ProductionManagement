@@ -2,6 +2,7 @@ package com.example.luckySystem.controller.bottles;
 import com.example.luckySystem.dto.bottles.*;
 import com.example.luckySystem.entity.*;
 import com.example.luckySystem.service.bottles.DailyEmptyBottleUnitService;
+import com.example.luckySystem.util.SerializeCurrentBottleStock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -101,5 +102,15 @@ public class BottleController {
         return ResponseEntity.ok().build();
     }
 
+    @Autowired
+    private SerializeCurrentBottleStock serializeCurrentBottleStock;
+
+    @GetMapping("/getCurrentBottleStock")
+    public ResponseEntity<CurrentBottleStatusDTO> getCurrentBottleStock(){
+
+        CurrentBottleStatusDTO currentBottleStatusDTO=serializeCurrentBottleStock.deserializebottleStock();
+
+        return ResponseEntity.ok().body(currentBottleStatusDTO);
+    }
 
 }

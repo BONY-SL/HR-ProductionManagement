@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -29,4 +31,7 @@ public class DailyProductionIssuesByEmployee {
 
     @Column(name = "damage_amount",nullable = false)
     private int damage_amount;
+
+    @Column(name = "submit_date",nullable = false)
+    private Date submit_date;
 }

@@ -27,6 +27,15 @@ public class CompanyBottleStock {
     @Column(nullable = false)
     private Date date;
 
+    @Column(nullable = true)
+    private long woshing;
+
+    @Column(nullable = true)
+    private long production;
+
+    @Column(nullable = true)
+    private long lording;
+
     @Column(nullable = false)
     private long total_bottle;
 
