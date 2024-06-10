@@ -1,8 +1,10 @@
 package com.example.luckySystem.controller.user;
 
 import com.example.luckySystem.dto.agent.AgentDTO;
+import com.example.luckySystem.dto.user.CredentialsDto;
 import com.example.luckySystem.dto.user.SignUpDto;
 import com.example.luckySystem.dto.user.UserDto;
+import com.example.luckySystem.dto.user.UserUpdateRequestDTO;
 import com.example.luckySystem.entity.User;
 import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.exceptions.EmployeeIDAlreadyExistsException;
@@ -50,21 +52,25 @@ public class UserController {
         return new ResponseEntity<>("Email Send successfully", HttpStatus.CREATED);
     }
 
-    @PutMapping("/updateUserDetails")
-    public ResponseEntity<?> updateUserDetails(@RequestBody UserDto dto) {
-        userService.updateUserDetails(dto);
-        return ResponseEntity.ok().build();
-    }
-    @PatchMapping("/deleteUserDetails/{userId}")
-    public ResponseEntity<?> deleteUserDetails(@PathVariable Long userId) {
-        userService.deleteUserDetails(userId);
-        return ResponseEntity.ok().build();
+
+    @DeleteMapping("/deleteUserDetails/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        userService.deleteUserDetails(id);
+        return ResponseEntity.ok().body("User deleted successfully");
     }
 
     @GetMapping("/getallUsers")
     public ResponseEntity<List<UserDto>> getallUsers() {
         List<UserDto> user = userService.getallUsers();
         return ResponseEntity.ok().body(user);
+    }
+
+    @PutMapping("/updateUserProfile")
+    public ResponseEntity<UserDto> updateUserProfile(@RequestBody @Valid UserUpdateRequestDTO userUpdateRequestDTO) {
+        System.out.println(userUpdateRequestDTO);
+        UserDto userDto = userService.updateUserProfile(userUpdateRequestDTO);
+        System.out.println(userDto);
+        return ResponseEntity.ok(userDto);
     }
 
 }

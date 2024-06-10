@@ -1,14 +1,10 @@
 package com.example.luckySystem.controller.salary;
-
-
-
 import com.example.luckySystem.dto.salary.MedicalDto;
 import com.example.luckySystem.service.salaryservice.MedicalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,6 +27,7 @@ public class MedicalController {
         System.out.println("Received request to save allowance data.");
         return medicalService.getMedicalDetails();
     }
+
 
     @PostMapping("/addMedical")
     public MedicalDto addMedical(@RequestParam("emp_id") String empId,

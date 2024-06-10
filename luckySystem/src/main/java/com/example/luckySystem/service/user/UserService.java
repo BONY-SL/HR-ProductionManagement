@@ -1,9 +1,9 @@
 package com.example.luckySystem.service.user;
-import com.example.luckySystem.dto.agent.AgentDTO;
+import com.example.luckySystem.controller.user.OTPSearailzeble;
 import com.example.luckySystem.dto.user.CredentialsDto;
 import com.example.luckySystem.dto.user.SignUpDto;
 import com.example.luckySystem.dto.user.UserDto;
-import com.example.luckySystem.entity.Agent;
+import com.example.luckySystem.dto.user.UserUpdateRequestDTO;
 import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.entity.User;
 import com.example.luckySystem.exceptions.AppException;
@@ -12,7 +12,6 @@ import com.example.luckySystem.repo.employee.EmployeeRepo;
 import com.example.luckySystem.repo.user.UserRepo;
 import com.example.luckySystem.service.employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -107,16 +106,9 @@ public class UserService {
 
         return userDto;
     }
-    public void updateUserDetails(UserDto dto) {
-
-        User user = userRepository.findById(dto.getId()).orElseThrow();
-        user.setId(dto.getId());
-        userRepository.save(user);
-    }
 
     public void deleteUserDetails(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Agent not found"));
-        userRepository.save(user);
+        userRepository.deleteById(id);
     }
 
     public List<UserDto> getallUsers() {
@@ -127,6 +119,66 @@ public class UserService {
     private UserDto convertUserEntityToDTO(User unit) {
 
         return new UserDto(unit.getId(),unit.getUsername(),unit.getPassword(),unit.getEmail(),unit.getContact(),unit.getRoles(),unit.getEmployee().getEmployee_id(),null);
+    }
+
+    public boolean  checkUserIDandUserEmail(String userID, String email){
+
+
+        Employee employee=employeeRepo.findById(userID).orElseThrow(() -> new AppException("Employee Is Not Found", HttpStatus.NOT_FOUND));
+
+        return userRepository.findByEmployeeAndEmail(employee,email).isPresent();
+
+
+    }
+
+    public void resetPassword(OTPSearailzeble userMailAndOTPSerailzeble, String password) throws AppException {
+
+        Employee employee=employeeRepo.findById(userMailAndOTPSerailzeble.getEmployeeID())
+                .orElseThrow(() -> new AppException("Employee Is Not Found", HttpStatus.NOT_FOUND));
+
+
+        User user=userRepository.findByEmployeeAndEmail(employee,userMailAndOTPSerailzeble.getEmail())
+                .orElseThrow(()->new AppException("Invalid Email Address",HttpStatus.NOT_FOUND));
+
+        user.setPassword(passwordEncoder.encode(CharBuffer.wrap(password)));
+        userRepository.save(user);
+
+
+    }
+
+    public UserDto updateUserProfile(UserUpdateRequestDTO userUpdateRequestDTO) {
+
+        User user = userRepository.findById(userUpdateRequestDTO.getId())
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+
+
+        Optional<User> existingUserWithUsername = userRepository.findByUsername(userUpdateRequestDTO.getUsername());
+        if (existingUserWithUsername.isPresent() && !existingUserWithUsername.get().getId().equals(user.getId())) {
+            throw new AppException("New username already exists", HttpStatus.BAD_REQUEST);
+        }
+
+
+        Optional<User> existingUserWithEmail = userRepository.findByEmail(userUpdateRequestDTO.getEmail());
+        if (existingUserWithEmail.isPresent() && !existingUserWithEmail.get().getId().equals(user.getId())) {
+            throw new AppException("New email already exists", HttpStatus.BAD_REQUEST);
+        }
+
+        user.setUsername(userUpdateRequestDTO.getUsername());
+        user.setEmail(userUpdateRequestDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userUpdateRequestDTO.getPassword())));
+        user.setContact(userUpdateRequestDTO.getContact());
+        userRepository.save(user);
+
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setUsername(user.getUsername());
+        userDto.setEmail(user.getEmail());
+        userDto.setPassword(user.getPassword());
+        userDto.setContact(user.getContact());
+        userDto.setRoles(user.getRoles());
+        userDto.setEmployee(user.getEmployee().getEmployee_id());
+
+        return userDto;
     }
 
 }
