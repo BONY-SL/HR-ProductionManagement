@@ -19,17 +19,20 @@ import java.util.List;
 public class MedicalService {
 
     @Autowired
-    public MedicalRepo medicalRepo;
+    public  MedicalRepo medicalRepo;
 
     @Autowired
     public ModelMapper modelMapper;
 
     @Autowired
     public EmployeeRepo emprepo;
+
+
     public List<MedicalDto> getMedicalDetails() {
         List<EmployeeMedical> medicalListList = medicalRepo.findAll();
         return modelMapper.map(medicalListList, new TypeToken<List<MedicalDto>>() {}.getType());
     }
+
 
     public MedicalDto addMedicalDetails(MedicalDto medicalDto) {
 
@@ -55,12 +58,16 @@ public class MedicalService {
             medical.setMedical_report(reportBytes);
         }
 
+
         // Save the medical entity in the repository
         medicalRepo.save(medical);
 
         // Return the DTO
         return medicalDto;
     }
+
+
+
 
 
 

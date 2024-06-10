@@ -32,6 +32,7 @@ public class MedicalController {
         return medicalService.getMedicalDetails();
     }
 
+
     @PostMapping("/addMedical")
     public MedicalDto addMedical(@RequestParam("emp_id") String empId,
                                  @RequestParam("submit_date") String submitDateString,
