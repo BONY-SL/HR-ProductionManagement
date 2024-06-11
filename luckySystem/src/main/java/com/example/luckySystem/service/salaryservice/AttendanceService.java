@@ -31,8 +31,6 @@ public class AttendanceService {
     @Autowired
     public EmployeeRepo emprepo;
 
-
-
     public List<AttendanceDto> getAttendanceDetails(){
         List<EmployeeAttendance>AttendanceList=attendanceRepo.findAll();
         return AttendanceList.stream().map(this::convertToDTO).collect(Collectors.toList());

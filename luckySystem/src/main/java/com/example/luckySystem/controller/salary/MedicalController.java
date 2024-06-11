@@ -1,7 +1,5 @@
 package com.example.luckySystem.controller.salary;
 
-
-
 import com.example.luckySystem.dto.salary.MedicalDto;
 import com.example.luckySystem.service.salaryservice.MedicalService;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +21,6 @@ public class MedicalController {
 
     @Autowired
     public MedicalService medicalService;
-
-
 
     @GetMapping("/getmedical")
     public List<MedicalDto> getMedicalDetails(){

@@ -25,6 +25,9 @@ public class EmployeeMedical {
     @JoinColumn(name = "emp_id",referencedColumnName = "employee_id")
     private Employee emp_id;
 
+    @Column(name="emp_name",length = 200)
+    private String emp_name;
+
     @Column(name="medical_status",length = 200)
     private String medical_status;
 

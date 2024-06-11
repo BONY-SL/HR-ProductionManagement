@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/hrandproduction")
+@RequestMapping("/hrandproduction/salary")
 public class AttendanceController {
 
     @Autowired
@@ -37,7 +37,4 @@ public class AttendanceController {
         System.out.println("Received request to retrieve employee count by date.");
         return attendanceService.countDistinctEmployeesByDate(date);
     }
-
-
-
 }
