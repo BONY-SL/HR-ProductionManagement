@@ -7,6 +7,12 @@ import java.io.*;
 @Service
 public class SerializeCurrentBottleStock {
 
+    /*
+    * This class Created For Manage The Current Bottle Stock
+    * Add The New Bottles For The Bottle Stock
+    * Serialize and get DeSerialize Bottle
+    * Manage Stock Easily without Database Transaction
+    * */
 
 
     public synchronized  void serializebottleStock(CurrentBottleStatusDTO  currentBottleStatusDTO) {

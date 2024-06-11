@@ -57,12 +57,15 @@ public class AgentService {
         agentRepo.save(unit);
     }
 
+    // Agent Data not Deleted Permanently  update Set Delete Data and setDeleteReason
+    //show user for deleteData and Delete Reason Null All fields
     public void deleteAgentDetails(Long agentId, String deleteReason) {
         Agent agent = agentRepo.findById(agentId).orElseThrow(() -> new RuntimeException("Agent not found"));
         agent.setDeletedAt(new Date());
         agent.setDeleteReason(deleteReason);
         agentRepo.save(agent);
     }
+
 
     public void undoDeleteAgentDetails(Long agentId) {
         //System.out.println(agentId);

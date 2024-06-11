@@ -42,6 +42,15 @@ public class UserService {
     private final EmployeeService employeeService;
     
 
+    /*
+    * this Class Create For User Authentication
+    * Authenticate While Login User and Validate Requirements For User Registration
+    * */
+
+
+
+
+
     public UserDto login(CredentialsDto credentialsDto) {
         User user = userRepository.findByUsername(credentialsDto.username())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));

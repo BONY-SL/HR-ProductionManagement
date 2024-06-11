@@ -51,6 +51,11 @@ public class DailyEmptyBottleUnitService {
     @Autowired
     private SerializeCurrentBottleStock serializeCurrentBottleStock;
 
+    /*
+    *Manage the Daily Bottle Stock Transaction Process Maintain By The StoreKeeper
+    *Add And Update Changes And Get Current Stock Under the Status By Using DeSerialize Method
+    * */
+
 
     public DailyEmptyBottleUnit saveDailyEmptyBottleUnit(EmptyBottleDTO dto) {
 

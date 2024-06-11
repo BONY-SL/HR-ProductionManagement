@@ -22,6 +22,8 @@ public class SecurityConfig {
 
     private final UserAuthenticationProvider userAuthenticationProvider;
 
+
+    // all rest controllers filter by security Filter Chain
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface DailyDamagesByEmployeeRepository extends JpaRepository<DailyDamageBottleByEmployee, Long> {
 
+    //Get Bottle Damages Last Three month
     @Query("SELECT d FROM DailyDamageBottleByEmployee d WHERE d.date >= :startDate")
     List<DailyDamageBottleByEmployee> findAllFromLastThreeMonths(@Param("startDate") Date startDate);
 }

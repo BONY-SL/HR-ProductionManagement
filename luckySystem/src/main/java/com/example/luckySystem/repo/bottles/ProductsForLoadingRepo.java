@@ -15,6 +15,9 @@ import java.util.List;
 public interface ProductsForLoadingRepo extends JpaRepository<GoodProductsForLoading,Long> {
 
 
+
+
+    //get Agent Monthly Purchase For Graph
     @Query("SELECT g FROM GoodProductsForLoading g WHERE g.ag_id.agent_id = :agentId AND g.submit_date BETWEEN :startDate AND :endDate ORDER BY g.submit_date ASC")
     List<GoodProductsForLoading> findByAgIdAndSubmitDateBetweenOrderBySubmitDateAsc(
             @Param("agentId") Long agentId,
