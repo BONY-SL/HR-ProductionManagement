@@ -43,5 +43,6 @@ public class User {
     @JoinColumn(name = "employee_id", referencedColumnName = "employee_id",unique = true)
     private Employee employee;
 
-
+    @Column(nullable = true, length = 500)
+    private String deleteReason;
 }

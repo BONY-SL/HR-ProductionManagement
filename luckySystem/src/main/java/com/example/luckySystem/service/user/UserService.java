@@ -55,6 +55,10 @@ public class UserService {
         User user = userRepository.findByUsername(credentialsDto.username())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
+        if (user.getDeleteReason() != null) {
+            throw new AppException("Invalid user", HttpStatus.BAD_REQUEST);
+        }
+
         if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()), user.getPassword())) {
             UserDto userDto = userMapper.toUserDto(user);
             if (user.getEmployee() != null) {
@@ -116,12 +120,9 @@ public class UserService {
         return userDto;
     }
 
-    public void deleteUserDetails(Long id) {
-        userRepository.deleteById(id);
-    }
 
     public List<UserDto> getallUsers() {
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findAllByDeleteReasonIsNull();
         return users.stream().map(this::convertUserEntityToDTO).collect(Collectors.toList());
     }
 
@@ -188,6 +189,13 @@ public class UserService {
         userDto.setEmployee(user.getEmployee().getEmployee_id());
 
         return userDto;
+    }
+
+    public void deleteUser(Long userId, String deleteReason) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
+        user.setDeleteReason(deleteReason);
+        userRepository.save(user);
     }
 
 }

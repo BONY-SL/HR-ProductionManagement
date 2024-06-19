@@ -30,36 +30,33 @@ public class MedicalController {
 
 
     @PostMapping("/addMedical")
-    public MedicalDto addMedical(@RequestParam("emp_id") String empId,
-                                 @RequestParam("submit_date") String submitDateString,
-                                 @RequestParam("medical_status") String medicalStatus,
-                                 @RequestParam("medical_report") MultipartFile medicalReport) {
+    public MedicalDto addMedical(@RequestBody MedicalDto medicalDto) {
+
+        System.out.println(medicalDto.getEmp_id());
+        System.out.println(medicalDto.getMedical_status());
+        System.out.println(medicalDto.getSubmit_date());
+        System.out.println(medicalDto.getMedical_report().toString());
 
         Date submitDate = null;
         try {
-            submitDate = new SimpleDateFormat(" yyyy-MM-DD ").parse(submitDateString);
+            submitDate = new SimpleDateFormat("yyyy-MM-dd").parse(medicalDto.getSubmit_date().toString());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        // Create a MedicalDto object and set its fields
-        MedicalDto medicalDto = new MedicalDto();
-        medicalDto.setEmp_id(empId);
-        medicalDto.setSubmit_date(submitDate);
-        medicalDto.setMedical_status(medicalStatus);
 
-        // Check if a medical report file was provided
-        if (medicalReport != null && !medicalReport.isEmpty()) {
+        if (medicalDto.getMedical_report() != null) {
             try {
-                byte[] reportBytes = medicalReport.getBytes();
+                byte[] reportBytes = medicalDto.getMedical_report();
                 medicalDto.setMedical_report(reportBytes);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 // Handle the exception as needed
+                e.printStackTrace();
             }
         }
 
-        // Call the service method to add medical details, passing the DTO
         return medicalService.addMedicalDetails(medicalDto);
     }
+
 
 
 }

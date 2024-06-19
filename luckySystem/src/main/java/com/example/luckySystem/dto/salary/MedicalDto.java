@@ -12,7 +12,6 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 public class MedicalDto {
-
     private Long employee_medical_id;
     private String emp_id;
     private String medical_status;
