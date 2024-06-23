@@ -25,6 +25,11 @@ public class ReportService {
     @Autowired
     private DailyIssueRepo dailyIssueRepo;
 
+
+    /*
+    This Class Create For Manage the Agents Purchase Details
+     */
+
     public List<AgentReportDTO> getDailyReportagent(Date date) {
 
         Date formattedDate = formatDate(date);
@@ -46,6 +51,7 @@ public class ReportService {
         return productsForLoadingRepo.findReportByMonth(month, year);
     }
 
+    //This method Create For Set Java DataFormat to Database Data Format
     private Date formatDate(Date date) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

@@ -12,6 +12,11 @@ import java.util.List;
 @Repository
 public interface DailyFinishedRepostory extends JpaRepository<DailyFinished, Long> {
 
+    /* This InterFace Create For Manage  All Agent Purchace Under By Daily Weekly Monthly For This Sql queries Get Customize Data
+    * */
+
+
+
     @Query("SELECT new com.example.luckySystem.dto.agent.ProductionReportDTO(SUM(d.amount), d.batch_code, d.finished_status) " +
             "FROM DailyFinished d " +
             "WHERE FUNCTION('DATE', d.submit_date) = :submitDate " +

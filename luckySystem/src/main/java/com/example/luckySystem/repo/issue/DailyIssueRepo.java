@@ -15,6 +15,13 @@ import java.util.List;
 @Repository
 public interface DailyIssueRepo extends JpaRepository<DailyProductionIssuesByEmployee,Long> {
 
+
+
+    /*
+    * Manage this Repo For Issue Reports
+    *
+    * */
+
     @Query("SELECT new com.example.luckySystem.dto.issue.GetMonthlyIssueDTO(d.issue_name, COUNT(d.issue_name), SUM(d.damage_amount)) " +
             "FROM DailyProductionIssuesByEmployee d " +
             "WHERE MONTH(d.submit_date) = :month AND YEAR(d.submit_date) = :year " +

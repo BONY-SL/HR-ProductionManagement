@@ -1,10 +1,7 @@
 package com.example.luckySystem.controller.user;
 
 import com.example.luckySystem.dto.agent.AgentDTO;
-import com.example.luckySystem.dto.user.CredentialsDto;
-import com.example.luckySystem.dto.user.SignUpDto;
-import com.example.luckySystem.dto.user.UserDto;
-import com.example.luckySystem.dto.user.UserUpdateRequestDTO;
+import com.example.luckySystem.dto.user.*;
 import com.example.luckySystem.entity.User;
 import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.exceptions.EmployeeIDAlreadyExistsException;
@@ -52,13 +49,6 @@ public class UserController {
         return new ResponseEntity<>("Email Send successfully", HttpStatus.CREATED);
     }
 
-
-    @DeleteMapping("/deleteUserDetails/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        userService.deleteUserDetails(id);
-        return ResponseEntity.ok().body("User deleted successfully");
-    }
-
     @GetMapping("/getallUsers")
     public ResponseEntity<List<UserDto>> getallUsers() {
         List<UserDto> user = userService.getallUsers();
@@ -71,6 +61,12 @@ public class UserController {
         UserDto userDto = userService.updateUserProfile(userUpdateRequestDTO);
         System.out.println(userDto);
         return ResponseEntity.ok(userDto);
+    }
+
+    @PostMapping("/deleteUser")
+    public ResponseEntity<String> deleteUser(@RequestBody DeleteUserRequestDto deleteUserRequestDto) {
+        userService.deleteUser(deleteUserRequestDto.getUserId(), deleteUserRequestDto.getDeleteReason());
+        return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
     }
 
 }

@@ -22,6 +22,8 @@ public class SecurityConfig {
 
     private final UserAuthenticationProvider userAuthenticationProvider;
 
+
+    // all rest controllers filter by security Filter Chain
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -31,7 +33,7 @@ public class SecurityConfig {
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(HttpMethod.POST, "/hrandproduction/userlogin", "/hrandproduction/userregister","/hrandproduction/adddailyemptybottles","/hrandproduction/addDailyDamages","/hrandproduction/adddailyfinishedmilk","/hrandproduction/addNewAgent","/hrandproduction/addnewpurchasednewBottles","/hrandproduction/addLording","/hrandproduction/addEmployee","/hrandproduction/addAdvance","/hrandproduction/addAllowance","/hrandproduction/addAttendance"
-                                                        ,"/hrandproduction/addSalary","/hrandproduction/addDeduction","/hrandproduction/addGatepass","/hrandproduction/addLeave","/hrandproduction/addLoan","/hrandproduction/addMedical","/hrandproduction/createNewUser","/hrandproduction/sendmailToUser","/hrandproduction/addNewIssue/{issue}","/hrandproduction/addDailyIssuesemployee","/hrandproduction/checkUserIDandUserEmail","/hrandproduction/sendMailToUser","/hrandproduction/verifyGetOtp").permitAll()
+                                                        ,"/hrandproduction/addSalary","/hrandproduction/addDeduction","/hrandproduction/addGatepass","/hrandproduction/addLeave","/hrandproduction/addLoan","/hrandproduction/addMedical","/hrandproduction/createNewUser","/hrandproduction/sendmailToUser","/hrandproduction/addNewIssue/{issue}","/hrandproduction/addDailyIssuesemployee","/hrandproduction/checkUserIDandUserEmail","/hrandproduction/sendMailToUser","/hrandproduction/verifyGetOtp","/hrandproduction/deleteUser").permitAll()
                         .requestMatchers(HttpMethod.GET,"/hrandproduction/getEmptyBottle","/hrandproduction/getemployeeDamageBottle","/hrandproduction/getDailyFinishedMilkBottle","/hrandproduction/getallAgentDetails","/hrandproduction/getAllLoading","/hrandproduction/getEmployee","/hrandproduction/employeeCountByDepartment","/hrandproduction/totalCount","/hrandproduction/getEmployeeByID/{employeeID}","/hrandproduction/getAdvance","/hrandproduction/getAdvanceByID/{advanceID}","/hrandproduction/getAllowance"
                                                       ,"/hrandproduction/getAllowanceByID/{allowanceID}","hrandproduction/getAttendance","hrandproduction/employeeCount","hrandproduction/getSalary","hrandproduction/getSalaryByID/{salaryID}","hrandproduction/getDeduction","hrandproduction/getDeductionByID/{deductionID}","hrandproduction/getGatepass","hrandproduction/getLeave","hrandproduction/getLoan","hrandproduction/getLoanByID/{loanID}","hrandproduction/getmedical","/hrandproduction/getallUsers",
                                 "/hrandproduction/getIssueDetails","/hrandproduction/gettAllIssueByEmployee","/hrandproduction/getAgentPurchaseDetails/{agentId}/{year}/{month}","/hrandproduction/getMonthlyIssues","/hrandproduction/getCurrentBottleStock","/hrandproduction/getDailyReportagent","/hrandproduction/getWeeklyReportagent","/hrandproduction/getMonthlyReportagent","/hrandproduction/getDailyProductions","/hrandproduction/getDailyIssues","/hrandproduction/getProductionsByDateRange","/hrandproduction/getIssuesByDateRange",
