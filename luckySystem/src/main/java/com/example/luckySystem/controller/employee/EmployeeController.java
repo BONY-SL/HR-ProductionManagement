@@ -4,6 +4,7 @@ package com.example.luckySystem.controller.employee;
 import com.example.luckySystem.dto.agent.AgentDTO;
 import com.example.luckySystem.dto.employee.EmployeeBirthdayDTO;
 import com.example.luckySystem.dto.employee.EmployeeDTO;
+import com.example.luckySystem.dto.employee.UpcommingBirthdayDTO;
 import com.example.luckySystem.dto.salary.LeaveDto;
 import com.example.luckySystem.dto.salary.MedicalDto;
 import com.example.luckySystem.dto.user.UserDto;
@@ -79,6 +80,11 @@ public class EmployeeController {
     @GetMapping("/todayBirthdays")
     public List<EmployeeBirthdayDTO> getEmployeesWithBirthdaysToday() {
         return employeeService.getEmployeesWithBirthdaysToday();
+    }
+
+    @GetMapping("/upcomingBirthdays")
+    public List<UpcommingBirthdayDTO> getUpcomingBirthdays() {
+        return employeeService.getUpcomingBirthdays();
     }
 
 }

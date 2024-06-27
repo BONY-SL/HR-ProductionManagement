@@ -1,9 +1,8 @@
 package com.example.luckySystem.service.employee;
-import com.example.luckySystem.dto.agent.AgentDTO;
 import com.example.luckySystem.dto.employee.EmployeeBirthdayDTO;
 import com.example.luckySystem.dto.employee.EmployeeDTO;
+import com.example.luckySystem.dto.employee.UpcommingBirthdayDTO;
 import com.example.luckySystem.dto.salary.LeaveDto;
-import com.example.luckySystem.dto.salary.LoanDto;
 import com.example.luckySystem.dto.salary.MedicalDto;
 import com.example.luckySystem.entity.*;
 import com.example.luckySystem.exceptions.AppException;
@@ -13,10 +12,8 @@ import com.example.luckySystem.repo.employee.EmployeeRepo;
 import com.example.luckySystem.repo.salary.LeaveRepo;
 import com.example.luckySystem.repo.salary.MedicalRepo;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -192,5 +189,29 @@ public class EmployeeService {
         dto.setDep_id(employee.getDep_id().getDepartment_name());
         dto.setSec_id(employee.getSec_id().getSection_name());
         return dto;
+    }
+
+    //upcoming birthday lists
+    public List<UpcommingBirthdayDTO> getUpcomingBirthdays() {
+
+        List<Employee> employees = employeeRepo.findUpcomingBirthdays();
+        return employees.stream().map(this::convertToDTOUpComing).collect(Collectors.toList());
+    }
+
+    private UpcommingBirthdayDTO convertToDTOUpComing(Employee employee) {
+
+        // Convert Employee entity to UpcomingBirthdayDTO
+        return UpcommingBirthdayDTO.builder()
+                .employee_id(employee.getEmployee_id())
+                .job_role(employee.getJob_role())
+                .employee_name(employee.getEmployee_name())
+                .dob(employee.getDob())
+                .address(employee.getAddress())
+                .gender(employee.getGender())
+                .ma_uma(employee.getMa_uma())
+                .contact(employee.getContact())
+                .dep_id(employee.getDep_id().getDepartment_name())
+                .sec_id(employee.getSec_id().getSection_name())
+                .build();
     }
 }
