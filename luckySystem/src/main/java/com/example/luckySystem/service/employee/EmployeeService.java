@@ -1,7 +1,6 @@
 package com.example.luckySystem.service.employee;
-
-
 import com.example.luckySystem.dto.agent.AgentDTO;
+import com.example.luckySystem.dto.employee.EmployeeBirthdayDTO;
 import com.example.luckySystem.dto.employee.EmployeeDTO;
 import com.example.luckySystem.dto.salary.LeaveDto;
 import com.example.luckySystem.dto.salary.LoanDto;
@@ -176,5 +175,22 @@ public class EmployeeService {
     }
 
 
+    //get All Employee list Today's Birthday
 
+    public List<EmployeeBirthdayDTO> getEmployeesWithBirthdaysToday() {
+        List<Employee> employees = employeeRepo.findEmployeesWithBirthdaysToday();
+        return employees.stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    private EmployeeBirthdayDTO convertToDTO(Employee employee) {
+        EmployeeBirthdayDTO dto = new EmployeeBirthdayDTO();
+        dto.setEmployee_id(employee.getEmployee_id());
+        dto.setJob_role(employee.getJob_role());
+        dto.setEmployee_name(employee.getEmployee_name());
+        dto.setGender(employee.getGender());
+        dto.setContact(employee.getContact());
+        dto.setDep_id(employee.getDep_id().getDepartment_name());
+        dto.setSec_id(employee.getSec_id().getSection_name());
+        return dto;
+    }
 }
