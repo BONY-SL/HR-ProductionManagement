@@ -72,16 +72,26 @@ public class EmployeeService {
         }
         Department department = departmentRepo.findById(employeeDto.getDep_id())
                 .orElseThrow(() -> new AppException("Department not found", HttpStatus.BAD_REQUEST));
-
         Section section = sectionRepo.findById(employeeDto.getSec_id())
                 .orElseThrow(() -> new AppException("Section not found", HttpStatus.BAD_REQUEST));
 
+        employee.setEmployee_id(employeeDto.getEmployeeid());
+        employee.setJob_role(employeeDto.getJob_role());
+        employee.setSalary_type(employeeDto.getSalary_type());
+        employee.setEmployee_name(employeeDto.getEmployee_name());
+        employee.setDob(employeeDto.getDob());
+        employee.setAddress(employeeDto.getAddress());
+        employee.setGender(employeeDto.getGender());
+        employee.setMa_uma(employeeDto.getMa_uma());
+        employee.setContact(employeeDto.getContact());
+        employee.setCompany_status(employeeDto.getCompany_status());
         employee.setDep_id(department);
         employee.setSec_id(section);
 
         employeeRepo.save(employee);
         return employee;
     }
+
 
 
     public List<Object[]> countActiveEmployeesByDepartment() {
