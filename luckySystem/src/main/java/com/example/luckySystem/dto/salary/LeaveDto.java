@@ -17,10 +17,8 @@ public class LeaveDto {
 
     private Long employee_leave_id;
     private String emp_id;
-
     private String leave_type;
     private String  reson;
-
     private String  status;
     private Date start_time;
     private Date end_time;

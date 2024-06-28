@@ -13,7 +13,9 @@ import com.example.luckySystem.service.employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -32,11 +34,13 @@ public class EmployeeController {
     }
 
     @PostMapping("/addEmployee")
-    public ResponseEntity<Employee> addEmployee(@RequestBody EmployeeDTO employeeDto) {
-        System.out.println("Received request to add an employee with ID: " + employeeDto.getEmployeeid());
-        Employee employee=employeeService.addEmployee(employeeDto);
+    public ResponseEntity<Employee> addEmployee(@RequestPart("employee") EmployeeDTO employeeDto,
+                                                @RequestPart("cv") MultipartFile cv) throws IOException {
+        Employee employee = employeeService.addEmployee(employeeDto, cv);
         return ResponseEntity.ok(employee);
     }
+
+
 
     @GetMapping("/employeeCountByDepartment")
     public List<Object[]> getEmployeeCountByDepartment() {

@@ -1,7 +1,5 @@
 package com.example.luckySystem.controller.salary;
-
-
-import com.example.luckySystem.dto.salary.AttendanceDto;
+import com.example.luckySystem.dto.employee.LeaveHistorySummaryDto;
 import com.example.luckySystem.dto.salary.LeaveDto;
 import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.service.salaryservice.LeaveService;
@@ -35,5 +33,20 @@ public class LeaveController {
         return leaveService.addLeave(leaveDto);
     }
 
+    //update employee leave requests
+    @PutMapping("/updateLeaveStatus")
+    public ResponseEntity<String> updateLeaveStatus(@RequestParam Long employee_leave_id, @RequestParam String status) {
+        leaveService.updateLeaveStatus(employee_leave_id, status);
+        return ResponseEntity.ok("Leave status updated successfully.");
+    }
 
+    @GetMapping("/getLeaveHistorySummary")
+    public ResponseEntity<LeaveHistorySummaryDto> getLeaveHistorySummary(@RequestParam String empId) {
+        System.out.println(empId);
+        LeaveHistorySummaryDto summaryDto = leaveService.getLeaveHistorySummary(empId);
+        if (summaryDto == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(summaryDto);
+    }
 }

@@ -15,6 +15,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,23 +65,21 @@ public class EmployeeService {
                 unit.getCompany_status(),unit.getCv(),unit.getDep_id().getDepartment_id(),unit.getSec_id().getSection_id());
     }
 
-    public Employee addEmployee(EmployeeDTO employeeDto) {
-        System.out.println("Service request to add an employee with ID: " + employeeDto.getEmployeeid());
+    public Employee addEmployee(EmployeeDTO employeeDto, MultipartFile cv) throws IOException {
         Employee employee = modelMapper.map(employeeDto, Employee.class);
-        if (employee.getEmployee_id() == null) {
-            employee.setEmployee_id(employeeDto.getEmployeeid()); // Ensure this is correctly named and implemented
+        if (cv != null && !cv.isEmpty()) {
+            employee.setCv(cv.getBytes());
         }
-        Department department=departmentRepo.findById(employeeDto.getDep_id())
+        Department department = departmentRepo.findById(employeeDto.getDep_id())
                 .orElseThrow(() -> new AppException("Department not found", HttpStatus.BAD_REQUEST));
 
-        Section section=sectionRepo.findById(employeeDto.getSec_id())
+        Section section = sectionRepo.findById(employeeDto.getSec_id())
                 .orElseThrow(() -> new AppException("Section not found", HttpStatus.BAD_REQUEST));
 
         employee.setDep_id(department);
         employee.setSec_id(section);
 
         employeeRepo.save(employee);
-        System.out.println(employee);
         return employee;
     }
 
