@@ -1,9 +1,7 @@
 package com.example.luckySystem.entity;
-
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
-
 import java.util.Date;
 
 @AllArgsConstructor
@@ -50,7 +48,7 @@ public class Employee {
     @Column(length = 200,nullable = false)
     private String company_status;
 
-    @Column(name="cv",nullable = true)
+    @Column(name="cv",nullable = true,columnDefinition="LONGBLOB")
     private byte[] cv;
 
     @ManyToOne
