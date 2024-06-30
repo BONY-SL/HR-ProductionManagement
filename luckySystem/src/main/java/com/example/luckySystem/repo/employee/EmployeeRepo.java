@@ -8,7 +8,7 @@ import java.util.List;
 @Repository
 public interface EmployeeRepo extends JpaRepository<Employee,String> {
 
-    @Query(value="SELECT dep_id, COUNT(employee_id) AS employee_count FROM employee WHERE company_status = 'Active' GROUP BY dep_id ")
+    @Query(value="SELECT department, COUNT(employee_id) AS employee_count FROM employee WHERE company_status = 'Active' GROUP BY department ")
     List<Object[]> countActiveEmployeesByDepartment();
 
     @Query(value = "SELECT COUNT(*) AS total_employees FROM employee", nativeQuery = true)
@@ -29,10 +29,5 @@ public interface EmployeeRepo extends JpaRepository<Employee,String> {
             "ORDER BY MONTH(e.dob), DAY(e.dob)",
             nativeQuery = true)
     List<Employee> findUpcomingBirthdays();
-
-
-
-
-
 
 }
