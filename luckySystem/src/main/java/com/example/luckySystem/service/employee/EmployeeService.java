@@ -1,4 +1,5 @@
 package com.example.luckySystem.service.employee;
+import com.example.luckySystem.dto.employee.DepartmentEmployeeGenderCountDto;
 import com.example.luckySystem.dto.employee.EmployeeBirthdayDTO;
 import com.example.luckySystem.dto.employee.EmployeeDTO;
 import com.example.luckySystem.dto.employee.UpcommingBirthdayDTO;
@@ -62,7 +63,7 @@ public class EmployeeService {
 
         return new EmployeeDTO(unit.getEmployee_id(),unit.getJob_role(),unit.getSalary_type(),unit.getEmployee_name(),
                 unit.getDob(),unit.getAddress(),unit.getGender(),unit.getMa_uma(),unit.getContact(),
-                unit.getCompany_status(),unit.getCv(),unit.getDep_id().getDepartment_id(),unit.getSec_id().getSection_id());
+                unit.getCompany_status(),unit.getCv(),unit.getDepartment().getDepartment_id(),unit.getSec_id().getSection_id());
     }
 
     public Employee addEmployee(EmployeeDTO employeeDto, MultipartFile cv) throws IOException {
@@ -85,7 +86,7 @@ public class EmployeeService {
         employee.setMa_uma(employeeDto.getMa_uma());
         employee.setContact(employeeDto.getContact());
         employee.setCompany_status(employeeDto.getCompany_status());
-        employee.setDep_id(department);
+        employee.setDepartment(department);
         employee.setSec_id(section);
 
         employeeRepo.save(employee);
@@ -114,7 +115,7 @@ public class EmployeeService {
         Section section=sectionRepo.findById(employeeDto.getSec_id())
                 .orElseThrow(() -> new AppException("Section not found", HttpStatus.BAD_REQUEST));
 
-        employee.setDep_id(department);
+        employee.setDepartment(department);
         employee.setSec_id(section);
 
         employeeRepo.save(employee);
@@ -151,7 +152,7 @@ public class EmployeeService {
             employeeDTO.setContact(employee.getContact());
             employeeDTO.setCompany_status(employee.getCompany_status());
             employeeDTO.setCv(employee.getCv());
-            employeeDTO.setDep_id(employee.getDep_id().getDepartment_id());
+            employeeDTO.setDep_id(employee.getDepartment().getDepartment_id());
             employeeDTO.setSec_id(employee.getSec_id().getSection_id());
 
 
@@ -197,7 +198,7 @@ public class EmployeeService {
         dto.setEmployee_name(employee.getEmployee_name());
         dto.setGender(employee.getGender());
         dto.setContact(employee.getContact());
-        dto.setDep_id(employee.getDep_id().getDepartment_name());
+        dto.setDep_id(employee.getDepartment().getDepartment_name());
         dto.setSec_id(employee.getSec_id().getSection_name());
         return dto;
     }
@@ -221,8 +222,12 @@ public class EmployeeService {
                 .gender(employee.getGender())
                 .ma_uma(employee.getMa_uma())
                 .contact(employee.getContact())
-                .dep_id(employee.getDep_id().getDepartment_name())
+                .dep_id(employee.getDepartment().getDepartment_name())
                 .sec_id(employee.getSec_id().getSection_name())
                 .build();
+    }
+
+    public List<DepartmentEmployeeGenderCountDto> getDepartmentEmployeeGenderCounts() {
+        return employeeRepo.findDepartmentEmployeeGenderCounts();
     }
 }

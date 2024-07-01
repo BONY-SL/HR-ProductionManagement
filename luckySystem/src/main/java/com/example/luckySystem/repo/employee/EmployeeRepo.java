@@ -1,4 +1,5 @@
 package com.example.luckySystem.repo.employee;
+import com.example.luckySystem.dto.employee.DepartmentEmployeeGenderCountDto;
 import com.example.luckySystem.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -8,7 +9,7 @@ import java.util.List;
 @Repository
 public interface EmployeeRepo extends JpaRepository<Employee,String> {
 
-    @Query(value="SELECT dep_id, COUNT(employee_id) AS employee_count FROM employee WHERE company_status = 'Active' GROUP BY dep_id ")
+    @Query(value="SELECT department, COUNT(employee_id) AS employee_count FROM employee WHERE company_status = 'Active' GROUP BY department ")
     List<Object[]> countActiveEmployeesByDepartment();
 
     @Query(value = "SELECT COUNT(*) AS total_employees FROM employee", nativeQuery = true)
@@ -30,9 +31,10 @@ public interface EmployeeRepo extends JpaRepository<Employee,String> {
             nativeQuery = true)
     List<Employee> findUpcomingBirthdays();
 
-
-
-
-
+    @Query("SELECT new com.example.luckySystem.dto.employee.DepartmentEmployeeGenderCountDto(d.department_name, " +
+            "SUM(CASE WHEN e.gender = 'Male' THEN 1 ELSE 0 END), " +
+            "SUM(CASE WHEN e.gender = 'Female' THEN 1 ELSE 0 END)) " +
+            "FROM employee e JOIN e.department d GROUP BY d.department_name")
+    List<DepartmentEmployeeGenderCountDto> findDepartmentEmployeeGenderCounts();
 
 }
