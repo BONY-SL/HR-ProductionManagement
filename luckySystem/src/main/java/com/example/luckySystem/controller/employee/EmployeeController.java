@@ -2,6 +2,7 @@
 package com.example.luckySystem.controller.employee;
 
 import com.example.luckySystem.dto.agent.AgentDTO;
+import com.example.luckySystem.dto.employee.DepartmentEmployeeGenderCountDto;
 import com.example.luckySystem.dto.employee.EmployeeBirthdayDTO;
 import com.example.luckySystem.dto.employee.EmployeeDTO;
 import com.example.luckySystem.dto.employee.UpcommingBirthdayDTO;
@@ -108,6 +109,11 @@ public class EmployeeController {
     @GetMapping("/upcomingBirthdays")
     public List<UpcommingBirthdayDTO> getUpcomingBirthdays() {
         return employeeService.getUpcomingBirthdays();
+    }
+
+    @GetMapping("/employeeCountsByGender")
+    public List<DepartmentEmployeeGenderCountDto> getEmployeeCountsByGender() {
+        return employeeService.getDepartmentEmployeeGenderCounts();
     }
 
 }

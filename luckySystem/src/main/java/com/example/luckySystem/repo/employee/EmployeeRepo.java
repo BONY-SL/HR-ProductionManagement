@@ -1,4 +1,5 @@
 package com.example.luckySystem.repo.employee;
+import com.example.luckySystem.dto.employee.DepartmentEmployeeGenderCountDto;
 import com.example.luckySystem.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,5 +30,11 @@ public interface EmployeeRepo extends JpaRepository<Employee,String> {
             "ORDER BY MONTH(e.dob), DAY(e.dob)",
             nativeQuery = true)
     List<Employee> findUpcomingBirthdays();
+
+    @Query("SELECT new com.example.luckySystem.dto.employee.DepartmentEmployeeGenderCountDto(d.department_name, " +
+            "SUM(CASE WHEN e.gender = 'Male' THEN 1 ELSE 0 END), " +
+            "SUM(CASE WHEN e.gender = 'Female' THEN 1 ELSE 0 END)) " +
+            "FROM employee e JOIN e.department d GROUP BY d.department_name")
+    List<DepartmentEmployeeGenderCountDto> findDepartmentEmployeeGenderCounts();
 
 }

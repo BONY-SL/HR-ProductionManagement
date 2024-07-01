@@ -1,4 +1,5 @@
 package com.example.luckySystem.service.employee;
+import com.example.luckySystem.dto.employee.DepartmentEmployeeGenderCountDto;
 import com.example.luckySystem.dto.employee.EmployeeBirthdayDTO;
 import com.example.luckySystem.dto.employee.EmployeeDTO;
 import com.example.luckySystem.dto.employee.UpcommingBirthdayDTO;
@@ -224,5 +225,9 @@ public class EmployeeService {
                 .dep_id(employee.getDepartment().getDepartment_name())
                 .sec_id(employee.getSec_id().getSection_name())
                 .build();
+    }
+
+    public List<DepartmentEmployeeGenderCountDto> getDepartmentEmployeeGenderCounts() {
+        return employeeRepo.findDepartmentEmployeeGenderCounts();
     }
 }
