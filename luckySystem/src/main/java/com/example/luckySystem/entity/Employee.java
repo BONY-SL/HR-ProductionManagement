@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -52,9 +53,15 @@ public class Employee {
 
     @ManyToOne
     @JoinColumn(name = "department_id", referencedColumnName = "department_id")
+    @ToString.Exclude
     private Department department;
 
     @ManyToOne
     @JoinColumn(name = "sec_id", referencedColumnName = "section_id")
+    @ToString.Exclude
     private Section sec_id;
+
+    @OneToMany(mappedBy = "employee")
+    @ToString.Exclude
+    private List<EmployeeMedical> employeeMedicals;
 }

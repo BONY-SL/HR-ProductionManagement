@@ -12,21 +12,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.List;
 @Service
 @Transactional
 public class MedicalService {
 
     @Autowired
-    public  MedicalRepo medicalRepo;
+    private  MedicalRepo medicalRepo;
 
     @Autowired
-    public ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     @Autowired
-    public EmployeeRepo emprepo;
+    private EmployeeRepo emprepo;
 
 
     public List<MedicalDto> getMedicalDetails() {
@@ -35,26 +36,31 @@ public class MedicalService {
     }
 
 
-    public MedicalDto addMedicalDetails(MedicalDto medicalDto) {
+    public EmployeeMedical addMedicalDetails(MedicalDto medicalDto, MultipartFile medicalReport) {
+
+        System.out.println("Service" + medicalDto.getEmp_id());
         Employee emp = emprepo.findById(medicalDto.getEmp_id())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
-        EmployeeMedical medical = modelMapper.map(medicalDto, EmployeeMedical.class);
-        medical.setEmp_id(emp);
+        System.out.println(emp);
 
-        if (medicalDto.getMedical_report() != null) {
-            byte[] reportBytes = medicalDto.getMedical_report();
-            medical.setMedical_report(reportBytes);
+        EmployeeMedical medical = new EmployeeMedical();
+        medical.setEmployee(emp);
+        medical.setSubmit_date(medicalDto.getSubmit_date());
+        medical.setMedical_status(medicalDto.getMedical_status());  // Corrected this line
+
+        if (medicalReport != null && !medicalReport.isEmpty()) {
+            try {
+                medical.setMedical_report(medicalReport.getBytes());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
+        System.out.println("last"+medical);
         medicalRepo.save(medical);
-        return medicalDto;
+        return medical;
     }
-
-
-
-
-
 
 
 }

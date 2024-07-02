@@ -1,12 +1,16 @@
 package com.example.luckySystem.controller.salary;
 import com.example.luckySystem.dto.salary.MedicalDto;
+import com.example.luckySystem.entity.EmployeeMedical;
+import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.service.salaryservice.MedicalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -30,33 +34,28 @@ public class MedicalController {
 
 
     @PostMapping("/addMedical")
-    public MedicalDto addMedical(@RequestBody MedicalDto medicalDto) {
+    public ResponseEntity<?> addMedical(@RequestParam("emp_id") String empId,
+                                        @RequestParam("submit_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date submitDate,
+                                        @RequestParam("medical_status") String medicalStatus,
+                                        @RequestParam(value = "medical_report", required = false) MultipartFile medicalReport) {
 
-        System.out.println(medicalDto.getEmp_id());
-        System.out.println(medicalDto.getMedical_status());
-        System.out.println(medicalDto.getSubmit_date());
-        System.out.println(medicalDto.getMedical_report().toString());
+        MedicalDto medicalDto = new MedicalDto();
+        medicalDto.setEmp_id(empId);
+        medicalDto.setMedical_status(medicalStatus);
+        medicalDto.setSubmit_date(submitDate);
 
-        Date submitDate = null;
+        System.out.println(medicalDto);
+        System.out.println(medicalReport);
         try {
-            submitDate = new SimpleDateFormat("yyyy-MM-dd").parse(medicalDto.getSubmit_date().toString());
+            EmployeeMedical medical = medicalService.addMedicalDetails(medicalDto, medicalReport);
+            System.out.println(medical);
+            return new ResponseEntity<>("Medical data added successfully", HttpStatus.CREATED);
+        } catch (AppException e) {
+            return ResponseEntity.status(e.getStatus()).body(Collections.singletonMap("message", e.getMessage()));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("message", "An unexpected error occurred"));
         }
-
-        if (medicalDto.getMedical_report() != null) {
-            try {
-                byte[] reportBytes = medicalDto.getMedical_report();
-                medicalDto.setMedical_report(reportBytes);
-            } catch (Exception e) {
-                // Handle the exception as needed
-                e.printStackTrace();
-            }
-        }
-
-        return medicalService.addMedicalDetails(medicalDto);
     }
-
 
 
 }
