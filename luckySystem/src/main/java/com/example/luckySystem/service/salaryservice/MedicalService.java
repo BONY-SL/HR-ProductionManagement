@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 public class MedicalService {
@@ -30,9 +32,22 @@ public class MedicalService {
     private EmployeeRepo emprepo;
 
 
-    public List<MedicalDto> getMedicalDetails() {
-        List<EmployeeMedical> medicalListList = medicalRepo.findAll();
-        return modelMapper.map(medicalListList, new TypeToken<List<MedicalDto>>() {}.getType());
+    public List<MedicalDto> getMedicalData() {
+        return medicalRepo.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
+    public MedicalDto getMedicalById(Long id) {
+        return convertToDto(medicalRepo.findById(id).orElseThrow(() -> new RuntimeException("Medical record not found")));
+    }
+
+    private MedicalDto convertToDto(EmployeeMedical employeeMedical) {
+        return MedicalDto.builder()
+                .employee_medical_id(employeeMedical.getEmployee_medical_id())
+                .emp_id(employeeMedical.getEmployee().getEmployee_id())
+                .medical_status(employeeMedical.getMedical_status())
+                .submit_date(employeeMedical.getSubmit_date())
+                .medical_report(employeeMedical.getMedical_report())
+                .build();
     }
 
 

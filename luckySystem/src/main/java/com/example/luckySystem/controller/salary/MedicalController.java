@@ -4,9 +4,13 @@ import com.example.luckySystem.entity.EmployeeMedical;
 import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.service.salaryservice.MedicalService;
 import lombok.RequiredArgsConstructor;
+import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +33,38 @@ public class MedicalController {
     @GetMapping("/getmedical")
     public List<MedicalDto> getMedicalDetails(){
         System.out.println("Received request to save allowance data.");
-        return medicalService.getMedicalDetails();
+        return medicalService.getMedicalData();
+    }
+
+
+    private final Tika tika = new Tika();
+
+    @GetMapping("/downloadMedicalReport/{id}")
+    public ResponseEntity<ByteArrayResource> downloadMedicalReport(@PathVariable Long id) {
+
+        System.out.println(id);
+        MedicalDto medicalDto = medicalService.getMedicalById(id);
+        byte[] medicalReport = medicalDto.getMedical_report();
+
+        String mimeType = tika.detect(medicalReport);
+        String fileExtension = getFileExtension(mimeType);
+
+        ByteArrayResource resource = new ByteArrayResource(medicalReport);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(mimeType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"medical_report_" + id + "." + fileExtension + "\"")
+                .body(resource);
+    }
+
+    private String getFileExtension(String mimeType) {
+        return switch (mimeType) {
+            case "image/jpeg" -> "jpg";
+            case "image/png" -> "png";
+            case "image/gif" -> "gif";
+            // Add more cases as necessary
+            default -> "jpg";
+        };
     }
 
 
