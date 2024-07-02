@@ -53,10 +53,21 @@ public class AdvanceService {
     }
 
     public AdvanceDto updateAdvanceDetails(AdvanceDto advanceDto) {
-        EmployeeAdvanceSalary advanceSalary = modelMapper.map(advanceDto, EmployeeAdvanceSalary.class);
+        EmployeeAdvanceSalary advanceSalary = advanceRepo.findById(advanceDto.getAdvance_salary_id())
+                .orElseThrow(() -> new AppException("Advance salary record not found", HttpStatus.NOT_FOUND));
+
+        Employee emp = emprepo.findById(advanceDto.getEmp_id())
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+
+        advanceSalary.setEmp_id(emp);
+        advanceSalary.setReson(advanceDto.getReson());
+        advanceSalary.setStatus(advanceDto.getStatus());
+        advanceSalary.setAmount(advanceDto.getAmount());
+
         advanceRepo.save(advanceSalary);
-        return advanceDto;
+        return convertToDTO(advanceSalary);
     }
+
 
     public boolean deleteAdvanceDetails(AdvanceDto advanceDto){
         advanceRepo.delete(modelMapper.map(advanceDto,EmployeeAdvanceSalary.class));
