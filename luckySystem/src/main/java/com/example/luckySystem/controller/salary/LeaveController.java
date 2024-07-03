@@ -40,6 +40,7 @@ public class LeaveController {
         return ResponseEntity.ok("Leave status updated successfully.");
     }
 
+    //get leave request summery by employee ID
     @GetMapping("/getLeaveHistorySummary")
     public ResponseEntity<LeaveHistorySummaryDto> getLeaveHistorySummary(@RequestParam String empId) {
         System.out.println(empId);

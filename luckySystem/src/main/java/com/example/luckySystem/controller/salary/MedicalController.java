@@ -1,4 +1,6 @@
 package com.example.luckySystem.controller.salary;
+import com.example.luckySystem.dto.employee.LeaveHistorySummaryDto;
+import com.example.luckySystem.dto.employee.MedicalHistorySummaryDto;
 import com.example.luckySystem.dto.salary.MedicalDto;
 import com.example.luckySystem.entity.EmployeeMedical;
 import com.example.luckySystem.exceptions.AppException;
@@ -90,6 +92,23 @@ public class MedicalController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("message", "An unexpected error occurred"));
         }
+    }
+
+    @GetMapping("/getMedicalHistorySummary")
+    public ResponseEntity<MedicalHistorySummaryDto> getMedicalHistorySummary(@RequestParam String empId) {
+
+        System.out.println(empId);
+        MedicalHistorySummaryDto summaryDto = medicalService.getMedicalHistorySummary(empId);
+        if (summaryDto == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(summaryDto);
+    }
+
+    @PutMapping("/updateMedicalStatus")
+    public ResponseEntity<String> updateMedicalStatus(@RequestParam Long employee_medical_id, @RequestParam String status) {
+        medicalService.updateMedicalStatus(employee_medical_id, status);
+        return ResponseEntity.ok("Medical status updated successfully.");
     }
 
 

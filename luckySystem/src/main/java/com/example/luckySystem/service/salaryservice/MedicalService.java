@@ -1,7 +1,10 @@
 package com.example.luckySystem.service.salaryservice;
 
+import com.example.luckySystem.dto.employee.LeaveHistorySummaryDto;
+import com.example.luckySystem.dto.employee.MedicalHistorySummaryDto;
 import com.example.luckySystem.dto.salary.MedicalDto;
 import com.example.luckySystem.entity.Employee;
+import com.example.luckySystem.entity.EmployeeLeave;
 import com.example.luckySystem.entity.EmployeeMedical;
 import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.repo.employee.EmployeeRepo;
@@ -23,7 +26,7 @@ import java.util.stream.Collectors;
 public class MedicalService {
 
     @Autowired
-    private  MedicalRepo medicalRepo;
+    private MedicalRepo medicalRepo;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -72,10 +75,25 @@ public class MedicalService {
             }
         }
 
-        System.out.println("last"+medical);
+        System.out.println("last" + medical);
         medicalRepo.save(medical);
         return medical;
     }
 
+    public MedicalHistorySummaryDto getMedicalHistorySummary(String empId) {
+        Employee employee = emprepo.findById(empId).orElse(null);
+        if (employee == null) {
+            return null;
+        }
+        long approvedCount = medicalRepo.countByEmpIdAndStatus(employee, "approved");
+        long rejectedCount = medicalRepo.countByEmpIdAndStatus(employee, "rejected");
 
+        return new MedicalHistorySummaryDto(approvedCount, rejectedCount, employee.getEmployee_id(), employee.getEmployee_name(), employee.getJob_role());
+    }
+
+    public void updateMedicalStatus(Long employee_medical_id, String status) {
+        EmployeeMedical medical = medicalRepo.findById(employee_medical_id).orElseThrow(() -> new AppException("Medical request not found", HttpStatus.NOT_FOUND));
+        medical.setMedical_status(status);
+        medicalRepo.save(medical);
+    }
 }
