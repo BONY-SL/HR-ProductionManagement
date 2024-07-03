@@ -2,6 +2,7 @@
 package com.example.luckySystem.controller.employee;
 
 import com.example.luckySystem.dto.agent.AgentDTO;
+import com.example.luckySystem.dto.bottles.EmptyBottleDTO;
 import com.example.luckySystem.dto.employee.*;
 import com.example.luckySystem.dto.salary.LeaveDto;
 import com.example.luckySystem.dto.salary.MedicalDto;
@@ -110,6 +111,12 @@ public class EmployeeController {
     @GetMapping("/employeeCountsByGender")
     public List<DepartmentEmployeeGenderCountDto> getEmployeeCountsByGender() {
         return employeeService.getDepartmentEmployeeGenderCounts();
+    }
+
+    @GetMapping("/getEmployeeToPromotionUpdate")
+    public ResponseEntity<List<UpdatePromotionDTO>> getEmployeeToPromotionUpdate() {
+        List<UpdatePromotionDTO> employee = employeeService.getEmployeeToPromotionUpdate();
+        return ResponseEntity.ok().body(employee);
     }
 
 }

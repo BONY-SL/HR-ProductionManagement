@@ -1,7 +1,4 @@
 package com.example.luckySystem.dto.employee;
-
-import com.example.luckySystem.entity.Department;
-import com.example.luckySystem.entity.Section;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
