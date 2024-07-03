@@ -1,17 +1,18 @@
 package com.example.luckySystem.dto.salary;
-
-import com.example.luckySystem.entity.Employee;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
+
 
 import java.util.Date;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Builder
 public class MedicalDto {
+
     private Long employee_medical_id;
     private String emp_id;
     private String medical_status;
