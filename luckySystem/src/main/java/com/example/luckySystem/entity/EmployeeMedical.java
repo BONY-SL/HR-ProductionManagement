@@ -22,8 +22,9 @@ public class EmployeeMedical {
     private Long employee_medical_id;
 
     @ManyToOne
-    @JoinColumn(name = "emp_id",referencedColumnName = "employee_id")
-    private Employee emp_id;
+    @JoinColumn(name = "employee_id",referencedColumnName = "employee_id")
+    @ToString.Exclude
+    private Employee employee;
 
     @Column(name="medical_status",length = 200)
     private String medical_status;
@@ -31,7 +32,7 @@ public class EmployeeMedical {
     @Column(name="submit_date",length = 10)
     private Date submit_date;
 
-    @Column(name="medical_report")
+    @Column(name="medical_report",columnDefinition="LONGBLOB")
     private byte[] medical_report;
 
 }

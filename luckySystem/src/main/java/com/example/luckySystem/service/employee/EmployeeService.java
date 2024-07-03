@@ -180,7 +180,7 @@ public class EmployeeService {
 
     private MedicalDto convertMedicalEntityToDTO(EmployeeMedical unit) {
 
-        return new MedicalDto(unit.getEmployee_medical_id(),unit.getEmp_id().getEmployee_id(),unit.getMedical_status(),unit.getSubmit_date(),unit.getMedical_report());
+        return new MedicalDto(unit.getEmployee_medical_id(), unit.getEmployee().getEmployee_id(),unit.getMedical_status(),unit.getSubmit_date(),unit.getMedical_report());
     }
 
     public List<LeaveDto> getLeaveData() {
