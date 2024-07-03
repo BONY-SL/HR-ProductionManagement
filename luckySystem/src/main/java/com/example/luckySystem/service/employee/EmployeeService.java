@@ -1,8 +1,5 @@
 package com.example.luckySystem.service.employee;
-import com.example.luckySystem.dto.employee.DepartmentEmployeeGenderCountDto;
-import com.example.luckySystem.dto.employee.EmployeeBirthdayDTO;
-import com.example.luckySystem.dto.employee.EmployeeDTO;
-import com.example.luckySystem.dto.employee.UpcommingBirthdayDTO;
+import com.example.luckySystem.dto.employee.*;
 import com.example.luckySystem.dto.salary.LeaveDto;
 import com.example.luckySystem.dto.salary.MedicalDto;
 import com.example.luckySystem.entity.*;
@@ -103,25 +100,38 @@ public class EmployeeService {
         return employeeRepo.getTotalEmployeesCount();
     }
 
-    public Employee updateEmployeeDetails(EmployeeDTO employeeDto) {
-        System.out.println("Service request to add an employee with ID: " + employeeDto.getEmployeeid());
-        Employee employee = modelMapper.map(employeeDto, Employee.class);
-        if (employee.getEmployee_id() == null) {
-            employee.setEmployee_id(employeeDto.getEmployeeid()); // Ensure this is correctly named and implemented
-        }
-        Department department=departmentRepo.findById(employeeDto.getDep_id())
-                .orElseThrow(() -> new AppException("Department not found", HttpStatus.BAD_REQUEST));
+    public Employee updateEmployeeDetails(UpdateEmployeeDTO updateEmployeeDTO) {
+        System.out.println("Service request to update an employee with ID: " + updateEmployeeDTO.getEmployeeid());
 
-        Section section=sectionRepo.findById(employeeDto.getSec_id())
+        // Find the existing employee entity
+        Employee existingEmployee = employeeRepo.findById(updateEmployeeDTO.getEmployeeid())
+                .orElseThrow(() -> new AppException("Employee not found", HttpStatus.NOT_FOUND));
+
+        // Find the related department and section entities
+        Department department = departmentRepo.findById(updateEmployeeDTO.getDep_id())
+                .orElseThrow(() -> new AppException("Department not found", HttpStatus.BAD_REQUEST));
+        Section section = sectionRepo.findById(updateEmployeeDTO.getSec_id())
                 .orElseThrow(() -> new AppException("Section not found", HttpStatus.BAD_REQUEST));
 
-        employee.setDepartment(department);
-        employee.setSec_id(section);
+        // Update the fields of the existing employee entity
 
-        employeeRepo.save(employee);
-        System.out.println(employee);
-        return employee;
+
+        existingEmployee.setEmployee_name(updateEmployeeDTO.getEmployee_name());
+
+        existingEmployee.setAddress(updateEmployeeDTO.getAddress());
+        existingEmployee.setGender(updateEmployeeDTO.getGender());
+        existingEmployee.setMa_uma(updateEmployeeDTO.getMa_uma());
+        existingEmployee.setContact(updateEmployeeDTO.getContact());
+        existingEmployee.setDepartment(department);
+        existingEmployee.setSec_id(section);
+
+        // Save the updated employee entity
+        employeeRepo.save(existingEmployee);
+
+        System.out.println(existingEmployee);
+        return existingEmployee;
     }
+
 
     public boolean deleteEmployee(EmployeeDTO employeeDto){
         employeeRepo.delete(modelMapper.map(employeeDto,Employee.class));

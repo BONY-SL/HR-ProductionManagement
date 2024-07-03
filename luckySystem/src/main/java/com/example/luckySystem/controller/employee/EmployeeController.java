@@ -2,10 +2,7 @@
 package com.example.luckySystem.controller.employee;
 
 import com.example.luckySystem.dto.agent.AgentDTO;
-import com.example.luckySystem.dto.employee.DepartmentEmployeeGenderCountDto;
-import com.example.luckySystem.dto.employee.EmployeeBirthdayDTO;
-import com.example.luckySystem.dto.employee.EmployeeDTO;
-import com.example.luckySystem.dto.employee.UpcommingBirthdayDTO;
+import com.example.luckySystem.dto.employee.*;
 import com.example.luckySystem.dto.salary.LeaveDto;
 import com.example.luckySystem.dto.salary.MedicalDto;
 import com.example.luckySystem.dto.user.UserDto;
@@ -60,8 +57,6 @@ public class EmployeeController {
     }
 
 
-
-
     @GetMapping("/employeeCountByDepartment")
     public List<Object[]> getEmployeeCountByDepartment() {
         return employeeService.countActiveEmployeesByDepartment();
@@ -74,9 +69,10 @@ public class EmployeeController {
 
 
     @PutMapping("/updateEmployee")
-    public ResponseEntity<Employee> updateEmployee(@RequestBody EmployeeDTO employeeDto) {
-        System.out.println("Received request to add an employee with ID: " + employeeDto.getEmployeeid());
-        Employee employee=employeeService.updateEmployeeDetails(employeeDto);
+    public ResponseEntity<Employee> updateEmployee(@RequestBody UpdateEmployeeDTO updateEmployeeDTO) {
+        System.out.println(updateEmployeeDTO);
+        System.out.println("Received request to add an employee with ID: " + updateEmployeeDTO.getEmployeeid());
+        Employee employee=employeeService.updateEmployeeDetails(updateEmployeeDTO);
         return ResponseEntity.ok(employee);
     }
     @DeleteMapping("/deleteEmployee")

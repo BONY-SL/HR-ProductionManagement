@@ -74,7 +74,7 @@ public class AdvanceService {
         return true;
     }
 
-    
+
     public AdvanceDto getAdvanceByID(String advance_id){
 
         EmployeeAdvanceSalary advanceSalary = advanceRepo.getAdvanceByID(advance_id);
