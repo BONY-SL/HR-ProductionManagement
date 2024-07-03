@@ -74,8 +74,7 @@ public class AdvanceService {
         return true;
     }
 
-
-
+    
     public AdvanceDto getAdvanceByID(String advance_id){
 
         EmployeeAdvanceSalary advanceSalary = advanceRepo.getAdvanceByID(advance_id);
@@ -84,16 +83,13 @@ public class AdvanceService {
             advanceDto.setAdvance_salary_id(advanceSalary.getAdvance_salary_id());
             advanceDto.setEmp_id(advanceSalary.getEmp_id().getEmployee_id());
             advanceDto.setReson(advanceSalary.getReson());
-            advanceDto.setStatus(advanceSalary.getStatus());
+            advanceDto.setAmount(advanceSalary.getAmount());
             advanceDto.setStatus(advanceSalary.getStatus());
             return advanceDto;
         } else{
                 return null;
             }
 
-
         }
-
-
 
 }
