@@ -10,4 +10,7 @@ public interface AttendanceRepo extends JpaRepository<EmployeeAttendance,Long> {
 
     @Query("SELECT COUNT(DISTINCT a.emp_id) AS employee_count FROM EmployeeAttendance a WHERE a.date = :date")
     int countDistinctEmployeesByDate(@Param("date") String date);
+
+    @Query(value = "SELECT * FROM EmployeeAttendance WHERE emp_id = :empId AND date = :dateStr", nativeQuery = true)
+    EmployeeAttendance findByEmpIdAndDateNative(@Param("empId") String empId, @Param("dateStr") String dateStr);
 }
