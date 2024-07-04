@@ -1,5 +1,4 @@
 package com.example.luckySystem.controller.salary;
-
 import com.example.luckySystem.dto.salary.BasicSalaryDto;
 import com.example.luckySystem.service.salaryservice.BasicSalaryService;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +41,5 @@ public class BasicSalaryController {
     public BasicSalaryDto getSalaryById(@PathVariable String salaryID) {
         return basicSalaryService.getSalaryDetailsByID(salaryID);
     }
-
 
 }
