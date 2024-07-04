@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -239,5 +238,24 @@ public class EmployeeService {
 
     public List<DepartmentEmployeeGenderCountDto> getDepartmentEmployeeGenderCounts() {
         return employeeRepo.findDepartmentEmployeeGenderCounts();
+    }
+
+    public List<UpdatePromotionDTO> getEmployeeToPromotionUpdate() {
+
+        List<Employee> employees = employeeRepo.findAll();
+        return employees.stream().map(this::convertEntityToDTO).collect(Collectors.toList());
+    }
+
+    private UpdatePromotionDTO convertEntityToDTO(Employee employee) {
+        return new UpdatePromotionDTO(
+                employee.getEmployee_id(),
+                employee.getJob_role(),
+                employee.getSalary_type(),
+                employee.getEmployee_name(),
+                employee.getCompany_status(),
+                employee.getDepartment().getDepartment_name(),
+                employee.getSec_id().getSection_name(),
+                employee.getGender()
+        );
     }
 }

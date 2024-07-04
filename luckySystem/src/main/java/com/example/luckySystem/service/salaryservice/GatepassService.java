@@ -1,11 +1,14 @@
 package com.example.luckySystem.service.salaryservice;
 
 
+import com.example.luckySystem.dto.employee.GatePassesHistorySummaryDto;
+import com.example.luckySystem.dto.employee.LeaveHistorySummaryDto;
 import com.example.luckySystem.dto.salary.AdvanceDto;
 import com.example.luckySystem.dto.salary.GatePassDto;
 import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.entity.EmployeeAdvanceSalary;
 import com.example.luckySystem.entity.EmployeeGatePass;
+import com.example.luckySystem.entity.EmployeeLeave;
 import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.repo.employee.EmployeeRepo;
 import com.example.luckySystem.repo.salary.GatePassRepo;
@@ -53,6 +56,23 @@ public class GatepassService {
     private GatePassDto convertToDTO(EmployeeGatePass unit) {
 
         return new GatePassDto(unit.getEmployee_gate_pass_id(),unit.getEmp_id().getEmployee_id(),unit.getIn_time(),unit.getOut_time(),unit.getDate(),unit.getReson(),unit.getStatus());
+    }
+
+    public void updateGatePassStatus(Long employee_leave_id, String status) {
+        EmployeeGatePass gatepass = gatePassRepo.findById(employee_leave_id).orElseThrow(() -> new AppException("GatePass request not found", HttpStatus.NOT_FOUND));
+        gatepass.setStatus(status);
+        gatePassRepo.save(gatepass);
+    }
+
+    public GatePassesHistorySummaryDto gatePassesHistorySummary(String empId) {
+        Employee employee = emprepo.findById(empId).orElse(null);
+        if (employee == null) {
+            return null;
+        }
+        long approvedCount = gatePassRepo.countByEmpIdAndStatus(employee, "approved");
+        long rejectedCount = gatePassRepo.countByEmpIdAndStatus(employee, "rejected");
+
+        return new GatePassesHistorySummaryDto(approvedCount, rejectedCount, employee.getEmployee_id(),employee.getEmployee_name(),employee.getJob_role());
     }
 
 
