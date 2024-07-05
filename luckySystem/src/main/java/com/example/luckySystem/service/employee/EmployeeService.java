@@ -258,4 +258,15 @@ public class EmployeeService {
                 employee.getGender()
         );
     }
+
+    public EmployeeCvDTO getEmployeeCvById(String empid) {
+        return convertToDto(employeeRepo.findById(empid).orElseThrow(() -> new RuntimeException("CV record not found")));
+    }
+
+    private EmployeeCvDTO convertToDto(Employee employee) {
+        return EmployeeCvDTO.builder()
+                .employee_id(employee.getEmployee_id())
+                .cv(employee.getCv())
+                .build();
+    }
 }

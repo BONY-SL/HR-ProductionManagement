@@ -8,7 +8,11 @@ import com.example.luckySystem.dto.user.UserDto;
 import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.service.employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.apache.tika.Tika;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -115,6 +119,25 @@ public class EmployeeController {
     public ResponseEntity<List<UpdatePromotionDTO>> getEmployeeToPromotionUpdate() {
         List<UpdatePromotionDTO> employee = employeeService.getEmployeeToPromotionUpdate();
         return ResponseEntity.ok().body(employee);
+    }
+
+    private final Tika tika = new Tika();
+
+    @GetMapping("/downloadCvReport/{empid}")
+    public ResponseEntity<ByteArrayResource> downloadCvReport(@PathVariable String empid) {
+
+        System.out.println(empid);
+        EmployeeCvDTO employeeCvDTO = employeeService.getEmployeeCvById(empid);
+        byte[] cvReport = employeeCvDTO.getCv();
+
+        String mimeType = tika.detect(cvReport);
+
+        ByteArrayResource resource = new ByteArrayResource(cvReport);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(mimeType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"medical_report_" + empid + "." + mimeType + "\"")
+                .body(resource);
     }
 
 }
