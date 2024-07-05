@@ -1,5 +1,4 @@
 package com.example.luckySystem.controller.user;
-
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Controller;

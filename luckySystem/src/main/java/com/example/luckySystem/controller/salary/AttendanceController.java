@@ -1,6 +1,4 @@
 package com.example.luckySystem.controller.salary;
-
-import com.example.luckySystem.dto.salary.AdvanceDto;
 import com.example.luckySystem.dto.salary.AttendanceDto;
 import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.service.salaryservice.AttendanceService;

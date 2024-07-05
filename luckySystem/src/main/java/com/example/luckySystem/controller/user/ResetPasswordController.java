@@ -1,8 +1,5 @@
 package com.example.luckySystem.controller.user;
-
-
 import com.example.luckySystem.exceptions.AppException;
-import com.example.luckySystem.exceptions.EmployeeIDAlreadyExistsException;
 import com.example.luckySystem.service.user.EmailService;
 import com.example.luckySystem.service.user.UserService;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,4 @@
 package com.example.luckySystem.repo.depAndsec;
-
-
 import com.example.luckySystem.dto.employee.DepartmentEmployeeCountDto;
 import com.example.luckySystem.entity.Department;
 import org.springframework.data.jpa.repository.JpaRepository;

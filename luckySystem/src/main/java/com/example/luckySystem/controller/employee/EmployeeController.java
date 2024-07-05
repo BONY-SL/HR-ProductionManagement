@@ -1,10 +1,7 @@
 package com.example.luckySystem.controller.employee;
-import com.example.luckySystem.dto.agent.AgentDTO;
-import com.example.luckySystem.dto.bottles.EmptyBottleDTO;
 import com.example.luckySystem.dto.employee.*;
 import com.example.luckySystem.dto.salary.LeaveDto;
 import com.example.luckySystem.dto.salary.MedicalDto;
-import com.example.luckySystem.dto.user.UserDto;
 import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.service.employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 

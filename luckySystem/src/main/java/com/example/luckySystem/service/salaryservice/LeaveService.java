@@ -1,10 +1,7 @@
 package com.example.luckySystem.service.salaryservice;
-
 import com.example.luckySystem.dto.employee.LeaveHistorySummaryDto;
-import com.example.luckySystem.dto.salary.AttendanceDto;
 import com.example.luckySystem.dto.salary.LeaveDto;
 import com.example.luckySystem.entity.Employee;
-import com.example.luckySystem.entity.EmployeeAttendance;
 import com.example.luckySystem.entity.EmployeeLeave;
 import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.repo.employee.EmployeeRepo;

@@ -1,7 +1,5 @@
 package com.example.luckySystem.controller.salary;
-
 import com.example.luckySystem.dto.employee.GatePassesHistorySummaryDto;
-import com.example.luckySystem.dto.salary.AdvanceDto;
 import com.example.luckySystem.dto.salary.GatePassDto;
 import com.example.luckySystem.service.salaryservice.GatepassService;
 import lombok.RequiredArgsConstructor;

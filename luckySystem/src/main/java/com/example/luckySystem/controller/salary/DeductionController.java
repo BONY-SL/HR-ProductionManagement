@@ -1,5 +1,4 @@
 package com.example.luckySystem.controller.salary;
-
 import com.example.luckySystem.dto.salary.DeductionDto;
 import com.example.luckySystem.service.salaryservice.DeductionService;
 import lombok.RequiredArgsConstructor;

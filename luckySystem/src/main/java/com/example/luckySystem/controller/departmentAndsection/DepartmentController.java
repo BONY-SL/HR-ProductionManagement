@@ -1,5 +1,4 @@
 package com.example.luckySystem.controller.departmentAndsection;
-
 import com.example.luckySystem.dto.employee.DepartmentEmployeeCountDto;
 import com.example.luckySystem.service.departmentAndsection.DepartmentService;
 import lombok.RequiredArgsConstructor;

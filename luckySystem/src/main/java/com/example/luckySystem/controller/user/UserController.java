@@ -1,9 +1,5 @@
 package com.example.luckySystem.controller.user;
-
-import com.example.luckySystem.dto.agent.AgentDTO;
 import com.example.luckySystem.dto.user.*;
-import com.example.luckySystem.entity.User;
-import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.exceptions.EmployeeIDAlreadyExistsException;
 import com.example.luckySystem.service.user.EmailService;
 import com.example.luckySystem.service.user.UserService;
