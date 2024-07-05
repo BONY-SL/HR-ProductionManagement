@@ -134,5 +134,4 @@ public class EmployeeController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"medical_report_" + empid + "." + mimeType + "\"")
                 .body(resource);
     }
-
 }

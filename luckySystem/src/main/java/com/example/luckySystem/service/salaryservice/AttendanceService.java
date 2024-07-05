@@ -1,4 +1,5 @@
 package com.example.luckySystem.service.salaryservice;
+import com.example.luckySystem.dto.employee.AttendanceChartDTO;
 import com.example.luckySystem.dto.salary.AttendanceDto;
 import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.entity.EmployeeAttendance;
@@ -11,7 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,6 +56,38 @@ public class AttendanceService {
 
     public int countDistinctEmployeesByDate(String date) {
         return attendanceRepo.countDistinctEmployeesByDate(date);
+    }
+
+    public List<AttendanceChartDTO> getAttendanceByMonthAndYear(String  empId, int month, int year) {
+
+        System.out.println(empId);
+
+        Date startDate = getStartDate(year, month);
+        Date endDate = getEndDate(year, month);
+
+        List<EmployeeAttendance> attendanceList = attendanceRepo.findByEmp_idAndDateBetweenOrderByDateAsc(empId,startDate,endDate);
+
+        System.out.println(attendanceList);
+        return attendanceList.stream().map(att ->
+                new AttendanceChartDTO(att.getDate().toString(), att.getAttendance_status())
+        ).collect(Collectors.toList());
+    }
+
+    //get value for start date
+    private Date getStartDate(int year, int month) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month - 1, 1, 0, 0, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
+    }
+
+    //get value for end date
+    private Date getEndDate(int year, int month) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, 1, 0, 0, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.add(Calendar.DATE, -1);
+        return calendar.getTime();
     }
 
 

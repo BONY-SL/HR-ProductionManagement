@@ -1,4 +1,5 @@
 package com.example.luckySystem.controller.salary;
+import com.example.luckySystem.dto.employee.AttendanceChartDTO;
 import com.example.luckySystem.dto.salary.AttendanceDto;
 import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.service.salaryservice.AttendanceService;
@@ -37,6 +38,15 @@ public class AttendanceController {
         return attendanceService.countDistinctEmployeesByDate(date);
     }
 
+    @GetMapping("/getAttendanceByMonthAndYear/{empId}/{month}/{year}")
+    public List<AttendanceChartDTO> getAttendanceByMonthAndYear(@PathVariable String empId, @PathVariable int month, @PathVariable int year) {
+
+        System.out.println(empId);
+        System.out.println(month);
+        System.out.println(year);
+
+        return attendanceService.getAttendanceByMonthAndYear(empId, month, year);
+    }
 
 
 }
