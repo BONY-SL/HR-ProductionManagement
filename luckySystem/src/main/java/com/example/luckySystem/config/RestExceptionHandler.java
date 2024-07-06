@@ -1,5 +1,4 @@
 package com.example.luckySystem.config;
-
 import com.example.luckySystem.exceptions.ErrorDto;
 import com.example.luckySystem.exceptions.AppException;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,4 @@
 package com.example.luckySystem.dto.issue;
-
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

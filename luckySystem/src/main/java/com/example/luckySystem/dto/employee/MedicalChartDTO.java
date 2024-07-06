@@ -1,4 +1,6 @@
 package com.example.luckySystem.dto.employee;
+
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DepartmentEmployeeCountDto {
+public class MedicalChartDTO {
 
-    private String departmentName;
-    private Long employeeCount;
+    private String date;
+    private String status;
 }

@@ -1,5 +1,4 @@
 package com.example.luckySystem.dto.salary;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

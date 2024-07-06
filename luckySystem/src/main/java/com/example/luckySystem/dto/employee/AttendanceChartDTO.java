@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DepartmentEmployeeCountDto {
+public class AttendanceChartDTO {
 
-    private String departmentName;
-    private Long employeeCount;
+    private String date;
+    private String status;
 }
