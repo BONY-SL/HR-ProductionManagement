@@ -1,12 +1,10 @@
 package com.example.luckySystem.service.salaryservice;
 import com.example.luckySystem.dto.employee.AttendanceChartDTO;
 import com.example.luckySystem.dto.employee.GatePassChartDTO;
+import com.example.luckySystem.dto.employee.LeaveChartDTO;
 import com.example.luckySystem.dto.employee.MedicalChartDTO;
 import com.example.luckySystem.dto.salary.AttendanceDto;
-import com.example.luckySystem.entity.Employee;
-import com.example.luckySystem.entity.EmployeeAttendance;
-import com.example.luckySystem.entity.EmployeeGatePass;
-import com.example.luckySystem.entity.EmployeeMedical;
+import com.example.luckySystem.entity.*;
 import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.repo.salary.AttendanceRepo;
 import com.example.luckySystem.repo.employee.EmployeeRepo;
@@ -18,11 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,13 +35,13 @@ public class AttendanceService {
     private GatePassRepo gatePassRepo;
 
     @Autowired
-    private LeaveRepo leaveRepo;
-
-    @Autowired
     private ModelMapper modelMapper;
 
     @Autowired
     private EmployeeRepo emprepo;
+
+    @Autowired
+    private LeaveRepo leaveRepo;
 
 
     //get value for start date
@@ -136,5 +132,36 @@ public class AttendanceService {
                 new GatePassChartDTO(gtt.getDate().toString(), gtt.getStatus())
         ).collect(Collectors.toList());
     }
+
+    public List<LeaveChartDTO> getLeavesByMonthAndYear(String  empId, int year) {
+
+        System.out.println(empId);
+
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.set(year, 0, 1, 0, 0, 0);
+        calendar1.set(Calendar.MILLISECOND, 0);
+
+        Date startDate = calendar1.getTime();
+
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.set(year, 12, 1, 0, 0, 0);
+        calendar2.set(Calendar.MILLISECOND, 0);
+        calendar2.add(Calendar.DATE, -1);
+
+        Date endDate = calendar2.getTime();
+
+        List<EmployeeLeave> leaveChartDTOS =leaveRepo.findByEmp_idAAndStart_timeAndEnd_timeOOrderByStart_timeAsc(empId,startDate,endDate);
+
+        System.out.println(leaveChartDTOS.size());
+
+        System.out.println(startDate);
+        System.out.println(endDate);
+
+        return leaveChartDTOS.stream().map(ltt ->
+                new LeaveChartDTO(ltt.getStart_time().toString(),ltt.getEnd_time().toString(), ltt.getStatus())
+        ).collect(Collectors.toList());
+    }
+
+
 
 }

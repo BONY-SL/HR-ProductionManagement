@@ -1,6 +1,7 @@
 package com.example.luckySystem.controller.salary;
 import com.example.luckySystem.dto.employee.AttendanceChartDTO;
 import com.example.luckySystem.dto.employee.GatePassChartDTO;
+import com.example.luckySystem.dto.employee.LeaveChartDTO;
 import com.example.luckySystem.dto.employee.MedicalChartDTO;
 import com.example.luckySystem.dto.salary.AttendanceDto;
 import com.example.luckySystem.exceptions.AppException;
@@ -68,6 +69,15 @@ public class AttendanceController {
         System.out.println(year);
 
         return attendanceService.getGatePassByMonthAndYear(empId, month, year);
+    }
+
+    @GetMapping("/getLeavesByMonthAndYear/{empId}/{year}")
+    public List<LeaveChartDTO> getLeavesByMonthAndYear(@PathVariable String empId,@PathVariable int year) {
+
+        System.out.println(empId);
+        System.out.println(year);
+
+        return attendanceService.getLeavesByMonthAndYear(empId, year);
     }
 
 }
