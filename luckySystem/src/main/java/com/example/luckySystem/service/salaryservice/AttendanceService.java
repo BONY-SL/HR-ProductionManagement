@@ -1,11 +1,18 @@
 package com.example.luckySystem.service.salaryservice;
 import com.example.luckySystem.dto.employee.AttendanceChartDTO;
+import com.example.luckySystem.dto.employee.GatePassChartDTO;
+import com.example.luckySystem.dto.employee.MedicalChartDTO;
 import com.example.luckySystem.dto.salary.AttendanceDto;
 import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.entity.EmployeeAttendance;
+import com.example.luckySystem.entity.EmployeeGatePass;
+import com.example.luckySystem.entity.EmployeeMedical;
 import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.repo.salary.AttendanceRepo;
 import com.example.luckySystem.repo.employee.EmployeeRepo;
+import com.example.luckySystem.repo.salary.GatePassRepo;
+import com.example.luckySystem.repo.salary.LeaveRepo;
+import com.example.luckySystem.repo.salary.MedicalRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,13 +30,40 @@ import java.util.stream.Collectors;
 public class AttendanceService {
 
     @Autowired
-    public AttendanceRepo attendanceRepo;
+    private AttendanceRepo attendanceRepo;
 
     @Autowired
-    public ModelMapper modelMapper;
+    private MedicalRepo medicalRepo;
 
     @Autowired
-    public EmployeeRepo emprepo;
+    private GatePassRepo gatePassRepo;
+
+    @Autowired
+    private LeaveRepo leaveRepo;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
+    private EmployeeRepo emprepo;
+
+
+    //get value for start date
+    private Date getStartDate(int year, int month) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month - 1, 1, 0, 0, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
+    }
+
+    //get value for end date
+    private Date getEndDate(int year, int month) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, 1, 0, 0, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.add(Calendar.DATE, -1);
+        return calendar.getTime();
+    }
 
 
 
@@ -73,22 +107,34 @@ public class AttendanceService {
         ).collect(Collectors.toList());
     }
 
-    //get value for start date
-    private Date getStartDate(int year, int month) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month - 1, 1, 0, 0, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        return calendar.getTime();
+    public List<MedicalChartDTO> getMedicalByMonthAndYear(String  empId, int month, int year) {
+
+        System.out.println(empId);
+
+        Date startDate = getStartDate(year, month);
+        Date endDate = getEndDate(year, month);
+
+        List<EmployeeMedical> medicals = medicalRepo.findByEmployeeAndSubmit_dateBetweenOrderBySubmit_dateAsc(empId,startDate,endDate);
+
+        System.out.println(medicals);
+        return medicals.stream().map(matt ->
+                new MedicalChartDTO(matt.getSubmit_date().toString(), matt.getMedical_status())
+        ).collect(Collectors.toList());
     }
 
-    //get value for end date
-    private Date getEndDate(int year, int month) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, 1, 0, 0, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        calendar.add(Calendar.DATE, -1);
-        return calendar.getTime();
-    }
+    public List<GatePassChartDTO> getGatePassByMonthAndYear(String  empId, int month, int year) {
 
+        System.out.println(empId);
+
+        Date startDate = getStartDate(year, month);
+        Date endDate = getEndDate(year, month);
+
+        List<EmployeeGatePass> gatePasses = gatePassRepo.findByEmp_idAndDateBetweenOrderByDateAsc(empId,startDate,endDate);
+
+        System.out.println(gatePasses);
+        return gatePasses.stream().map(gtt ->
+                new GatePassChartDTO(gtt.getDate().toString(), gtt.getStatus())
+        ).collect(Collectors.toList());
+    }
 
 }
