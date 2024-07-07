@@ -25,7 +25,7 @@ public class DailyPayrollDto {
     private String section_name;
 
 
-    private int  working_hours;
+    private double  working_hours;
 
 
     private double  amount_per_aditonal_hour;

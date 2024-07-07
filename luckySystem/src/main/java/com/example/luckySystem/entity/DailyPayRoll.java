@@ -32,7 +32,7 @@ public class DailyPayRoll{
     private String section_name;
 
     @Column(name="working_hours",nullable = false)
-    private int  working_hours;
+    private double  working_hours;
 
     @Column(name="amount_per_aditonal_hour",nullable = false)
     private double  amount_per_aditonal_hour;
