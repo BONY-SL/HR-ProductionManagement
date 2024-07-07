@@ -2,15 +2,12 @@ package com.example.luckySystem.dto.salary;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.sql.Date;
 import java.sql.Time;
-import java.util.Date;
 
-
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-
-
 public class GatePassDto {
 
 

@@ -16,10 +16,16 @@ public interface GatePassRepo extends JpaRepository<EmployeeGatePass,Long> {
     @Query("SELECT COUNT(l) FROM EmployeeGatePass l WHERE l.emp_id = :employee AND l.status = :status")
     long countByEmpIdAndStatus(Employee employee, String status);
 
+
+    @Query(value = "SELECT * FROM employeegetpass WHERE emp_id = :empId AND date = :dateStr", nativeQuery = true)
+    EmployeeGatePass findGatepassamount(@Param("empId") String empId, @Param("dateStr") String dateStr);
+
+    
     @Query("SELECT g FROM EmployeeGatePass g WHERE g.emp_id.employee_id = :empId AND g.date BETWEEN :startDate AND :endDate ORDER BY g.date ASC")
     List<EmployeeGatePass> findByEmp_idAndDateBetweenOrderByDateAsc(
             @Param("empId") String  empId,
             @Param("startDate") Date startDate,
             @Param("endDate") Date endDate);
+
 
 }

@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -30,7 +32,7 @@ public class EmployeeDailyPayRoll {
     private DailyPayRoll daily_pay_id;
 
     @Column(name="working_hours",nullable = false)
-    private int working_hours;
+    private double working_hours;
 
     @Column(name="ot_amount",nullable = false)
     private double ot_amount;
@@ -40,5 +42,9 @@ public class EmployeeDailyPayRoll {
 
     @Column(name="total_amount",nullable = false)
     private double total_amount;
+
+    @Column(name="date",nullable = false,length = 15)
+    private Date date;
+
 
 }
