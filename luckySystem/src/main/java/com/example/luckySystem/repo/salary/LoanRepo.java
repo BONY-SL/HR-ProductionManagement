@@ -1,7 +1,4 @@
 package com.example.luckySystem.repo.salary;
-
-
-
 import com.example.luckySystem.entity.Allowances;
 import com.example.luckySystem.entity.EmployeeLoan;
 import org.springframework.data.jpa.repository.JpaRepository;

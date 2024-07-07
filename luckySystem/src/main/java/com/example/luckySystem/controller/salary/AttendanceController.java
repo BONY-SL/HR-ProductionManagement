@@ -1,6 +1,8 @@
 package com.example.luckySystem.controller.salary;
-
-import com.example.luckySystem.dto.salary.AdvanceDto;
+import com.example.luckySystem.dto.employee.AttendanceChartDTO;
+import com.example.luckySystem.dto.employee.GatePassChartDTO;
+import com.example.luckySystem.dto.employee.LeaveChartDTO;
+import com.example.luckySystem.dto.employee.MedicalChartDTO;
 import com.example.luckySystem.dto.salary.AttendanceDto;
 import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.service.salaryservice.AttendanceService;
@@ -39,6 +41,43 @@ public class AttendanceController {
         return attendanceService.countDistinctEmployeesByDate(date);
     }
 
+    @GetMapping("/getAttendanceByMonthAndYear/{empId}/{month}/{year}")
+    public List<AttendanceChartDTO> getAttendanceByMonthAndYear(@PathVariable String empId, @PathVariable int month, @PathVariable int year) {
 
+        System.out.println(empId);
+        System.out.println(month);
+        System.out.println(year);
+
+        return attendanceService.getAttendanceByMonthAndYear(empId, month, year);
+    }
+
+    @GetMapping("/getMedicalByMonthAndYear/{empId}/{month}/{year}")
+    public List<MedicalChartDTO> getMedicalByMonthAndYear(@PathVariable String empId, @PathVariable int month, @PathVariable int year) {
+
+        System.out.println(empId);
+        System.out.println(month);
+        System.out.println(year);
+
+        return attendanceService.getMedicalByMonthAndYear(empId, month, year);
+    }
+
+    @GetMapping("/getGatePassByMonthAndYear/{empId}/{month}/{year}")
+    public List<GatePassChartDTO> getGatePassByMonthAndYear(@PathVariable String empId, @PathVariable int month, @PathVariable int year) {
+
+        System.out.println(empId);
+        System.out.println(month);
+        System.out.println(year);
+
+        return attendanceService.getGatePassByMonthAndYear(empId, month, year);
+    }
+
+    @GetMapping("/getLeavesByMonthAndYear/{empId}/{year}")
+    public List<LeaveChartDTO> getLeavesByMonthAndYear(@PathVariable String empId,@PathVariable int year) {
+
+        System.out.println(empId);
+        System.out.println(year);
+
+        return attendanceService.getLeavesByMonthAndYear(empId, year);
+    }
 
 }

@@ -1,5 +1,4 @@
 package com.example.luckySystem.service.salaryservice;
-
 import com.example.luckySystem.dto.salary.DeductionDto;
 import com.example.luckySystem.entity.Deduction;
 import com.example.luckySystem.repo.salary.DeductionRepo;

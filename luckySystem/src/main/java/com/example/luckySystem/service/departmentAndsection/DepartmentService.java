@@ -1,5 +1,4 @@
 package com.example.luckySystem.service.departmentAndsection;
-
 import com.example.luckySystem.dto.employee.DepartmentEmployeeCountDto;
 import com.example.luckySystem.dto.salary.BasicSalaryDto;
 import com.example.luckySystem.dto.sectionanddepartment.DepartmentDto;

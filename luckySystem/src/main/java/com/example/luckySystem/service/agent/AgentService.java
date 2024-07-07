@@ -1,6 +1,4 @@
 package com.example.luckySystem.service.agent;
-
-
 import com.example.luckySystem.dto.agent.AgentDTO;
 import com.example.luckySystem.dto.agent.AgentPurchaseDTO;
 import com.example.luckySystem.entity.Agent;

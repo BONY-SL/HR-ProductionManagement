@@ -1,7 +1,5 @@
 package com.example.luckySystem.controller.salary;
-
 import com.example.luckySystem.service.salaryservice.EmployeeDailyPayrollService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

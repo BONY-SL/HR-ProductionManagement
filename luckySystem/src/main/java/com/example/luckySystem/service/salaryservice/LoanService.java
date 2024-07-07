@@ -1,14 +1,11 @@
 package com.example.luckySystem.service.salaryservice;
-import com.example.luckySystem.dto.salary.AdvanceDto;
 import com.example.luckySystem.dto.salary.LoanDto;
 import com.example.luckySystem.entity.Employee;
-import com.example.luckySystem.entity.EmployeeAdvanceSalary;
 import com.example.luckySystem.entity.EmployeeLoan;
 import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.repo.employee.EmployeeRepo;
 import com.example.luckySystem.repo.salary.LoanRepo;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

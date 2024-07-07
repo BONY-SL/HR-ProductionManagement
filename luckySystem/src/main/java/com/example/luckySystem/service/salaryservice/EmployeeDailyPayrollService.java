@@ -1,5 +1,4 @@
 package com.example.luckySystem.service.salaryservice;
-
 import com.example.luckySystem.entity.DailyPayRoll;
 import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.entity.EmployeeDailyPayRoll;

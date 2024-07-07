@@ -1,5 +1,4 @@
 package com.example.luckySystem.controller.issue;
-import com.example.luckySystem.dto.bottles.EmptyBottleDTO;
 import com.example.luckySystem.dto.issue.DailyIssuEmployeeDTO;
 import com.example.luckySystem.dto.issue.GetMonthlyIssueDTO;
 import com.example.luckySystem.dto.issue.IssueDTO;

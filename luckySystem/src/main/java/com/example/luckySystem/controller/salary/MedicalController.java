@@ -1,5 +1,4 @@
 package com.example.luckySystem.controller.salary;
-import com.example.luckySystem.dto.employee.LeaveHistorySummaryDto;
 import com.example.luckySystem.dto.employee.MedicalHistorySummaryDto;
 import com.example.luckySystem.dto.salary.MedicalDto;
 import com.example.luckySystem.entity.EmployeeMedical;

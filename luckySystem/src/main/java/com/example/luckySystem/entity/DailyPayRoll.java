@@ -1,6 +1,4 @@
 package com.example.luckySystem.entity;
-
-
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;

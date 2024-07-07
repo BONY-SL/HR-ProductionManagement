@@ -1,5 +1,4 @@
 package com.example.luckySystem.repo.user;
-import com.example.luckySystem.entity.Agent;
 import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

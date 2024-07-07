@@ -1,6 +1,4 @@
 package com.example.luckySystem.dto.bottles;
-
-
 import lombok.*;
 import org.springframework.stereotype.Service;
 

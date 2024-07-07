@@ -1,8 +1,5 @@
 package com.example.luckySystem.dto.salary;
-
-import com.example.luckySystem.entity.DailyPayRoll;
 import com.example.luckySystem.entity.Employee;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
