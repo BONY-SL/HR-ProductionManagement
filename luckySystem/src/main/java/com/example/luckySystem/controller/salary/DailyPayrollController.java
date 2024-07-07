@@ -18,7 +18,7 @@ public class DailyPayrollController {
         this.dailyPayrollService = dailyPayrollService;
     }
 
-    @GetMapping("/daily-payroll")
+    @PostMapping("/daily-payroll")
     public void createDailyPayroll(@RequestParam String empId, @RequestParam String date) {
         System.out.println("work");
         System.out.println(empId);
