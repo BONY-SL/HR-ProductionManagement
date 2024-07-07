@@ -21,4 +21,15 @@ public interface AttendanceRepo extends JpaRepository<EmployeeAttendance,Long> {
             @Param("empId") String  empId,
             @Param("startDate") Date startDate,
             @Param("endDate") Date endDate);
+
+    @Query("SELECT COUNT(e) FROM EmployeeAttendance e WHERE e.attendance_status = 'absent' AND e.date = :currentDate")
+    int countAbsentEmployeesByDate(Date currentDate);
+
+    @Query("SELECT COUNT(e) FROM EmployeeAttendance e WHERE e.attendance_status = 'present' AND e.date = :currentDate")
+    int countPresentEmployeesByDate(Date currentDate);
+
+
+
+    @Query("SELECT COUNT(e) FROM EmployeeAttendance e WHERE e.attendance_status = 'late' AND e.date = :currentDate")
+    int countLateEmployeesByDate(Date currentDate);
 }

@@ -1,8 +1,5 @@
 package com.example.luckySystem.service.salaryservice;
-import com.example.luckySystem.dto.employee.AttendanceChartDTO;
-import com.example.luckySystem.dto.employee.GatePassChartDTO;
-import com.example.luckySystem.dto.employee.LeaveChartDTO;
-import com.example.luckySystem.dto.employee.MedicalChartDTO;
+import com.example.luckySystem.dto.employee.*;
 import com.example.luckySystem.dto.salary.AttendanceDto;
 import com.example.luckySystem.entity.*;
 import com.example.luckySystem.exceptions.AppException;
@@ -16,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -163,5 +162,33 @@ public class AttendanceService {
     }
 
 
+    public String updateEmployeePerformance(UpdateEmployeePerformance updateEmployeePerformance){
 
+        Employee employee=emprepo.findById(updateEmployeePerformance.getEmployeeId())
+                .orElseThrow( () -> new AppException("Unknown User",HttpStatus.BAD_REQUEST));
+
+        employee.setCompany_status(updateEmployeePerformance.getStatus());
+        employee.setSalary_type(updateEmployeePerformance.getSalaryType());
+        employee.setJob_role(updateEmployeePerformance.getJobRole());
+        emprepo.save(employee);
+
+        return "Employee Performance Update Successfully";
+    }
+
+
+    public int totalAbsent() {
+
+        LocalDate localDate = LocalDate.now();
+        Date currentDate= java.sql.Date.valueOf(localDate);
+        System.out.println(currentDate);
+        return attendanceRepo.countAbsentEmployeesByDate(currentDate);
+    }
+
+    public int totalWorking() {
+
+        LocalDate localDate = LocalDate.now();
+        Date currentDate= java.sql.Date.valueOf(localDate);
+        System.out.println(currentDate);
+        return attendanceRepo.countPresentEmployeesByDate(currentDate)+attendanceRepo.countLateEmployeesByDate(currentDate);
+    }
 }

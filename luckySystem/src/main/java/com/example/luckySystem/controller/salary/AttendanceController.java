@@ -1,13 +1,11 @@
 package com.example.luckySystem.controller.salary;
-import com.example.luckySystem.dto.employee.AttendanceChartDTO;
-import com.example.luckySystem.dto.employee.GatePassChartDTO;
-import com.example.luckySystem.dto.employee.LeaveChartDTO;
-import com.example.luckySystem.dto.employee.MedicalChartDTO;
+import com.example.luckySystem.dto.employee.*;
 import com.example.luckySystem.dto.salary.AttendanceDto;
 import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.service.salaryservice.AttendanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -80,4 +78,13 @@ public class AttendanceController {
         return attendanceService.getLeavesByMonthAndYear(empId, year);
     }
 
+    @PutMapping("/updateEmployeePerformance")
+    public ResponseEntity<String> updateEmployeePerformance(@RequestBody UpdateEmployeePerformance updateEmployeePerformance){
+
+        System.out.println(updateEmployeePerformance);
+
+        String msg=attendanceService.updateEmployeePerformance(updateEmployeePerformance);
+
+        return new ResponseEntity<>(msg, HttpStatus.OK);
+    }
 }
