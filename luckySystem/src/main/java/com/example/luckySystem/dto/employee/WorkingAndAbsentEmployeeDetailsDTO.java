@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WorkingAndAbsentEmployeeDetails {
+public class WorkingAndAbsentEmployeeDetailsDTO {
 
     private String emp_id;
     private String name;

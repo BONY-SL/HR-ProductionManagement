@@ -1,5 +1,6 @@
 package com.example.luckySystem.controller.employee;
-import com.example.luckySystem.dto.employee.WorkingAndAbsentEmployeeDetails;
+import com.example.luckySystem.dto.employee.CurrentGatePassViewDTO;
+import com.example.luckySystem.dto.employee.WorkingAndAbsentEmployeeDetailsDTO;
 import com.example.luckySystem.service.employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,22 @@ public class HRDashBoardConroller {
 
 
     @GetMapping("/WorkingAndAbsentEmployeeDetails")
-    public List<WorkingAndAbsentEmployeeDetails> WorkingAndAbsentEmployeeDetails() {
+    public List<WorkingAndAbsentEmployeeDetailsDTO> WorkingAndAbsentEmployeeDetails() {
 
-        List<WorkingAndAbsentEmployeeDetails> employeeDetails = employeeService.WorkingAndAbsentEmployeeDetails();
+        List<WorkingAndAbsentEmployeeDetailsDTO> employeeDetails = employeeService.WorkingAndAbsentEmployeeDetails();
 
         System.out.println(employeeDetails);
 
         return employeeDetails;
+    }
+
+    @GetMapping("/fetchTotalCurrentGatePassEmployeeCount")
+    public List<CurrentGatePassViewDTO> currentGatePassEmployeeCount() {
+
+        List<CurrentGatePassViewDTO> currentGatePassViewDTOS=employeeService.currentGatePassEmployeeCount();
+
+        System.out.println(currentGatePassViewDTOS);
+        return currentGatePassViewDTOS;
+
     }
 }

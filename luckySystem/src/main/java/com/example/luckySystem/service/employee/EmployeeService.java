@@ -8,6 +8,7 @@ import com.example.luckySystem.repo.depAndsec.DepartmentRepo;
 import com.example.luckySystem.repo.depAndsec.SectionRepo;
 import com.example.luckySystem.repo.employee.EmployeeRepo;
 import com.example.luckySystem.repo.salary.AttendanceRepo;
+import com.example.luckySystem.repo.salary.GatePassRepo;
 import com.example.luckySystem.repo.salary.LeaveRepo;
 import com.example.luckySystem.repo.salary.MedicalRepo;
 import org.modelmapper.ModelMapper;
@@ -39,6 +40,9 @@ public class EmployeeService {
 
     @Autowired
     private AttendanceRepo attendanceRepo;
+
+    @Autowired
+    private GatePassRepo gatePassRepo;
 
     public EmployeeService(EmployeeRepo employeeRepo) {
         this.employeeRepo = employeeRepo;
@@ -223,15 +227,15 @@ public class EmployeeService {
         return employees.stream().map(this::convertToDTOUpComing).collect(Collectors.toList());
     }
 
-    public List<WorkingAndAbsentEmployeeDetails> WorkingAndAbsentEmployeeDetails() {
+    public List<WorkingAndAbsentEmployeeDetailsDTO> WorkingAndAbsentEmployeeDetails() {
 
         List<EmployeeAttendance> employees = attendanceRepo.findCurrentMonthAttendance();
         return employees.stream().map(this::convertToDTOUWorkingAndAbsent).collect(Collectors.toList());
     }
 
-    private WorkingAndAbsentEmployeeDetails convertToDTOUWorkingAndAbsent(EmployeeAttendance employee) {
+    private WorkingAndAbsentEmployeeDetailsDTO convertToDTOUWorkingAndAbsent(EmployeeAttendance employee) {
 
-        return WorkingAndAbsentEmployeeDetails.builder()
+        return WorkingAndAbsentEmployeeDetailsDTO.builder()
                 .emp_id(employee.getEmp_id().getEmployee_id())
                 .name(employee.getEmp_id().getEmployee_name())
                 .department(employee.getEmp_id().getDepartment().getDepartment_name())
@@ -241,6 +245,31 @@ public class EmployeeService {
                 .build();
     }
 
+
+    //current Gate Pass Employees
+
+    public List<CurrentGatePassViewDTO> currentGatePassEmployeeCount(){
+
+        List<EmployeeGatePass> employeeGatePasses=gatePassRepo.findCurrentCurrentGatePasses();
+
+        return employeeGatePasses.stream().map(this::convertDTOGatePass).collect(Collectors.toList());
+
+    }
+
+
+    private CurrentGatePassViewDTO convertDTOGatePass(EmployeeGatePass employee) {
+
+        return CurrentGatePassViewDTO.builder()
+                .emp_id(employee.getEmp_id().getEmployee_id())
+                .name(employee.getEmp_id().getEmployee_name())
+                .department(employee.getEmp_id().getDepartment().getDepartment_name())
+                .section(employee.getEmp_id().getSec_id().getSection_name())
+                .jobRole(employee.getEmp_id().getJob_role())
+                .status(employee.getStatus())
+                .in_time(employee.getIn_time())
+                .out_time(employee.getOut_time())
+                .build();
+    }
 
     private UpcommingBirthdayDTO convertToDTOUpComing(Employee employee) {
 
