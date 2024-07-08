@@ -79,6 +79,8 @@ public class AgentService {
         Date startDate = getStartDate(year, month);
         Date endDate = getEndDate(year, month);
 
+        System.out.println(startDate);
+
         List<GoodProductsForLoading> products = productsForLoadingRepo.findByAgIdAndSubmitDateBetweenOrderBySubmitDateAsc(agentId, startDate, endDate);
 
         System.out.println(products);

@@ -51,12 +51,12 @@ public class Employee {
     private byte[] cv;
 
     @ManyToOne
-    @JoinColumn(name = "department_id", referencedColumnName = "department_id")
+    @JoinColumn(name = "department_id", referencedColumnName = "department_id",nullable = true)
     @ToString.Exclude
     private Department department;
 
     @ManyToOne
-    @JoinColumn(name = "sec_id", referencedColumnName = "section_id")
+    @JoinColumn(name = "sec_id", referencedColumnName = "section_id",nullable = true)
     @ToString.Exclude
     private Section sec_id;
 

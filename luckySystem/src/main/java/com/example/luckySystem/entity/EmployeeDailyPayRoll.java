@@ -1,6 +1,5 @@
 package com.example.luckySystem.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.stereotype.Component;
@@ -43,7 +42,7 @@ public class EmployeeDailyPayRoll {
     @Column(name="total_amount",nullable = false)
     private double total_amount;
 
-    @Column(name="date",nullable = false,length = 15)
+    @Column(name="date",length = 15)
     private Date date;
 
 
