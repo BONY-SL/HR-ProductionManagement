@@ -30,7 +30,7 @@ public class EmployeeAttendance {
     @Column(name="attendance_status",length = 15,nullable = false)
     private String attendance_status;
 
-    @Column(name="in_time",nullable = false)
+    @Column(name="in_time")
     private Time in_time;
 
     @Column(name="out_time")

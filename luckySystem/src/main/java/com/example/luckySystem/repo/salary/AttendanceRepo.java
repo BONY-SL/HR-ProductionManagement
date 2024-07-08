@@ -32,4 +32,7 @@ public interface AttendanceRepo extends JpaRepository<EmployeeAttendance,Long> {
 
     @Query("SELECT COUNT(e) FROM EmployeeAttendance e WHERE e.attendance_status = 'late' AND e.date = :currentDate")
     int countLateEmployeesByDate(Date currentDate);
+
+    @Query("SELECT e from  EmployeeAttendance e WHERE MONTH(e.date) = MONTH(CURRENT_DATE) AND DAY(e.date) = DAY(CURRENT_DATE)")
+    List<EmployeeAttendance> findCurrentMonthAttendance();
 }

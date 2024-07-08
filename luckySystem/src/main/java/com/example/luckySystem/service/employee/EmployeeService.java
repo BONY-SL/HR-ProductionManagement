@@ -7,6 +7,7 @@ import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.repo.depAndsec.DepartmentRepo;
 import com.example.luckySystem.repo.depAndsec.SectionRepo;
 import com.example.luckySystem.repo.employee.EmployeeRepo;
+import com.example.luckySystem.repo.salary.AttendanceRepo;
 import com.example.luckySystem.repo.salary.LeaveRepo;
 import com.example.luckySystem.repo.salary.MedicalRepo;
 import org.modelmapper.ModelMapper;
@@ -35,6 +36,9 @@ public class EmployeeService {
     private MedicalRepo medicalRepo;
     @Autowired
     private LeaveRepo leaveRepo;
+
+    @Autowired
+    private AttendanceRepo attendanceRepo;
 
     public EmployeeService(EmployeeRepo employeeRepo) {
         this.employeeRepo = employeeRepo;
@@ -218,6 +222,25 @@ public class EmployeeService {
         List<Employee> employees = employeeRepo.findUpcomingBirthdays();
         return employees.stream().map(this::convertToDTOUpComing).collect(Collectors.toList());
     }
+
+    public List<WorkingAndAbsentEmployeeDetails> WorkingAndAbsentEmployeeDetails() {
+
+        List<EmployeeAttendance> employees = attendanceRepo.findCurrentMonthAttendance();
+        return employees.stream().map(this::convertToDTOUWorkingAndAbsent).collect(Collectors.toList());
+    }
+
+    private WorkingAndAbsentEmployeeDetails convertToDTOUWorkingAndAbsent(EmployeeAttendance employee) {
+
+        return WorkingAndAbsentEmployeeDetails.builder()
+                .emp_id(employee.getEmp_id().getEmployee_id())
+                .name(employee.getEmp_id().getEmployee_name())
+                .department(employee.getEmp_id().getDepartment().getDepartment_name())
+                .section(employee.getEmp_id().getSec_id().getSection_name())
+                .jobRole(employee.getEmp_id().getJob_role())
+                .attendance_status(employee.getAttendance_status())
+                .build();
+    }
+
 
     private UpcommingBirthdayDTO convertToDTOUpComing(Employee employee) {
 
