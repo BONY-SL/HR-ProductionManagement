@@ -251,6 +251,7 @@ public class EmployeeService {
     public List<CurrentGatePassViewDTO> currentGatePassEmployeeCount(){
 
         List<EmployeeGatePass> employeeGatePasses=gatePassRepo.findCurrentCurrentGatePasses();
+        System.out.println(employeeGatePasses);
 
         return employeeGatePasses.stream().map(this::convertDTOGatePass).collect(Collectors.toList());
 
