@@ -2,7 +2,6 @@ package com.example.luckySystem.controller.user;
 
 
 import com.example.luckySystem.exceptions.AppException;
-import com.example.luckySystem.exceptions.EmployeeIDAlreadyExistsException;
 import com.example.luckySystem.service.user.EmailService;
 import com.example.luckySystem.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -69,7 +68,7 @@ public class ResetPasswordController {
 
             String emailContent=mailRequest.getContent() +"\n \n Your OTP Code : "+otpCode;
 
-            emailService.sendUserCredentials(mailRequest.getTo(),mailRequest.getSubject(), emailContent);
+            emailService.commonMailService(mailRequest.getTo(),mailRequest.getSubject(), emailContent);
 
             return ResponseEntity.status(HttpStatus.CREATED).body("true");
 

@@ -12,7 +12,7 @@ public class EmailService {
     @Autowired
     private JavaMailSender emailSender;
 
-    public void sendUserCredentials(String to, String subject, String text) {
+    public void commonMailService(String to, String subject, String text) {
 
         System.out.println(to+subject+text);
         SimpleMailMessage message = new SimpleMailMessage();

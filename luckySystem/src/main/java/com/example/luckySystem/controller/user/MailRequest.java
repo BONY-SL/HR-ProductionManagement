@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MailRequest {
+    //mail content
     @NotBlank(message = "Recipient email is required")
     @Email(message = "Email should be valid")
     private String to;

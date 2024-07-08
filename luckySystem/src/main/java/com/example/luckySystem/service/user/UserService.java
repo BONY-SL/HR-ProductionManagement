@@ -151,7 +151,7 @@ public class UserService {
         User user = userRepository.findById(userUpdateRequestDTO.getId())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
-
+        //check username without getting relevant user
         Optional<User> existingUserWithUsername = userRepository.findByUsername(userUpdateRequestDTO.getUsername());
         if (existingUserWithUsername.isPresent() && !existingUserWithUsername.get().getId().equals(user.getId())) {
             throw new AppException("New username already exists", HttpStatus.BAD_REQUEST);

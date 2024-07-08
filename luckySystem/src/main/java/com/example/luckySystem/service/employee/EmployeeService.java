@@ -68,13 +68,16 @@ public class EmployeeService {
 
     public Employee addEmployee(EmployeeDTO employeeDto) {
         System.out.println("Service request to add an employee with ID: " + employeeDto.getEmployeeid());
+        //map the dto object into entity
         Employee employee = modelMapper.map(employeeDto, Employee.class);
         if (employee.getEmployee_id() == null) {
             employee.setEmployee_id(employeeDto.getEmployeeid()); // Ensure this is correctly named and implemented
         }
+        //validate department
         Department department=departmentRepo.findById(employeeDto.getDep_id())
                 .orElseThrow(() -> new AppException("Department not found", HttpStatus.BAD_REQUEST));
 
+        //validate the section
         Section section=sectionRepo.findById(employeeDto.getSec_id())
                 .orElseThrow(() -> new AppException("Section not found", HttpStatus.BAD_REQUEST));
 

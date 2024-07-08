@@ -1,12 +1,8 @@
 package com.example.luckySystem.controller.user;
 
-import com.example.luckySystem.dto.agent.AgentDTO;
-import com.example.luckySystem.dto.user.CredentialsDto;
 import com.example.luckySystem.dto.user.SignUpDto;
 import com.example.luckySystem.dto.user.UserDto;
 import com.example.luckySystem.dto.user.UserUpdateRequestDTO;
-import com.example.luckySystem.entity.User;
-import com.example.luckySystem.exceptions.AppException;
 import com.example.luckySystem.exceptions.EmployeeIDAlreadyExistsException;
 import com.example.luckySystem.service.user.EmailService;
 import com.example.luckySystem.service.user.UserService;
@@ -48,7 +44,7 @@ public class UserController {
     @PostMapping("/sendmailToUser")
     public ResponseEntity<?> sendMailToUser(@RequestBody  MailRequest mailRequest) {
         System.out.println("Controller"+mailRequest);
-            emailService.sendUserCredentials(mailRequest.getTo(),mailRequest.getSubject(),mailRequest.getContent());
+            emailService.commonMailService(mailRequest.getTo(),mailRequest.getSubject(),mailRequest.getContent());
         return new ResponseEntity<>("Email Send successfully", HttpStatus.CREATED);
     }
 
