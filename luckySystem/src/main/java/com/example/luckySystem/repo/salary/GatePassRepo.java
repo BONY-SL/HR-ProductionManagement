@@ -27,5 +27,7 @@ public interface GatePassRepo extends JpaRepository<EmployeeGatePass,Long> {
             @Param("startDate") Date startDate,
             @Param("endDate") Date endDate);
 
-
+    @Query("SELECT e from  EmployeeGatePass e WHERE MONTH(e.date) = MONTH(CURRENT_DATE) AND DAY(e.date) = DAY(CURRENT_DATE) AND (TIME(CURRENT TIME ) BETWEEN TIME(e.in_time) AND TIME(e.out_time))")
+    List<EmployeeGatePass> findCurrentCurrentGatePasses();
 }
+

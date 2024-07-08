@@ -12,4 +12,5 @@ public class DepartmentEmployeeCountDto {
 
     private String departmentName;
     private Long employeeCount;
+
 }
