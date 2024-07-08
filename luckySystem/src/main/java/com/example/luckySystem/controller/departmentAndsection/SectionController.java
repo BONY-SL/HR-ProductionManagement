@@ -1,8 +1,4 @@
 package com.example.luckySystem.controller.departmentAndsection;
-
-
-import com.example.luckySystem.dto.salary.BasicSalaryDto;
-import com.example.luckySystem.dto.sectionanddepartment.DepartmentDto;
 import com.example.luckySystem.dto.sectionanddepartment.SectionDto;
 import com.example.luckySystem.service.departmentAndsection.SectionService;
 import lombok.RequiredArgsConstructor;

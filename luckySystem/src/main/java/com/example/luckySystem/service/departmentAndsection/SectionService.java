@@ -61,11 +61,11 @@ public class SectionService {
         sectionDto.setStart_date(section.getStart_date());
 
         if (section.getDep_id() != null) {
-            sectionDto.setDep_id(section.getDep_id().getDepartment_id());
+            sectionDto.setDep_id(section.getDep_id().getDepartment_name());
         }
 
         if (section.getSection_of_head() != null) {
-            sectionDto.setSection_of_head(section.getSection_of_head().getEmployee_id());
+            sectionDto.setSection_of_head(section.getSection_of_head().getEmployee_name());
         }
 
         return sectionDto;

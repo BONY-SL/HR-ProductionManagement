@@ -1,13 +1,10 @@
 package com.example.luckySystem.service.departmentAndsection;
 import com.example.luckySystem.dto.employee.DepartmentEmployeeCountDto;
-import com.example.luckySystem.dto.salary.BasicSalaryDto;
 import com.example.luckySystem.dto.sectionanddepartment.DepartmentDto;
-import com.example.luckySystem.dto.sectionanddepartment.SectionDto;
-import com.example.luckySystem.entity.BasicSalary;
 import com.example.luckySystem.entity.Department;
 import com.example.luckySystem.entity.Employee;
-import com.example.luckySystem.entity.Section;
 import com.example.luckySystem.repo.depAndsec.DepartmentRepo;
+import com.example.luckySystem.repo.employee.EmployeeRepo;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +21,10 @@ public class DepartmentService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+
+    @Autowired
+    private EmployeeRepo employeeRepo;
 
 
     public List<DepartmentEmployeeCountDto> getDepartmentEmployeeCounts() {
@@ -47,21 +48,18 @@ public class DepartmentService {
     }
 
     public List<DepartmentDto> DepartmentDetails() {
-        List<Department> DepartmentList = departmentRepository.findAll();
-        return DepartmentList.stream().map(this::convertToDTO).collect(Collectors.toList());
+        return departmentRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
+
     }
 
     private DepartmentDto convertToDTO(Department department) {
-        DepartmentDto departmentDto = new DepartmentDto();
-        departmentDto.setDepartment_id(department.getDepartment_id());
-        departmentDto.setDepartment_name(department.getDepartment_name());
-        departmentDto.setStart_date(department.getStart_date());
 
-        if (department.getHead_of_department() != null) {
-            departmentDto.setHead_of_department(department.getHead_of_department().getEmployee_id());
-        }
-
-        return departmentDto;
+        return DepartmentDto.builder()
+                .department_id(department.getDepartment_id())
+                .department_name(department.getDepartment_name())
+                .start_date(department.getStart_date())
+                .head_of_department(department.getHead_of_department().getEmployee_name())
+                .build();
     }
 
     public List<DepartmentDto> DepartmentDetails1() {

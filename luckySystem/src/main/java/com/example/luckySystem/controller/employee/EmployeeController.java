@@ -4,8 +4,10 @@ import com.example.luckySystem.dto.salary.LeaveDto;
 import com.example.luckySystem.dto.salary.MedicalDto;
 import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.service.employee.EmployeeService;
+import com.example.luckySystem.service.salaryservice.AttendanceService;
 import lombok.RequiredArgsConstructor;
 import org.apache.tika.Tika;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +26,9 @@ import java.util.List;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
+
+    @Autowired
+    private AttendanceService attendanceService;
 
     @GetMapping("/getEmployee")
     public ResponseEntity<List<EmployeeDTO>> getAllEmployeeDetails() {
@@ -134,4 +139,16 @@ public class EmployeeController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"medical_report_" + empid + "." + mimeType + "\"")
                 .body(resource);
     }
+
+    @GetMapping("/totalAbsent")
+    public int totalAbsent(){
+        return attendanceService.totalAbsent();
+    }
+
+    @GetMapping("/totalWorking")
+    public int totalWorking(){
+        return attendanceService.totalWorking();
+    }
+
+
 }
