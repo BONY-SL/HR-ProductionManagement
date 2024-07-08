@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class EmployeeDailyPayrollDto {
 
     private Long employee_daily_id;
-    private Employee emp_id;
+    private String  emp_id;
     private Long daily_pay_id;
     private double working_hours;
     private double ot_amount;

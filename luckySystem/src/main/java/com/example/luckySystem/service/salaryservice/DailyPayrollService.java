@@ -21,6 +21,8 @@ public class DailyPayrollService {
     private final GatePassRepo gatePassRepo;
     private final EmployeeDailyPayrollRepo employeeDailyPayrollRepo;
 
+    public  double shifthours;
+
     @Autowired
     public DailyPayrollService(DailyPayrollRepo dailyPayrollRepo, EmployeeRepo employeeRepo,
                                BasicSalaryRepo basicSalaryRepo, AttendanceRepo attendanceRepo,
@@ -75,10 +77,20 @@ public class DailyPayrollService {
                     double basicsalary=(basicSalary.getBasic_amount() + basicSalary.getBr_1() + basicSalary.getBr_2() + basicSalary.getSubsistant());
                     System.out.println("basic salary:"+basicsalary);
 
+
+                    if(workingHours>8){
+                         shifthours=8.0;
+                    }else {
+                        shifthours=workingHours;
+                    }
+
+
                     // Calculate ShiftAmount
-                    double shiftAmount = basicsalary / workingHours;
+                    double shiftAmount = basicsalary / shifthours;
                     BigDecimal shiftAmountRounded = new BigDecimal(shiftAmount).setScale(2, RoundingMode.HALF_UP);
                     double roundedShiftAmount = shiftAmountRounded.doubleValue();
+
+
 
                     System.out.println("shiftamount:"+roundedShiftAmount);
 
@@ -109,6 +121,8 @@ public class DailyPayrollService {
                     employeeDailyPayrollService.createEmployeeDailyPayroll(savedDailyPayRoll, employee, dateStr);
 
                     return savedDailyPayRoll;
+
+
                 }
 
             }

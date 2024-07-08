@@ -1,8 +1,13 @@
 package com.example.luckySystem.controller.salary;
 
+import com.example.luckySystem.dto.salary.MonthlySalaryDto;
+import com.example.luckySystem.dto.sectionanddepartment.SectionDto;
 import com.example.luckySystem.service.salaryservice.MonthlySalaryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -29,4 +34,14 @@ public class MonthlySalaryController {
 
         monthlySalaryService.createMonthlySalary(empId, date, bonus);
     }
+
+
+    @GetMapping("/getMonthlySalary")
+    public ResponseEntity<List<MonthlySalaryDto>> getMonthlyDetails() {
+        System.out.println("Received request to save data.");
+        List<MonthlySalaryDto> monthlySalaryDtos =monthlySalaryService.MonthlySalaryDetails();
+        return ResponseEntity.ok().body(monthlySalaryDtos);
+    }
+
+
 }

@@ -1,10 +1,16 @@
 package com.example.luckySystem.service.salaryservice;
 
+import com.example.luckySystem.dto.salary.MonthlySalaryDto;
+import com.example.luckySystem.dto.sectionanddepartment.SectionDto;
 import com.example.luckySystem.entity.*;
+import com.example.luckySystem.repo.employee.EmployeeRepo;
 import com.example.luckySystem.repo.salary.*;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MonthlySalaryService {
@@ -16,6 +22,9 @@ public class MonthlySalaryService {
     private final LeaveRepo leaveRepo;
     private final LoanRepo loanRepo;
     private final MedicalRepo medicalRepo;
+    private final BasicSalaryRepo basicSalaryRepo;
+    private final MonthlySalaryRepo monthlySalaryRepo;
+    private final EmployeeRepo employeeRepo;
 
 
     private String sectionName;
@@ -25,7 +34,24 @@ public class MonthlySalaryService {
     private String salarytype;
     private double totalAmount;
 
-    public MonthlySalaryService(EmployeeDailyPayrollRepo employeeDailyPayrollRepo, AllowanceRepo allowanceRepo, AdvanceRepo advanceRepo, DeductionRepo deductionRepo, LeaveRepo leaveRepo, LoanRepo loanRepo, MedicalRepo medicalRepo) {
+    private int acount;
+    private double allowanceamount;
+    private double deductionamount;
+
+    private double advancesalary;
+
+    private double cloanamount;
+
+    private double cadvance;
+
+    private double shiftamount;
+
+    private double grossbasicsalary;
+
+    private double netsalary;
+
+    @Autowired
+    public MonthlySalaryService(EmployeeDailyPayrollRepo employeeDailyPayrollRepo, AllowanceRepo allowanceRepo, AdvanceRepo advanceRepo, DeductionRepo deductionRepo, LeaveRepo leaveRepo, LoanRepo loanRepo, MedicalRepo medicalRepo, BasicSalaryRepo basicSalaryRepo, MonthlySalaryRepo monthlySalaryRepo, EmployeeRepo employeeRepo) {
         this.employeeDailyPayrollRepo = employeeDailyPayrollRepo;
         this.allowanceRepo = allowanceRepo;
         this.advanceRepo = advanceRepo;
@@ -33,6 +59,10 @@ public class MonthlySalaryService {
         this.leaveRepo = leaveRepo;
         this.loanRepo = loanRepo;
         this.medicalRepo = medicalRepo;
+        this.basicSalaryRepo = basicSalaryRepo;
+        this.monthlySalaryRepo = monthlySalaryRepo;
+        this.employeeRepo = employeeRepo;
+
     }
 
     public void createMonthlySalary(String empId, String date, double bonus) {
@@ -41,89 +71,185 @@ public class MonthlySalaryService {
         int year = Integer.parseInt(dateParts[0]);
         int month = Integer.parseInt(dateParts[1]);
 
+        // Fetch the Employee object by empId
+        Employee employee = employeeRepo.findByEmployeeId(empId);
+        if (employee == null) {
+            System.out.println("Employee not found for ID: " + empId);
+            return;
+        }
+
         // Fetch data from repository
         List<EmployeeDailyPayRoll> employeeDailyPayRolls = employeeDailyPayrollRepo.findAllByByMonthYearAndEmpId(empId, month, year);
 
-        // Print the retrieved list
         if (employeeDailyPayRolls.isEmpty()) {
             System.out.println("No payroll records found for employee ID: " + empId + " in " + year + "-" + String.format("%02d", month));
             return;
         }
 
-        System.out.println("Fetched employee daily payroll records: " + employeeDailyPayRolls.get(0));
+        // Calculate total shift amount and other details
+        double totalShiftAmount = employeeDailyPayRolls.stream().mapToDouble(EmployeeDailyPayRoll::getShift_amount).sum();
+        double totalAmount = employeeDailyPayRolls.stream().mapToDouble(EmployeeDailyPayRoll::getTotal_amount).sum();
+        String jobRole = employeeDailyPayRolls.get(0).getDaily_pay_id().getJob_role();
+        String departmentName = employeeDailyPayRolls.get(0).getDaily_pay_id().getDepartment_name();
+        String sectionName = employeeDailyPayRolls.get(0).getDaily_pay_id().getSection_name();
 
-        // Calculate the total amount
-        totalAmount = employeeDailyPayRolls.stream()
-                .mapToDouble(EmployeeDailyPayRoll::getTotal_amount)
+        acount = employeeDailyPayrollRepo.countByMonthYearAndEmpId(empId, month, year);
+        List<EmployeeLeave> employeeLeaveList = leaveRepo.findAllleave(empId, month, year);
+        BasicSalary basicSalary = basicSalaryRepo.findByCustomQuery(jobRole, departmentName, sectionName);
+        BasicSalary basicSalary1 = basicSalaryRepo.findByCustomQuery(jobRole, departmentName, sectionName);
+
+        double netbasicsalay = basicSalary1.getBasic_amount() + basicSalary1.getBr_1() + basicSalary1.getBr_2() + basicSalary1.getSubsistant();
+        double epf = (netbasicsalay * 8) / 100; // deduction
+        double cepf = (netbasicsalay * 12) / 100; // not deduction
+        double etf = (netbasicsalay * 3) / 100; // not deduction
+
+        // Check leave days count and total leaves equal to initials days
+        long totalLeaveDays = employeeLeaveList.stream()
+                .filter(leaveRecord -> "approve".equalsIgnoreCase(leaveRecord.getStatus()))
+                .mapToLong(leaveRecord -> ChronoUnit.DAYS.between(leaveRecord.getStart_time().toLocalDate(), leaveRecord.getEnd_time().toLocalDate()) + 1)
                 .sum();
 
-        // Print each total amount and details
-        for (EmployeeDailyPayRoll payroll : employeeDailyPayRolls) {
-            // Assuming these fields are available in the related DailyPayRoll entity
-            sectionName = payroll.getDaily_pay_id().getSection_name();
-            departmentName = payroll.getDaily_pay_id().getDepartment_name();
-            jobRole = payroll.getDaily_pay_id().getJob_role();
-            salarytype = payroll.getDaily_pay_id().getSalary_type();
+        System.out.println("Total leave days for approved leaves: " + totalLeaveDays);
 
-            System.out.println("Total amount for record: " + payroll.getTotal_amount());
-            System.out.println("Section Name: " + sectionName);
-            System.out.println("Department Name: " + departmentName);
-            System.out.println("Job Role: " + jobRole);
-            System.out.println("Salary Type: " + salarytype);
+        if (acount + totalLeaveDays == basicSalary.getInitial_days()) {
+            shiftamount = ((basicSalary.getBasic_amount() + basicSalary.getBr_1() + basicSalary.getBr_2() + basicSalary.getSubsistant()) / 8) * basicSalary.getInitial_days();
         }
 
-        // Print the total amount
-        System.out.println("Total amount for employee ID: " + empId + " in " + year + "-" + String.format("%02d", month) + " is: " + totalAmount);
-        System.out.println(totalAmount);
+        // Fetch related allowance
+        List<Allowances> allowancesList = allowanceRepo.findByCustomQuery(jobRole, departmentName, sectionName);
 
-        // Fetch allowances and deduction
-        Allowances allowances = allowanceRepo.findByCustomQuery(jobRole, departmentName, sectionName);
-        Deduction deduction = deductionRepo.findByCustomQuery(jobRole, departmentName, sectionName);
-        EmployeeLoan loan = loanRepo.getloanbyid(empId);
-        EmployeeAdvanceSalary advance=advanceRepo.getAdvancebyid(empId);
-        EmployeeLeave leave=leaveRepo.getleaveybyid(empId);
-        EmployeeMedical medical=medicalRepo.getMedicalbyid(empId);
+        if (allowancesList != null && !allowancesList.isEmpty()) {
+            allowanceamount = allowancesList.stream()
+                    .filter(allowance -> !(allowance.getAllowances_type().equalsIgnoreCase("Attendance Allowance") && acount == 28))
+                    .mapToDouble(Allowances::getAllowances_amount)
+                    .sum();
 
-        // Print allowances and deduction amounts if they are not null
-        if (allowances != null) {
-            System.out.println("Allowances amount: " + allowances.getAllowances_amount());
+            System.out.println("Total Allowances amount: " + allowanceamount);
         } else {
             System.out.println("No allowances found for the given criteria.");
         }
 
-        if (deduction != null) {
-            System.out.println("Deduction amount: " + deduction.getDeduction_amount());
+        // Fetch Deduction
+        List<Deduction> deductionList = deductionRepo.findByCustomQuery(jobRole, departmentName, sectionName);
+
+        if (deductionList != null && !deductionList.isEmpty()) {
+            deductionamount = deductionList.stream()
+                    .mapToDouble(Deduction::getDeduction_amount)
+                    .sum();
+
+            System.out.println("Total Deduction amount: " + deductionamount);
         } else {
-            System.out.println("No deduction found for the given criteria.");
+            System.out.println("No Deduction found for the given criteria.");
         }
 
+        // Fetch loan
+        EmployeeLoan loan = loanRepo.getloanbyid(empId);
+
         if (loan != null) {
-            System.out.println("Loan amount: " + loan.getLoan_amount());
+            if (loan.getLoan_amount() > 0) {
+                System.out.println("Loan amount: " + loan.getLoan_amount());
+                cloanamount = loan.getLoan_amount() - loan.getInterest_amount();
+                System.out.println(cloanamount);
+                loanRepo.updateLoanAmount(cloanamount, loan.getLoan_id());
+            } else {
+                System.out.println("Loan payment complete");
+            }
         } else {
             System.out.println("No loan found for the given criteria.");
         }
 
-        System.out.println(bonus);
+        // Fetch advance
+        EmployeeAdvanceSalary advance = advanceRepo.getAdvancebyid(empId);
 
         if (advance != null) {
-            System.out.println("advance amount: " + advance.getAmount());
+            if ("approve".equalsIgnoreCase(advance.getStatus()) && advance.getAmount() > 0) {
+                System.out.println("Advance amount: " + advance.getAmount());
+                advancesalary = advance.getAmount();
+                advanceRepo.updateAdvanceAmount(0.0, advance.getAdvance_salary_id());
+            }
         } else {
             System.out.println("No advance found for the given criteria.");
         }
 
-        if (leave != null) {
-            System.out.println("leave amount: " + leave.getStatus());
-        } else {
-            System.out.println("No leave found for the given criteria.");
-        }
+        // Fetch medical
+        EmployeeMedical medical = medicalRepo.getMedicalbyid(empId);
 
         if (medical != null) {
-            System.out.println("medical amount: " + medical.getMedical_status());
+            System.out.println("Medical amount: " + medical.getMedical_status());
         } else {
             System.out.println("No medical found for the given criteria.");
         }
 
+        // Net basic salary
+        grossbasicsalary = netbasicsalay + totalShiftAmount + allowanceamount;
+
+        // Net salary
+        netsalary = (grossbasicsalary - (deductionamount + loan.getInterest_amount() + advancesalary));
+
+        // Print details
+        System.out.println("Emp ID:" + empId);
+        System.out.println("Salary type:" + basicSalary1.getSalary_type());
+        System.out.println("Job Role: " + jobRole);
+        System.out.println(date);
+        System.out.println("Bonus:" + bonus);
+        System.out.println("Allowance:" + allowanceamount);
+        System.out.println("Deduction:" + deductionamount);
+        System.out.println("EPF 8% : " + epf);
+        System.out.println("ETF 3% : " + etf);
+        System.out.println("Gross basic salary: " + grossbasicsalary);
+        System.out.println("Net salary:" + netsalary);
+        System.out.println("Department Name: " + departmentName);
+        System.out.println("Section Name: " + sectionName);
+        System.out.println("Shift Amount: " + totalShiftAmount);
+        System.out.println("Loan: " + loan.getLoan_amount());
+        System.out.println("Advance: " + advance.getAmount());
+        System.out.println("Total Amount: " + totalAmount);
+        System.out.println("Net basic salary: " + netbasicsalay);
+        System.out.println("EPF 12% : " + cepf);
+        System.out.println("Total leave days:" + totalLeaveDays);
+
+        // Create EmployeeMonthlySalary object and set properties
+        EmployeeMonthlySalary employeeMonthlySalary = new EmployeeMonthlySalary();
+        employeeMonthlySalary.setEmp_id(employee);
+        employeeMonthlySalary.setSalary_type(basicSalary1.getSalary_type());
+        employeeMonthlySalary.setJob_role(jobRole);
+        employeeMonthlySalary.setDate(date);
+        employeeMonthlySalary.setBonus_amount(bonus);
+        employeeMonthlySalary.setAllowancess_amount(allowanceamount);
+        employeeMonthlySalary.setDeduction_amount(deductionamount);
+        employeeMonthlySalary.setEpf(epf);
+        employeeMonthlySalary.setEtf(etf);
+        employeeMonthlySalary.setLoan_deduction(loan.getLoan_amount());
+        employeeMonthlySalary.setAdvance_salary(advancesalary);
+        employeeMonthlySalary.setGross_basic_salary(grossbasicsalary);
+        employeeMonthlySalary.setNet_salary(netsalary);
+
+        // Save EmployeeMonthlySalary object
+        monthlySalaryRepo.save(employeeMonthlySalary);
+    }
 
 
+    public List<MonthlySalaryDto> MonthlySalaryDetails() {
+        List<EmployeeMonthlySalary> salaryList = monthlySalaryRepo.findAll();
+        return salaryList.stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    private MonthlySalaryDto convertToDTO(EmployeeMonthlySalary employeeMonthlySalary) {
+        MonthlySalaryDto monthlySalaryDto = new MonthlySalaryDto();
+        monthlySalaryDto.setSalary_id(employeeMonthlySalary.getSalary_id());
+        monthlySalaryDto.setEmp_id(employeeMonthlySalary.getEmp_id().getEmployee_id()); // Assuming getEmployee_id() returns the ID of the employee
+        monthlySalaryDto.setSalary_type(employeeMonthlySalary.getSalary_type());
+        monthlySalaryDto.setJob_role(employeeMonthlySalary.getJob_role());
+        monthlySalaryDto.setDate(employeeMonthlySalary.getDate());
+        monthlySalaryDto.setBonus_amount(employeeMonthlySalary.getBonus_amount());
+        monthlySalaryDto.setAllowancess_amount(employeeMonthlySalary.getAllowancess_amount());
+        monthlySalaryDto.setDeduction_amount(employeeMonthlySalary.getDeduction_amount());
+        monthlySalaryDto.setEpf(employeeMonthlySalary.getEpf());
+        monthlySalaryDto.setEtf(employeeMonthlySalary.getEtf());
+        monthlySalaryDto.setLoan_deduction(employeeMonthlySalary.getLoan_deduction());
+        monthlySalaryDto.setAdvance_salary(employeeMonthlySalary.getAdvance_salary());
+        monthlySalaryDto.setGross_basic_salary(employeeMonthlySalary.getGross_basic_salary());
+        monthlySalaryDto.setNet_salary(employeeMonthlySalary.getNet_salary());
+        return monthlySalaryDto;
     }
 }
