@@ -1,13 +1,19 @@
 package com.example.luckySystem.service.salaryservice;
+import com.example.luckySystem.dto.salary.DailyPayrollDto;
+import com.example.luckySystem.dto.salary.EmployeeDailyPayrollDto;
+import com.example.luckySystem.dto.salary.MonthlySalaryDto;
 import com.example.luckySystem.entity.DailyPayRoll;
 import com.example.luckySystem.entity.Employee;
 import com.example.luckySystem.entity.EmployeeDailyPayRoll;
+import com.example.luckySystem.entity.EmployeeMonthlySalary;
 import com.example.luckySystem.repo.salary.DailyPayrollRepo;
 import com.example.luckySystem.repo.salary.EmployeeDailyPayrollRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeDailyPayrollService {
@@ -50,8 +56,28 @@ public class EmployeeDailyPayrollService {
 
         System.out.println(employeeDailyPayRoll);
 
+    }
+
+    public List<EmployeeDailyPayrollDto> getEmployeeDailypayroll() {
+        List<EmployeeDailyPayRoll>employeeDailyPayRollList=employeeDailyPayrollRepo.findAll();
+        return employeeDailyPayRollList.stream().map(this::convertToDTO).collect(Collectors.toList());
+
 
     }
+
+    private EmployeeDailyPayrollDto convertToDTO(EmployeeDailyPayRoll employeeDailyPayRoll) {
+        EmployeeDailyPayrollDto employeeDailyPayrollDto1 = new EmployeeDailyPayrollDto();
+        employeeDailyPayrollDto1.setEmployee_daily_id(employeeDailyPayRoll.getEmployee_daily_id());
+        employeeDailyPayrollDto1.setEmp_id(employeeDailyPayRoll.getEmp_id().getEmployee_id());
+        employeeDailyPayrollDto1.setDaily_pay_id(employeeDailyPayRoll.getDaily_pay_id().getDaily_pay_roll_id());
+        employeeDailyPayrollDto1.setWorking_hours(employeeDailyPayRoll.getWorking_hours());
+        employeeDailyPayrollDto1.setOt_amount(employeeDailyPayRoll.getOt_amount());
+        employeeDailyPayrollDto1.setShift_amount(employeeDailyPayRoll.getShift_amount());
+        employeeDailyPayrollDto1.setTotal_amount(employeeDailyPayRoll.getTotal_amount());
+
+        return employeeDailyPayrollDto1;
+    }
+
 
 
 }

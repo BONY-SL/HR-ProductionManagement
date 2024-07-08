@@ -37,4 +37,7 @@ public interface EmployeeRepo extends JpaRepository<Employee,String> {
             "FROM employee e JOIN e.department d GROUP BY d.department_name")
     List<DepartmentEmployeeGenderCountDto> findDepartmentEmployeeGenderCounts();
 
+    @Query("SELECT e FROM employee e WHERE e.employee_id = ?1")
+    Employee findByEmployeeId(String employeeId);
+
 }

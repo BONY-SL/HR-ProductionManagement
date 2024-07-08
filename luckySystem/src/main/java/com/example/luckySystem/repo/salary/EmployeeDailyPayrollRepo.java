@@ -10,4 +10,8 @@ public interface EmployeeDailyPayrollRepo extends JpaRepository<EmployeeDailyPay
 
     @Query(value = "SELECT * FROM employeedailypayroll WHERE emp_id = :empId AND MONTH(date) = :month AND YEAR(date) = :year", nativeQuery = true)
     List<EmployeeDailyPayRoll> findAllByByMonthYearAndEmpId(@Param("empId") String empId, @Param("month") int month, @Param("year") int year);
+
+    @Query(value = "SELECT COUNT(*) FROM employeedailypayroll WHERE emp_id = :empId AND MONTH(date) = :month AND YEAR(date) = :year", nativeQuery = true)
+    int countByMonthYearAndEmpId(@Param("empId") String empId, @Param("month") int month, @Param("year") int year);
+
 }
