@@ -167,6 +167,8 @@ public class AttendanceService {
         Employee employee=emprepo.findById(updateEmployeePerformance.getEmployeeId())
                 .orElseThrow( () -> new AppException("Unknown User",HttpStatus.BAD_REQUEST));
 
+        System.out.println(employee);
+
         employee.setCompany_status(updateEmployeePerformance.getStatus());
         employee.setSalary_type(updateEmployeePerformance.getSalaryType());
         employee.setJob_role(updateEmployeePerformance.getJobRole());
