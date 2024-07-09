@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,18 +68,20 @@ public class EmployeeService {
 
         return new EmployeeDTO(unit.getEmployee_id(),unit.getJob_role(),unit.getSalary_type(),unit.getEmployee_name(),
                 unit.getDob(),unit.getAddress(),unit.getGender(),unit.getMa_uma(),unit.getContact(),
-                unit.getCompany_status(),unit.getCv(),unit.getDepartment().getDepartment_id(),unit.getSec_id().getSection_id());
+                unit.getCompany_status(),unit.getCv(),unit.getDepartment().getDepartment_name(),unit.getSec_id().getSection_name());
     }
 
     public Employee addEmployee(EmployeeDTO employeeDto, MultipartFile cv) throws IOException {
+
         Employee employee = modelMapper.map(employeeDto, Employee.class);
+
+        Department departmentId=departmentRepo.findById(employeeDto.getDep_id()).orElse(null);
+        Section sectionId=sectionRepo.findById(employeeDto.getSec_id()).orElse(null);
+
+
         if (cv != null && !cv.isEmpty()) {
             employee.setCv(cv.getBytes());
         }
-        Department department = departmentRepo.findById(employeeDto.getDep_id())
-                .orElseThrow(() -> new AppException("Department not found", HttpStatus.BAD_REQUEST));
-        Section section = sectionRepo.findById(employeeDto.getSec_id())
-                .orElseThrow(() -> new AppException("Section not found", HttpStatus.BAD_REQUEST));
 
         employee.setEmployee_id(employeeDto.getEmployeeid());
         employee.setJob_role(employeeDto.getJob_role());
@@ -90,9 +93,8 @@ public class EmployeeService {
         employee.setMa_uma(employeeDto.getMa_uma());
         employee.setContact(employeeDto.getContact());
         employee.setCompany_status(employeeDto.getCompany_status());
-        employee.setDepartment(department);
-        employee.setSec_id(section);
-
+        employee.setDepartment(departmentId);
+        employee.setSec_id(sectionId);
         employeeRepo.save(employee);
         return employee;
     }
@@ -300,6 +302,7 @@ public class EmployeeService {
     }
 
     private UpdatePromotionDTO convertEntityToDTO(Employee employee) {
+
         return new UpdatePromotionDTO(
                 employee.getEmployee_id(),
                 employee.getJob_role(),
