@@ -105,7 +105,7 @@ public class MonthlySalaryService {
 
         // Check leave days count and total leaves equal to initials days
         long totalLeaveDays = employeeLeaveList.stream()
-                .filter(leaveRecord -> "approve".equalsIgnoreCase(leaveRecord.getStatus()))
+                .filter(leaveRecord -> "approved".equalsIgnoreCase(leaveRecord.getStatus()))
                 .mapToLong(leaveRecord -> ChronoUnit.DAYS.between(leaveRecord.getStart_time().toLocalDate(), leaveRecord.getEnd_time().toLocalDate()) + 1)
                 .sum();
 
