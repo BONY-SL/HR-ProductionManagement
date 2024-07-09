@@ -171,14 +171,6 @@ public class MonthlySalaryService {
             System.out.println("No advance found for the given criteria.");
         }
 
-        // Fetch medical
-        EmployeeMedical medical = medicalRepo.getMedicalbyid(empId);
-
-        if (medical != null) {
-            System.out.println("Medical amount: " + medical.getMedical_status());
-        } else {
-            System.out.println("No medical found for the given criteria.");
-        }
 
         // Net basic salary
         grossbasicsalary = netbasicsalay + totalShiftAmount + allowanceamount;
