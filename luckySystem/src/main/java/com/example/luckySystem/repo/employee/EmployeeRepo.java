@@ -22,6 +22,7 @@ public interface EmployeeRepo extends JpaRepository<Employee,String> {
     List<Employee> findEmployeesWithBirthdaysToday();
 
 
+    //upcoming birthdays
     @Query(value = "SELECT * FROM employee e " +
             "WHERE (MONTH(e.dob) = MONTH(DATE_ADD(CURDATE(), INTERVAL 1 DAY)) " +
             "AND DAY(e.dob) = DAY(DATE_ADD(CURDATE(), INTERVAL 1 DAY))) " +
