@@ -1,7 +1,5 @@
 package com.example.luckySystem.repo.salary;
 import com.example.luckySystem.entity.Employee;
-import com.example.luckySystem.entity.EmployeeLeave;
-import com.example.luckySystem.entity.EmployeeAttendance;
 import com.example.luckySystem.entity.EmployeeMedical;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,9 +16,8 @@ public interface MedicalRepo extends JpaRepository<EmployeeMedical,Long> {
     @Query("SELECT COUNT(l) FROM EmployeeMedical l WHERE l.employee = :employee AND l.medical_status = :status")
     long countByEmpIdAndStatus(Employee employee, String status);
 
-    @Query(value = "SELECT * FROM employeemedical WHERE employee_id = :empid", nativeQuery = true)
+    @Query(value = "SELECT  FROM employeemedical WHERE employee_id = :empid", nativeQuery = true)
     EmployeeMedical getMedicalbyid(@Param("empid") String empid);
-
 
     @Query("SELECT g FROM EmployeeMedical g WHERE g.employee.employee_id = :empId AND g.submit_date BETWEEN :startDate AND :endDate ORDER BY g.submit_date ASC")
     List<EmployeeMedical> findByEmployeeAndSubmit_dateBetweenOrderBySubmit_dateAsc(

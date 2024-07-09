@@ -55,6 +55,7 @@ public class EmployeeController {
 
         System.out.println(employeeid);
         EmployeeDTO employeeDto = new EmployeeDTO(employeeid, jobRole, salaryType, employeeName, dob, address, gender, maUma, contact, companyStatus,null, depId, secId);
+        System.out.println(employeeDto);
         Employee employee = employeeService.addEmployee(employeeDto, cv);
         return ResponseEntity.ok(employee);
     }
