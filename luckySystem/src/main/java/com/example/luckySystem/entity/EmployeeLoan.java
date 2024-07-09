@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 
 @Entity(name="employeelone")
+@Table(name = "employeelone")
 public class EmployeeLoan {
 
     @Id
