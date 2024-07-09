@@ -74,6 +74,7 @@ public class EmployeeDailyPayrollService {
         employeeDailyPayrollDto1.setOt_amount(employeeDailyPayRoll.getOt_amount());
         employeeDailyPayrollDto1.setShift_amount(employeeDailyPayRoll.getShift_amount());
         employeeDailyPayrollDto1.setTotal_amount(employeeDailyPayRoll.getTotal_amount());
+        employeeDailyPayrollDto1.setDate(employeeDailyPayRoll.getDate());
 
         return employeeDailyPayrollDto1;
     }

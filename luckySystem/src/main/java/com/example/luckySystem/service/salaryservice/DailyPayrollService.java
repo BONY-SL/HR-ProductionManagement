@@ -39,6 +39,13 @@ public class DailyPayrollService {
 
     public DailyPayRoll createDailyPayroll(String empId, String dateStr) {
 
+
+        System.out.println(empId);
+        System.out.println(dateStr);
+
+
+
+
         // Get employee details
         Optional<Employee> employeeOptional = employeeRepo.findById(empId);
         if (employeeOptional.isPresent()) {
@@ -46,6 +53,16 @@ public class DailyPayrollService {
             String jobRole = employee.getJob_role();
             String departmentName = employee.getDepartment().getDepartment_name();
             String sectionName = employee.getSec_id().getSection_name();
+
+
+            System.out.println(jobRole);
+            System.out.println(departmentName);
+            System.out.println(sectionName);
+
+
+
+
+
 
             BasicSalary basicSalary = basicSalaryRepo.findByCustomQuery(jobRole, departmentName, sectionName);
             EmployeeAttendance employeeAttendance = attendanceRepo.findByEmpIdAndDateNative(empId, dateStr);

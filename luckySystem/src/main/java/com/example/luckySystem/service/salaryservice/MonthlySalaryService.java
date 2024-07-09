@@ -105,7 +105,7 @@ public class MonthlySalaryService {
 
         // Check leave days count and total leaves equal to initials days
         long totalLeaveDays = employeeLeaveList.stream()
-                .filter(leaveRecord -> "approve".equalsIgnoreCase(leaveRecord.getStatus()))
+                .filter(leaveRecord -> "approved".equalsIgnoreCase(leaveRecord.getStatus()))
                 .mapToLong(leaveRecord -> ChronoUnit.DAYS.between(leaveRecord.getStart_time().toLocalDate(), leaveRecord.getEnd_time().toLocalDate()) + 1)
                 .sum();
 
@@ -184,7 +184,7 @@ public class MonthlySalaryService {
         grossbasicsalary = netbasicsalay + totalShiftAmount + allowanceamount;
 
         // Net salary
-        netsalary = (grossbasicsalary - (deductionamount + loan.getInterest_amount() + advancesalary));
+        netsalary = (grossbasicsalary - (deductionamount + (loan != null ? loan.getInterest_amount() : 0.0) + advancesalary));
 
         // Print details
         System.out.println("Emp ID:" + empId);
@@ -201,8 +201,8 @@ public class MonthlySalaryService {
         System.out.println("Department Name: " + departmentName);
         System.out.println("Section Name: " + sectionName);
         System.out.println("Shift Amount: " + totalShiftAmount);
-        System.out.println("Loan: " + loan.getLoan_amount());
-        System.out.println("Advance: " + advance.getAmount());
+        System.out.println("Loan: " + (loan != null ? loan.getLoan_amount() : "N/A"));
+        System.out.println("Advance: " + (advance != null ? advance.getAmount() : "N/A"));
         System.out.println("Total Amount: " + totalAmount);
         System.out.println("Net basic salary: " + netbasicsalay);
         System.out.println("EPF 12% : " + cepf);
@@ -219,7 +219,7 @@ public class MonthlySalaryService {
         employeeMonthlySalary.setDeduction_amount(deductionamount);
         employeeMonthlySalary.setEpf(epf);
         employeeMonthlySalary.setEtf(etf);
-        employeeMonthlySalary.setLoan_deduction(loan.getLoan_amount());
+        employeeMonthlySalary.setLoan_deduction(loan != null ? loan.getLoan_amount() : 0.0);
         employeeMonthlySalary.setAdvance_salary(advancesalary);
         employeeMonthlySalary.setGross_basic_salary(grossbasicsalary);
         employeeMonthlySalary.setNet_salary(netsalary);
@@ -227,6 +227,7 @@ public class MonthlySalaryService {
         // Save EmployeeMonthlySalary object
         monthlySalaryRepo.save(employeeMonthlySalary);
     }
+
 
 
     public List<MonthlySalaryDto> MonthlySalaryDetails() {

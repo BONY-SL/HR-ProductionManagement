@@ -19,7 +19,6 @@ public interface MedicalRepo extends JpaRepository<EmployeeMedical,Long> {
     @Query(value = "SELECT  FROM employeemedical WHERE employee_id = :empid", nativeQuery = true)
     EmployeeMedical getMedicalbyid(@Param("empid") String empid);
 
-
     @Query("SELECT g FROM EmployeeMedical g WHERE g.employee.employee_id = :empId AND g.submit_date BETWEEN :startDate AND :endDate ORDER BY g.submit_date ASC")
     List<EmployeeMedical> findByEmployeeAndSubmit_dateBetweenOrderBySubmit_dateAsc(
             @Param("empId") String  empId,

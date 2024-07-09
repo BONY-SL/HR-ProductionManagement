@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -17,5 +19,7 @@ public class EmployeeDailyPayrollDto {
     private double ot_amount;
     private double shift_amount;
     private double total_amount;
+    private Date date;
+
 
 }
