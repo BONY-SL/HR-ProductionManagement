@@ -1,6 +1,7 @@
 package com.example.luckySystem.controller.salary;
 
 import com.example.luckySystem.dto.salary.MonthlySalaryDto;
+import com.example.luckySystem.dto.salary.MonthlySalaryReportDto;
 import com.example.luckySystem.dto.sectionanddepartment.SectionDto;
 import com.example.luckySystem.service.salaryservice.MonthlySalaryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,34 @@ public class MonthlySalaryController {
         List<MonthlySalaryDto> monthlySalaryDtos =monthlySalaryService.MonthlySalaryDetails();
         return ResponseEntity.ok().body(monthlySalaryDtos);
     }
+
+
+
+
+    @GetMapping("/monthltysalaryReport")
+    public MonthlySalaryReportDto createMonthlySalaryReport(
+            @RequestParam String empId,
+            @RequestParam String date
+
+    ) {
+        System.out.println("Received request for empId: " + empId + ", date: " + date);
+
+
+           MonthlySalaryReportDto monthlySalaryReportDtos= monthlySalaryService.getMonthlySalaryReport(empId, date);
+           return monthlySalaryReportDtos;
+    }
+
+
+
+    @GetMapping("/epfReport")
+    public ResponseEntity<List<MonthlySalaryReportDto>> EPFReport(@RequestParam String date) {
+        System.out.println("Received request for empId: date: " + date);
+
+        List<MonthlySalaryReportDto>monthlySalaryReportDtoList=monthlySalaryService.EPFReport(date);
+        return ResponseEntity.ok().body(monthlySalaryReportDtoList);
+    }
+
+
 
 
 }

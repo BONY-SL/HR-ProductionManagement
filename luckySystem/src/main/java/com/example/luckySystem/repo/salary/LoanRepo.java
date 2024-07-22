@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface LoanRepo extends JpaRepository<EmployeeLoan,Long> {
 
@@ -14,7 +16,7 @@ public interface LoanRepo extends JpaRepository<EmployeeLoan,Long> {
     EmployeeLoan getLoanById(String emp_id);
 
     @Query(value = "SELECT * FROM employeelone WHERE emp_id = :empid", nativeQuery = true)
-    EmployeeLoan getloanbyid(@Param("empid") String empid);
+    List<EmployeeLoan> getloanbyid(@Param("empid") String empid);
 
 
     @Transactional

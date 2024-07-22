@@ -17,6 +17,8 @@ public class EmployeeDailyPayrollDto {
     private Long daily_pay_id;
     private double working_hours;
     private double ot_amount;
+    private double late_amount;
+    private double gatepass_amount;
     private double shift_amount;
     private double total_amount;
     private Date date;

@@ -34,8 +34,14 @@ public class EmployeeMonthlySalary {
     @Column(name="date",length = 20,nullable = false)
     private String date;
 
+    @Column(name="total_basicsalary")
+    private double total_basicsalary;
+
     @Column(name="bonus_amount")
     private double bonus_amount;
+
+    @Column(name="total_otamount")
+    private double total_otamount;
 
     @Column(name="allowancess_amount")
     private double allowancess_amount;
@@ -45,6 +51,9 @@ public class EmployeeMonthlySalary {
 
     @Column(name="epf",length = 20,nullable = false)
     private double epf;
+
+    @Column(name="cetf",length = 20,nullable = false)
+    private double cetf;
 
     @Column(name="etf",length = 20,nullable = false)
     private double etf;

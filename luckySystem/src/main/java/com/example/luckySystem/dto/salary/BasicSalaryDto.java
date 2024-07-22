@@ -19,7 +19,7 @@ public class BasicSalaryDto {
     private double basic_amount;
     private double get_pass_amount;
     private double ot_amount;
-    private double subsistant;
+    private double late_hours_amount;
 }
 
 

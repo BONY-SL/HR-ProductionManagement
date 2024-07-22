@@ -36,6 +36,12 @@ public class EmployeeDailyPayRoll {
     @Column(name="ot_amount",nullable = false)
     private double ot_amount;
 
+    @Column(name="late_amount",nullable = false)
+    private double late_amount;
+
+    @Column(name="gatepass_amount",nullable = false)
+    private double gatepass_amount;
+
     @Column(name="shift_amount",nullable = false)
     private double shift_amount;
 

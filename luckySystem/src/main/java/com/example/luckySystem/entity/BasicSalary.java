@@ -54,7 +54,7 @@ public class BasicSalary{
     private double ot_amount;
 
     @Column
-    private double subsistant;
+    private double late_hours_amount;
 
     public void setSalaryType(String salaryType) {
     }
