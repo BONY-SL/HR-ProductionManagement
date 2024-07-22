@@ -1,6 +1,7 @@
 package com.example.luckySystem.service.salaryservice;
 
 import com.example.luckySystem.dto.salary.MonthlySalaryDto;
+import com.example.luckySystem.dto.salary.MonthlySalaryReportDto;
 import com.example.luckySystem.dto.sectionanddepartment.SectionDto;
 import com.example.luckySystem.entity.*;
 import com.example.luckySystem.repo.employee.EmployeeRepo;
@@ -8,8 +9,11 @@ import com.example.luckySystem.repo.salary.*;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.Month;
+import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,28 +31,15 @@ public class MonthlySalaryService {
     private final EmployeeRepo employeeRepo;
 
 
-    private String sectionName;
-    private String departmentName;
-    private String jobRole;
-
-    private String salarytype;
-    private double totalAmount;
 
     private int acount;
     private double allowanceamount;
     private double deductionamount;
-
-    private double advancesalary;
-
-    private double cloanamount;
-
-    private double cadvance;
-
-    private double shiftamount;
-
-    private double grossbasicsalary;
-
+    private double grosssalary;
     private double netsalary;
+    private double cepf;
+    private double loanDeductionAmount;
+    private double advancedeductionamount;
 
     @Autowired
     public MonthlySalaryService(EmployeeDailyPayrollRepo employeeDailyPayrollRepo, AllowanceRepo allowanceRepo, AdvanceRepo advanceRepo, DeductionRepo deductionRepo, LeaveRepo leaveRepo, LoanRepo loanRepo, MedicalRepo medicalRepo, BasicSalaryRepo basicSalaryRepo, MonthlySalaryRepo monthlySalaryRepo, EmployeeRepo employeeRepo) {
@@ -78,6 +69,9 @@ public class MonthlySalaryService {
             return;
         }
 
+        String formattedDate = String.format("%04d-%02d-00", year, month);
+
+
         // Fetch data from repository
         List<EmployeeDailyPayRoll> employeeDailyPayRolls = employeeDailyPayrollRepo.findAllByByMonthYearAndEmpId(empId, month, year);
 
@@ -86,22 +80,26 @@ public class MonthlySalaryService {
             return;
         }
 
-        // Calculate total shift amount and other details
-        double totalShiftAmount = employeeDailyPayRolls.stream().mapToDouble(EmployeeDailyPayRoll::getShift_amount).sum();
-        double totalAmount = employeeDailyPayRolls.stream().mapToDouble(EmployeeDailyPayRoll::getTotal_amount).sum();
+        // get jobrole,depname,section,othours,latehours,otamount
         String jobRole = employeeDailyPayRolls.get(0).getDaily_pay_id().getJob_role();
         String departmentName = employeeDailyPayRolls.get(0).getDaily_pay_id().getDepartment_name();
         String sectionName = employeeDailyPayRolls.get(0).getDaily_pay_id().getSection_name();
+        double otAmount=employeeDailyPayRolls.stream().mapToDouble(EmployeeDailyPayRoll::getOt_amount).sum();
+        double lateAmount =employeeDailyPayRolls.stream().mapToDouble(EmployeeDailyPayRoll::getLate_amount).sum();
+        double gatepassAmount=employeeDailyPayRolls.stream().mapToDouble(EmployeeDailyPayRoll::getGatepass_amount).sum();
+
+
+        System.out.println(jobRole);
+        System.out.println(departmentName);
+        System.out.println(sectionName);
+
+
 
         acount = employeeDailyPayrollRepo.countByMonthYearAndEmpId(empId, month, year);
         List<EmployeeLeave> employeeLeaveList = leaveRepo.findAllleave(empId, month, year);
         BasicSalary basicSalary = basicSalaryRepo.findByCustomQuery(jobRole, departmentName, sectionName);
-        BasicSalary basicSalary1 = basicSalaryRepo.findByCustomQuery(jobRole, departmentName, sectionName);
 
-        double netbasicsalay = basicSalary1.getBasic_amount() + basicSalary1.getBr_1() + basicSalary1.getBr_2() + basicSalary1.getSubsistant();
-        double epf = (netbasicsalay * 8) / 100; // deduction
-        double cepf = (netbasicsalay * 12) / 100; // not deduction
-        double etf = (netbasicsalay * 3) / 100; // not deduction
+
 
         // Check leave days count and total leaves equal to initials days
         long totalLeaveDays = employeeLeaveList.stream()
@@ -111,23 +109,66 @@ public class MonthlySalaryService {
 
         System.out.println("Total leave days for approved leaves: " + totalLeaveDays);
 
-        if (acount + totalLeaveDays == basicSalary.getInitial_days()) {
-            shiftamount = ((basicSalary.getBasic_amount() + basicSalary.getBr_1() + basicSalary.getBr_2() + basicSalary.getSubsistant()) / 8) * basicSalary.getInitial_days();
-        }
+
+
+        //no pay amount
+        double nopayAmount=totalLeaveDays*basicSalary.getInitial_nopay_amount();
+
+
+
+
+
+
+        double totalbasicsalary=basicSalary.getBasic_amount() + basicSalary.getBr_1() + basicSalary.getBr_2();
+        double netbasicsalay =totalbasicsalary-(lateAmount+nopayAmount+gatepassAmount);
+
+        System.out.println("total basic salary" +totalbasicsalary);
+        System.out.println("net basic salary" +netbasicsalay);
+        System.out.println("attendance count" +acount);
+        System.out.println("total gatepass amount" +gatepassAmount);
+        System.out.println("tot late amount" +lateAmount);
+        System.out.println("tot Ot amount" +otAmount);
+
+
+
+
+
 
         // Fetch related allowance
         List<Allowances> allowancesList = allowanceRepo.findByCustomQuery(jobRole, departmentName, sectionName);
 
         if (allowancesList != null && !allowancesList.isEmpty()) {
             allowanceamount = allowancesList.stream()
-                    .filter(allowance -> !(allowance.getAllowances_type().equalsIgnoreCase("Attendance Allowance") && acount == 28))
+                    .filter(allowance -> !(allowance.getAllowances_type().equalsIgnoreCase("Attendance Allowance") && acount < 0 ))
                     .mapToDouble(Allowances::getAllowances_amount)
                     .sum();
 
             System.out.println("Total Allowances amount: " + allowanceamount);
         } else {
             System.out.println("No allowances found for the given criteria.");
+
         }
+
+
+        //Gross salary
+        grosssalary=netbasicsalay+allowanceamount+otAmount+bonus;
+        System.out.println("gross salary:" +grosssalary);
+
+
+
+
+
+        double epf = (netbasicsalay * 8) / 100; // deduction
+        cepf = (netbasicsalay * 12) / 100; // not deduction
+        double etf = (netbasicsalay * 3) / 100; // not deduction
+
+
+        System.out.println("epf" +epf);
+        System.out.println("cpf" +cepf);
+        System.out.println("etf" +etf);
+
+
+
 
         // Fetch Deduction
         List<Deduction> deductionList = deductionRepo.findByCustomQuery(jobRole, departmentName, sectionName);
@@ -142,82 +183,105 @@ public class MonthlySalaryService {
             System.out.println("No Deduction found for the given criteria.");
         }
 
-        // Fetch loan
-        EmployeeLoan loan = loanRepo.getloanbyid(empId);
 
-        if (loan != null) {
-            if (loan.getLoan_amount() > 0) {
+
+// Fetch loans for an employee
+        List<EmployeeLoan> loans = loanRepo.getloanbyid(empId);
+
+        if (loans != null && !loans.isEmpty()) {
+            // Loop through each loan in the list
+            for (EmployeeLoan loan : loans) {
                 System.out.println("Loan amount: " + loan.getLoan_amount());
-                cloanamount = loan.getLoan_amount() - loan.getInterest_amount();
-                System.out.println(cloanamount);
-                loanRepo.updateLoanAmount(cloanamount, loan.getLoan_id());
-            } else {
-                System.out.println("Loan payment complete");
+                if(loan.getLoan_amount()>0) {
+                    loanDeductionAmount = loan.getInterest_amount();
+                    System.out.println("loan deduction amount" + loanDeductionAmount);
+                    double newLoanAmount = loan.getLoan_amount() - loanDeductionAmount;
+                    System.out.println(newLoanAmount);
+
+                    // Update the loan amount in the database
+                    loanRepo.updateLoanAmount(newLoanAmount, loan.getLoan_id());
+                }else {
+                    loanDeductionAmount=0.0;
+                }
             }
         } else {
             System.out.println("No loan found for the given criteria.");
         }
 
+
+
         // Fetch advance
-        EmployeeAdvanceSalary advance = advanceRepo.getAdvancebyid(empId);
+        List<EmployeeAdvanceSalary> advance = advanceRepo.getAdvancebyid(empId);
 
         if (advance != null) {
-            if ("approve".equalsIgnoreCase(advance.getStatus()) && advance.getAmount() > 0) {
-                System.out.println("Advance amount: " + advance.getAmount());
-                advancesalary = advance.getAmount();
-                advanceRepo.updateAdvanceAmount(0.0, advance.getAdvance_salary_id());
+
+            for(EmployeeAdvanceSalary salaryadvance:advance){
+
+                if ("approve".equalsIgnoreCase(salaryadvance.getStatus()) && salaryadvance.getAmount() > 0) {
+                    System.out.println("Advance amount: " + salaryadvance.getAmount());
+                    advancedeductionamount=salaryadvance.getAmount();
+                    advanceRepo.updateAdvanceAmount(0.0, salaryadvance.getAdvance_salary_id());
+                }else {
+                    advancedeductionamount=0.0;
+                }
+
             }
+
         } else {
             System.out.println("No advance found for the given criteria.");
         }
 
 
-        // Net basic salary
-        grossbasicsalary = netbasicsalay + totalShiftAmount + allowanceamount;
 
         // Net salary
-        netsalary = (grossbasicsalary - (deductionamount + (loan != null ? loan.getInterest_amount() : 0.0) + advancesalary));
+        netsalary = (grosssalary-(epf+deductionamount+loanDeductionAmount+advancedeductionamount));
+
+        System.out.println("netsalary:"+netsalary);
+
 
         // Print details
         System.out.println("Emp ID:" + empId);
-        System.out.println("Salary type:" + basicSalary1.getSalary_type());
+        System.out.println("Emp Name:"+employee.getEmployee_name());
+        System.out.println("Salary type:" + basicSalary.getSalary_type());
         System.out.println("Job Role: " + jobRole);
-        System.out.println(date);
+        System.out.println(formattedDate);
         System.out.println("Bonus:" + bonus);
         System.out.println("Allowance:" + allowanceamount);
         System.out.println("Deduction:" + deductionamount);
         System.out.println("EPF 8% : " + epf);
         System.out.println("ETF 3% : " + etf);
-        System.out.println("Gross basic salary: " + grossbasicsalary);
+        System.out.println("Gross salary: " + grosssalary);
         System.out.println("Net salary:" + netsalary);
         System.out.println("Department Name: " + departmentName);
         System.out.println("Section Name: " + sectionName);
-        System.out.println("Shift Amount: " + totalShiftAmount);
-        System.out.println("Loan: " + (loan != null ? loan.getLoan_amount() : "N/A"));
-        System.out.println("Advance: " + (advance != null ? advance.getAmount() : "N/A"));
-        System.out.println("Total Amount: " + totalAmount);
-        System.out.println("Net basic salary: " + netbasicsalay);
-        System.out.println("EPF 12% : " + cepf);
-        System.out.println("Total leave days:" + totalLeaveDays);
+        //System.out.println("Loan: " + (loan != null ? loan.getLoan_amount() : "N/A"));
+       // System.out.println("Advance: " + (advance != null ? advance.getAmount() : "N/A"));
+
+
 
         // Create EmployeeMonthlySalary object and set properties
         EmployeeMonthlySalary employeeMonthlySalary = new EmployeeMonthlySalary();
         employeeMonthlySalary.setEmp_id(employee);
-        employeeMonthlySalary.setSalary_type(basicSalary1.getSalary_type());
+        employeeMonthlySalary.setSalary_type(basicSalary.getSalary_type());
         employeeMonthlySalary.setJob_role(jobRole);
-        employeeMonthlySalary.setDate(date);
+        employeeMonthlySalary.setDate(formattedDate);
+        employeeMonthlySalary.setTotal_basicsalary(totalbasicsalary);
+        employeeMonthlySalary.setTotal_otamount(otAmount);
         employeeMonthlySalary.setBonus_amount(bonus);
         employeeMonthlySalary.setAllowancess_amount(allowanceamount);
         employeeMonthlySalary.setDeduction_amount(deductionamount);
         employeeMonthlySalary.setEpf(epf);
         employeeMonthlySalary.setEtf(etf);
-        employeeMonthlySalary.setLoan_deduction(loan != null ? loan.getLoan_amount() : 0.0);
-        employeeMonthlySalary.setAdvance_salary(advancesalary);
-        employeeMonthlySalary.setGross_basic_salary(grossbasicsalary);
+        employeeMonthlySalary.setCetf(cepf);
+        employeeMonthlySalary.setLoan_deduction(loanDeductionAmount);
+        employeeMonthlySalary.setAdvance_salary(advancedeductionamount);
+        employeeMonthlySalary.setGross_basic_salary(grosssalary);
         employeeMonthlySalary.setNet_salary(netsalary);
 
         // Save EmployeeMonthlySalary object
         monthlySalaryRepo.save(employeeMonthlySalary);
+
+
     }
 
 
@@ -244,5 +308,100 @@ public class MonthlySalaryService {
         monthlySalaryDto.setGross_basic_salary(employeeMonthlySalary.getGross_basic_salary());
         monthlySalaryDto.setNet_salary(employeeMonthlySalary.getNet_salary());
         return monthlySalaryDto;
+
+
+
     }
+
+
+
+
+
+    public MonthlySalaryReportDto getMonthlySalaryReport(String empId, String date) {
+        // Trim the date string to remove any leading or trailing whitespace characters
+        date = date.trim();
+
+        // Extract year and month from the date string (format: YYYY-MM)
+        String[] dateParts = date.split("-");
+        int year = Integer.parseInt(dateParts[0]);
+        int month = Integer.parseInt(dateParts[1]);
+
+        // Get the month name from the month integer value
+        String monthName = Month.of(month).getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+
+
+        EmployeeMonthlySalary monthlySalary = monthlySalaryRepo.findAllByByMonthYearAndEmpId(empId, month, year);
+
+        if (monthlySalary == null) {
+            System.out.println("No salary report found for the given criteria.");
+            return null;
+        }
+
+        MonthlySalaryReportDto reportDto = new MonthlySalaryReportDto();
+        reportDto.setEmp_id(empId);
+        reportDto.setEmp_Name(monthlySalary.getEmp_id().getEmployee_name());
+        reportDto.setSalary_type(monthlySalary.getSalary_type());
+        reportDto.setJob_role(monthlySalary.getJob_role());
+        reportDto.setMonth(monthName);
+        reportDto.setYear(year);
+        reportDto.setTotal_basicsalary(monthlySalary.getTotal_basicsalary());
+        reportDto.setBonus_amount(monthlySalary.getBonus_amount());
+        reportDto.setTotal_otamount(monthlySalary.getTotal_otamount());
+        reportDto.setAllowancess_amount(monthlySalary.getAllowancess_amount());
+        reportDto.setDeduction_amount(monthlySalary.getDeduction_amount());
+        reportDto.setEtf(monthlySalary.getEtf());
+        reportDto.setEpf(monthlySalary.getEpf());
+        reportDto.setCepf(monthlySalary.getCetf());
+        reportDto.setLoan_deduction(monthlySalary.getLoan_deduction());
+        reportDto.setGross_basic_salary(monthlySalary.getGross_basic_salary());
+        reportDto.setNet_salary(monthlySalary.getNet_salary());
+
+        return reportDto;
+    }
+
+
+    public List<MonthlySalaryReportDto> EPFReport(String date) {
+
+        System.out.println(date);
+
+        // Extract year and month from the date string (format: YYYY-MM)
+        String[] dateParts = date.split("-");
+        int year = Integer.parseInt(dateParts[0].trim());
+        int month = Integer.parseInt(dateParts[1].trim());
+
+
+        System.out.println(year);
+        System.out.println(month);
+
+        // Fetch employee monthly salary from repository
+        List<EmployeeMonthlySalary> etfreportlist = monthlySalaryRepo.EPFrepoart(month, year);
+
+        System.out.println(etfreportlist);
+
+        // Check if employeeMonthlySalary is null
+        if (etfreportlist == null) {
+
+        }
+        return etfreportlist.stream().map(this::convertToDTO2).collect(Collectors.toList());
+
+    }
+
+    private MonthlySalaryReportDto convertToDTO2(EmployeeMonthlySalary employeeMonthlySalary) {
+
+        MonthlySalaryReportDto monthlySalaryReportDto = new MonthlySalaryReportDto();
+
+        // Assuming employeeMonthlySalary.getEmp_id() returns an Employee object
+        Employee employee = employeeMonthlySalary.getEmp_id();
+
+        monthlySalaryReportDto.setEmp_id(String.valueOf(employee.getEmployee_id()));
+        monthlySalaryReportDto.setEmp_Name(employee.getEmployee_name());
+        monthlySalaryReportDto.setEpf(employeeMonthlySalary.getEpf());
+        monthlySalaryReportDto.setCepf(employeeMonthlySalary.getCetf());
+        monthlySalaryReportDto.setEtf(employeeMonthlySalary.getEtf());
+        monthlySalaryReportDto.setDate(employeeMonthlySalary.getDate());
+
+        return monthlySalaryReportDto;
+    }
+
+
 }

@@ -34,6 +34,12 @@ public class DailyPayRoll{
     @Column(name="working_hours",nullable = false)
     private double  working_hours;
 
+    @Column(name="late_hours",nullable = false)
+    private double  late_hours;
+
+    @Column(name="gatepass_hours",nullable = false)
+    private double  gatepass_hours;
+
     @Column(name="amount_per_aditonal_hour",nullable = false)
     private double  amount_per_aditonal_hour;
 

@@ -31,3 +31,5 @@ public interface GatePassRepo extends JpaRepository<EmployeeGatePass,Long> {
     List<EmployeeGatePass> findCurrentCurrentGatePasses();
 }
 
+
+

@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface AdvanceRepo extends JpaRepository<EmployeeAdvanceSalary,Long> {
 
@@ -16,7 +18,7 @@ public interface AdvanceRepo extends JpaRepository<EmployeeAdvanceSalary,Long> {
     EmployeeAdvanceSalary getAdvanceByID(String advanceID);
 
     @Query(value = "SELECT * FROM employeeadvancesalary WHERE emp_id = :empid", nativeQuery = true)
-    EmployeeAdvanceSalary getAdvancebyid(@Param("empid") String empid);
+    List<EmployeeAdvanceSalary>  getAdvancebyid(@Param("empid") String empid);
 
     @Transactional
     @Modifying
