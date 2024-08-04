@@ -40,6 +40,9 @@ public class EmployeeMonthlySalary {
     @Column(name="bonus_amount")
     private double bonus_amount;
 
+    @Column(name="nopay_amount")
+    private double nopay_amount;
+
     @Column(name="total_otamount")
     private double total_otamount;
 

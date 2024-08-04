@@ -17,6 +17,9 @@ public class MonthlySalaryReportDto {
     private String job_role;
     private String month;
     private int year;
+    private double nopay_amount;
+    private double totnopay_amount;
+    private double netbasic_salary;
     private double total_basicsalary;
     private double bonus_amount;
     private double total_otamount;

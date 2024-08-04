@@ -277,6 +277,7 @@ public class MonthlySalaryService {
         employeeMonthlySalary.setAdvance_salary(advancedeductionamount);
         employeeMonthlySalary.setGross_basic_salary(grosssalary);
         employeeMonthlySalary.setNet_salary(netsalary);
+        employeeMonthlySalary.setNopay_amount(nopayAmount);
 
         // Save EmployeeMonthlySalary object
         monthlySalaryRepo.save(employeeMonthlySalary);
@@ -330,7 +331,12 @@ public class MonthlySalaryService {
         String monthName = Month.of(month).getDisplayName(TextStyle.FULL, Locale.ENGLISH);
 
 
+
+
+
         EmployeeMonthlySalary monthlySalary = monthlySalaryRepo.findAllByByMonthYearAndEmpId(empId, month, year);
+
+
 
         if (monthlySalary == null) {
             System.out.println("No salary report found for the given criteria.");
@@ -349,12 +355,16 @@ public class MonthlySalaryService {
         reportDto.setTotal_otamount(monthlySalary.getTotal_otamount());
         reportDto.setAllowancess_amount(monthlySalary.getAllowancess_amount());
         reportDto.setDeduction_amount(monthlySalary.getDeduction_amount());
+        reportDto.setNetbasic_salary(monthlySalary.getTotal_basicsalary()-monthlySalary.getNopay_amount());
         reportDto.setEtf(monthlySalary.getEtf());
         reportDto.setEpf(monthlySalary.getEpf());
         reportDto.setCepf(monthlySalary.getCetf());
         reportDto.setLoan_deduction(monthlySalary.getLoan_deduction());
         reportDto.setGross_basic_salary(monthlySalary.getGross_basic_salary());
         reportDto.setNet_salary(monthlySalary.getNet_salary());
+        reportDto.setTotnopay_amount(monthlySalary.getNopay_amount());
+
+
 
         return reportDto;
     }
@@ -399,6 +409,7 @@ public class MonthlySalaryService {
         monthlySalaryReportDto.setCepf(employeeMonthlySalary.getCetf());
         monthlySalaryReportDto.setEtf(employeeMonthlySalary.getEtf());
         monthlySalaryReportDto.setDate(employeeMonthlySalary.getDate());
+        monthlySalaryReportDto.setNopay_amount(employeeMonthlySalary.getNopay_amount());
 
         return monthlySalaryReportDto;
     }
