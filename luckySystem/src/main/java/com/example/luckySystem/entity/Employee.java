@@ -16,6 +16,7 @@ import java.util.List;
 @Table(name="employee")
 public class Employee {
 
+    //EPF00001
     @Id
     @Column(name="employee_id", length = 8, unique = true, nullable = false)
     private String employee_id;
