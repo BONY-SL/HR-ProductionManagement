@@ -22,6 +22,7 @@ public class MonthlySalaryDto {
     private String job_role;
     private String date;
     private double bonus_amount;
+    private double nopay_amount;
     private double allowancess_amount;
     private double deduction_amount;
     private double epf;
