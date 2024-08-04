@@ -17,7 +17,7 @@ import java.util.Date;
 public class Section {
 
     @Id
-    @Column(name="section_id",length = 5,unique = true,nullable = false)
+    @Column(name="section_id",unique = true,nullable = false)
     private String section_id;
 
     @Column(name="section_name",length = 50,nullable = false)
