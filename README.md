@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>HR & Inventory Management System</title>
-</head>
-<body>
+
     <h1>HR & Inventory Management System</h1>
 
     <h2>Backend System Environment (JAVA-Spring boot)</h2>
@@ -117,5 +111,3 @@
             <p>Created user account default password is "Employee ID".</p>
         </li>
     </ol>
-</body>
-</html>
